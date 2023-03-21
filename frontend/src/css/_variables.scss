@@ -1,0 +1,24 @@
+:root {
+  // COLORS
+  --primary: #031927;
+  --secondary: #e5dcc5;
+  --tertiary: #f3752b;
+  --sucess: #60f32b;
+  --danger: #f35a2b;
+
+  // ROUNDED
+  --rounded: 0.25rem;
+  --rounded-sm: 0.125rem;
+  --rounded-md: 0.375rem;
+  --rounded-full: 99999999px;
+
+  // SHADOW
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  // ANIMATION
+  --delay-300: 0.3s;
+
+  // GRID
+  --grid-cols-2: repeat(2, minmax(0, 1fr));
+}

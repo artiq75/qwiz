@@ -1,0 +1,29 @@
+.result {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.result .card {
+  width: 450px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2em;
+}
+
+.result table {
+  border: 1px solid var(--primary);
+  border-radius: var(--rounded-md);
+  border-collapse: collapse;
+  min-width: 100%;
+}
+
+.result th, td {
+  padding: 1em;
+  border: 1px solid var(--primary);
+}
+
+.result th {
+  text-align-last: left;
+}

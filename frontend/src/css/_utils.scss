@@ -1,0 +1,59 @@
+[class~='primary'] {
+  background-color: var(--primary);
+  color: var(--secondary);
+}
+
+[class~='secondary'] {
+  background-color: var(--tertiary);
+  color: var(--primary);
+}
+
+[class~='success'] {
+  background-color: var(--sucess);
+  color: var(--primary);
+}
+
+[class~='danger'] {
+  background-color: var(--danger);
+  color: var(--secondary);
+}
+
+[class~='primary'][class~='outlined'] {
+  background-color: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+[class~='secondary'][class~='outlined'] {
+  background-color: transparent;
+  border-color: var(--tertiary);
+  color: var(--primary);
+}
+
+.w-full {
+  width: 100%;
+}
+
+.g2 {
+  display: grid;
+  grid-template-columns: var(--grid-cols-2);
+}
+
+.gap1 {
+  gap: 1em;
+}
+
+.tag {
+  padding: 0.35em;
+  width: max-content;
+  border-radius: var(--rounded-md);
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.txt-center {
+  text-align: center;
+}
