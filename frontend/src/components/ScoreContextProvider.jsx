@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState } from 'react'
+import { createContext, useContext, useMemo, useState } from 'react'
 
 export const initialScoreState = {
   goodAnswer: 0,
@@ -10,6 +10,8 @@ export const ScoreContext = createContext({
   score: initialScoreState,
   setScore: () => {}
 })
+
+export const useScoreContext = () => useContext(ScoreContext)
 
 export default function ScoreContextProvider({ children }) {
   const [score, setScore] = useState(initialScoreState)

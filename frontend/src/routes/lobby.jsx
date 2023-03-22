@@ -1,19 +1,22 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   initialScoreState,
-  ScoreContext
+  useScoreContext
 } from '../components/ScoreContextProvider'
+import { useUserContext } from '../components/UserContextProvider'
 import AnswerItem from '../components/AnswerItem'
 import useTimer from '../hooks/useTimer'
-import { http } from '../utils'
+import Http from '../Http'
+import useAsyncEffect from '../hooks/useAsyncEffect'
 
 export default function Lobby() {
   const [questions, setQuestions] = useState([])
   const [index, setIndex] = useState(0)
   const [hasChoose, setHasChoose] = useState(false)
   const { count: timer, stop: timerStop, reload: timerReload } = useTimer()
-  const { setScore } = useContext(ScoreContext)
+  const { setScore } = useScoreContext()
+  const { user } = useUserContext()
 
   const isLastQuestion = useMemo(() => {
     return index + 1 >= questions.length
@@ -28,10 +31,15 @@ export default function Lobby() {
     timerReload()
   }, [index])
 
-  useEffect(() => {
+  useAsyncEffect(async () => {
     setScore(initialScoreState)
-    http('/questions').then(setQuestions)
-  }, [])
+    const questions = await Http.get('/questions', {
+      headers: {
+        Authorization: `Bearer ${user.token}`
+      }
+    })
+    setQuestions(questions)
+  }, [user])
 
   useEffect(() => {
     if (isTimeFinish) {

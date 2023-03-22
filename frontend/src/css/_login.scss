@@ -1,0 +1,12 @@
+.login {
+  padding: 1em;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login form {
+  display: grid;
+  gap: 1em;
+}
