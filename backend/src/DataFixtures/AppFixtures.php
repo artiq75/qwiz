@@ -5,10 +5,12 @@ namespace App\DataFixtures;
 use App\Entity\Answer;
 use App\Entity\Category;
 use App\Entity\Question;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 const CATEGORIES = [
     'Culture',
@@ -20,13 +22,26 @@ class AppFixtures extends Fixture
 {
     private Generator $faker;
 
-    public function __construct()
-    {
+    public function __construct(
+        private UserPasswordHasherInterface $hasher
+    ) {
         $this->faker = Factory::create('fr_FR');
     }
 
     public function load(ObjectManager $manager): void
     {
+        $user = new User();
+        $user
+            ->setUsername($this->faker->userName())
+            ->setEmail($this->faker->email())
+            ->setPassword(
+                $this->hasher->hashPassword(
+                    $user,
+                    'password'
+                )
+            );
+        $manager->persist($user);
+
         $categories = [];
 
         foreach (CATEGORIES as $title) {

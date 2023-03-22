@@ -1,14 +1,13 @@
-import { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { ScoreContext } from '../components/ScoreContextProvider'
+import { useScore } from '../components/providers/ScoreProvider'
 
 export default function Result() {
-  const { score } = useContext(ScoreContext)
+  const { score } = useScore()
 
   return (
     <main className="result">
       <div className="card">
-        <h1 className='txt-center'>Score</h1>
+        <h1 className="txt-center">Score</h1>
         <table>
           <thead>
             <tr></tr>

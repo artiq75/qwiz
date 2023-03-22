@@ -2,12 +2,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   initialScoreState,
-  useScoreContext
-} from '../components/ScoreContextProvider'
-import { useUserContext } from '../components/UserContextProvider'
+  useScore
+} from '../components/providers/ScoreProvider'
+import { useAuth } from '../components/providers/AuthProvider'
 import AnswerItem from '../components/AnswerItem'
 import useTimer from '../hooks/useTimer'
-import Http from '../Http'
+import Http from '../classes/Http'
 import useAsyncEffect from '../hooks/useAsyncEffect'
 
 export default function Lobby() {
@@ -15,8 +15,8 @@ export default function Lobby() {
   const [index, setIndex] = useState(0)
   const [hasChoose, setHasChoose] = useState(false)
   const { count: timer, stop: timerStop, reload: timerReload } = useTimer()
-  const { setScore } = useScoreContext()
-  const { user } = useUserContext()
+  const { setScore } = useScore()
+  const { user } = useAuth()
 
   const isLastQuestion = useMemo(() => {
     return index + 1 >= questions.length

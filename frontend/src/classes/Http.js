@@ -1,6 +1,3 @@
-import { redirect } from 'react-router-dom'
-import Storage from './Storage'
-
 export default class Http {
   static headers = {
     'Content-Type': 'application/json',
@@ -19,6 +16,7 @@ export default class Http {
     options.body = JSON.stringify(options.body)
     options.headers = { ...options.headers, ...Http.headers }
     const response = await fetch(`http://localhost/api${uri}`, options)
+    console.log(response)
     return await response.json()
   }
 }

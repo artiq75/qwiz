@@ -1,30 +1,23 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useUserContext } from '../components/UserContextProvider'
-import Http from '../Http'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../components/providers/AuthProvider'
 
 export default function Login() {
-  const { user, onAuth } = useUserContext()
   const navigate = useNavigate()
+  const location = useLocation()
+  const auth = useAuth()
 
-  useEffect(() => {
-    if (user.isAuth) {
-      navigate('/')
-    }
-  }, [user])
+  const from = location.state?.from?.pathname || '/'
 
   const handleSubmit = async function (e) {
     e.preventDefault()
     const data = new FormData(e.target)
-    const response = await Http.post('/login', {
-      method: 'POST',
-      body: {
-        email: data.get('email'),
-        password: data.get('password')
-      }
+    const user = {
+      email: data.get('email'),
+      password: data.get('password')
+    }
+    auth.signin(user, () => {
+      navigate(from, { replace: true })
     })
-    onAuth(response.token)
-    navigate('/')
   }
 
   return (
@@ -33,6 +26,7 @@ export default function Login() {
         <h1 className="txt-center">Connexion</h1>
         <input type="text" name="email" placeholder="Email" />
         <input type="password" name="password" placeholder="Mot de passe" />
+        <Link to={'/register'}>Pas encore inscrit ?</Link>
         <button className="btn primary w-full" type="submit">
           Se connecter
         </button>

@@ -1,24 +1,16 @@
-import { useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
-import ScoreContextProvider from './components/ScoreContextProvider'
-import { useUserContext } from './components/UserContextProvider'
+import { Outlet } from 'react-router-dom'
+import ScoreProvider from './components/providers/ScoreProvider'
+import AuthProvider from './components/providers/AuthProvider'
 import TimeIndicator from './elements/TimeIndicator'
 
 customElements.define('time-indicator', TimeIndicator)
 
 export default function App() {
-  const { user } = useUserContext()
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (!user.isAuth) {
-      navigate('/login')
-    }
-  }, [user])
-
   return (
-    <ScoreContextProvider>
-      <Outlet />
-    </ScoreContextProvider>
+    <AuthProvider>
+      <ScoreProvider>
+        <Outlet />
+      </ScoreProvider>
+    </AuthProvider>
   )
 }
