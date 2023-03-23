@@ -2,15 +2,32 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+use App\Controller\ApiRegisterController;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
+#[ApiResource(
+    operations: [
+        new Post(
+            name: 'register',
+            uriTemplate: '/register',
+            formats: ['json'],
+            controller: ApiRegisterController::class,
+            denormalizationContext: ['groups' => 'write:User:collection'],
+            normalizationContext: ['groups' => 'register'],
+        )
+    ]
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -20,7 +37,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email]
+    #[Groups(['groups' => 'write:User:collection'])]
     private ?string $email = null;
+
+    #[Groups(['groups' => 'register'])]
+    public ?string $token = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -30,10 +51,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank]
+    #[Groups(['groups' => 'write:User:collection'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Groups(['groups' => 'write:User:collection'])]
     private ?string $username = null;
 
     public function getId(): ?int

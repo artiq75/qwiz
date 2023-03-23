@@ -23,7 +23,7 @@ class ApiRegisterController extends AbstractController
     }
 
     #[Route('/api/register', name: 'api_register', methods: ['POST'])]
-    public function __handle(Request $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         if ($request->headers->get('Content-Type') !== 'application/json') {
             return new JsonResponse([

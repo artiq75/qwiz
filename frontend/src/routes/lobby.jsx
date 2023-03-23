@@ -7,8 +7,8 @@ import {
 import { useAuth } from '../components/providers/AuthProvider'
 import AnswerItem from '../components/AnswerItem'
 import useTimer from '../hooks/useTimer'
-import Http from '../classes/Http'
 import useAsyncEffect from '../hooks/useAsyncEffect'
+import { findAllQueston } from '../api/question'
 
 export default function Lobby() {
   const [questions, setQuestions] = useState([])
@@ -33,13 +33,8 @@ export default function Lobby() {
 
   useAsyncEffect(async () => {
     setScore(initialScoreState)
-    const questions = await Http.get('/questions', {
-      headers: {
-        Authorization: `Bearer ${user.token}`
-      }
-    })
-    setQuestions(questions)
-  }, [user])
+    findAllQueston().then(setQuestions)
+  }, [])
 
   useEffect(() => {
     if (isTimeFinish) {

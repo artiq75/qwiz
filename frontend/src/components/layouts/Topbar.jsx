@@ -1,21 +1,11 @@
-import { useMemo } from 'react'
-import jwt_decode from 'jwt-decode'
 import { useAuth } from '../providers/AuthProvider'
 import { Link } from 'react-router-dom'
 
 export default function Topbar() {
-  const auth = useAuth()
-
-  const user = useMemo(() => {
-    return auth.user.token
-      ? jwt_decode(auth.user.token)
-      : {
-          email: ''
-        }
-  }, [auth.user.token])
+  const { user, signout } = useAuth()
 
   const handleLogout = function () {
-    auth.signout()
+    signout()
   }
 
   return (

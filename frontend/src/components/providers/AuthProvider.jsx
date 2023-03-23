@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { login, register } from '../../api/auth'
 import Storage from '../../classes/Storage'
+import jwt_decode from 'jwt-decode'
 
 const initialUserState = {
-  token: ''
+  username: '',
+  email: '',
 }
 
 const AuthContext = createContext({
@@ -19,31 +21,32 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(initialUserState)
 
   useEffect(() => {
-    setUser({
-      token: Storage.get('token') || ''
-    })
+    const token = Storage.get('token') || ''
+    if (token) {
+      const data = jwt_decode(token)
+      setUser({
+        email: data.email
+      })
+    }
   }, [])
 
   const signin = function (user) {
     login(user).then((token) => {
-      setUser({
-        token: Storage.set('token', token)
-      })
+      Storage.set('token', token)
+      setUser({ email: user.email })
     })
   }
 
   const signup = function (user) {
     register(user).then((token) => {
-      setUser({
-        token: Storage.set('token', token)
-      })
+      Storage.set('token', token)
+      setUser({ email: user.email })
     })
   }
 
   const signout = function () {
-    setUser({
-      token: Storage.set('token', '')
-    })
+    Storage.set('token', '')
+    setUser(initialUserState)
   }
 
   const value = {
