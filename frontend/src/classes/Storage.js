@@ -1,10 +1,16 @@
 export default class Storage {
   static set(key, value) {
-    localStorage.setItem(key, JSON.stringify(value))
-    return value
+    try {
+      localStorage.setItem(key, JSON.stringify(value))
+      return value
+    } catch (error) {
+      return null
+    }
   }
 
   static get(key) {
-    return JSON.parse(localStorage.getItem(key)) || null
+    const storage = localStorage.getItem(key)
+    if (storage === 'undefined') return null
+    return JSON.parse(storage)
   }
 }

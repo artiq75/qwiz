@@ -22,12 +22,24 @@
   background-color: transparent;
   border-color: var(--primary);
   color: var(--primary);
+
+  &:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--secondary);
+  }
 }
 
 [class~='secondary'][class~='outlined'] {
   background-color: transparent;
   border-color: var(--tertiary);
   color: var(--primary);
+
+  &:hover {
+    background-color: var(--tertiary);
+    border-color: var(--tertiary);
+    color: var(--primary);
+  }
 }
 
 .w-full {

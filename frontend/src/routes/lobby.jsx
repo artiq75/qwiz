@@ -78,10 +78,9 @@ export default function Lobby() {
 
   return (
     <main className="lobby">
-      <section className="lobby-question">
+      <section className="lobby-question card">
         <p className="center tag primary">{question.category.title}</p>
         <div>
-          Question {index + 1}/{questions.length}
           {!hasChoose && <time-indicator time={timer}></time-indicator>}
         </div>
         <h1 className="lobby-question__title">{question.title}</h1>

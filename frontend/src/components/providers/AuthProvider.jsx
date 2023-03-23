@@ -1,41 +1,55 @@
-import { createContext, useContext, useState } from 'react'
-import { login } from '../../utils/auth'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { login, register } from '../../api/auth'
+import Storage from '../../classes/Storage'
 
-export const initialUserState = {
-  token: '',
-  email: ''
+const initialUserState = {
+  token: ''
 }
 
 const AuthContext = createContext({
   user: initialUserState,
   signin: () => {},
+  signup: () => {},
   signout: () => {}
 })
 
 export const useAuth = () => useContext(AuthContext)
 
-export default function UserProvider({ children }) {
+export default function AuthProvider({ children }) {
   const [user, setUser] = useState(initialUserState)
 
-  const signin = async function (user, callback) {
-    const token = await login(user)
-    window.token = token
+  useEffect(() => {
     setUser({
-      token,
-      email: user.email
+      token: Storage.get('token') || ''
     })
-    callback()
+  }, [])
+
+  const signin = function (user) {
+    login(user).then((token) => {
+      setUser({
+        token: Storage.set('token', token)
+      })
+    })
   }
 
-  const signout = function (callback) {
-    setUser(initialUserState)
-    window.token = ''
-    callback()
+  const signup = function (user) {
+    register(user).then((token) => {
+      setUser({
+        token: Storage.set('token', token)
+      })
+    })
+  }
+
+  const signout = function () {
+    setUser({
+      token: Storage.set('token', '')
+    })
   }
 
   const value = {
     user,
     signin,
+    signup,
     signout
   }
 

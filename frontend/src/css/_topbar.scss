@@ -1,0 +1,11 @@
+.topbar {
+  height: var(--topbar-height);
+  padding-left: 1em;
+  padding-right: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--tertiary);
+  color: var(--secondary);
+  box-shadow: var(--shadow);
+}

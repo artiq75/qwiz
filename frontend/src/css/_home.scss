@@ -1,6 +1,12 @@
 .home {
-  min-height: 100vh;
+  padding-left: 1em;
+  min-height: calc(100vh - var(--topbar-height));
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.home .card {
+  display: grid;
+  gap: 1em;
 }

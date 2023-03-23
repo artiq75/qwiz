@@ -1,13 +1,12 @@
 .lobby {
+  min-height: calc(100vh - var(--topbar-height));
   padding: 1em;
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .lobby-question {
-  width: 450px;
   display: grid;
   gap: 3em;
   text-align: center;
