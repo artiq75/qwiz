@@ -14,11 +14,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: (
-          <RequireAuth>
-            <Home />
-          </RequireAuth>
-        )
+        element: <Home />
       },
       {
         path: '/lobby',

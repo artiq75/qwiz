@@ -5,8 +5,7 @@ import jwt_decode from 'jwt-decode'
 
 const initialUserState = {
   username: '',
-  email: '',
-  isAuth: false
+  email: ''
 }
 
 const AuthContext = createContext({
@@ -27,8 +26,7 @@ export default function AuthProvider({ children }) {
       const data = jwt_decode(token)
       setUser({
         username: data.username,
-        email: data.email,
-        isAuth: true
+        email: data.email
       })
     }
   }, [])
@@ -39,8 +37,7 @@ export default function AuthProvider({ children }) {
       const data = jwt_decode(token)
       setUser({
         username: data.username,
-        email: data.email,
-        isAuth: true
+        email: data.email
       })
       callback()
     })
@@ -52,8 +49,7 @@ export default function AuthProvider({ children }) {
       const data = jwt_decode(token)
       setUser({
         username: data.username,
-        email: data.email,
-        isAuth: true
+        email: data.email
       })
       callback()
     })

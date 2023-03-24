@@ -5,8 +5,6 @@ export default function Signup() {
   const navigate = useNavigate()
   const auth = useAuth()
 
-  const from = '/'
-
   const handleSubmit = function (e) {
     e.preventDefault()
     const data = new FormData(e.target)
@@ -16,7 +14,7 @@ export default function Signup() {
       password: data.get('password')
     }
     auth.signup(user, () => {
-      navigate(from, { replace: true })
+      navigate('/', { replace: true })
     })
   }
 
