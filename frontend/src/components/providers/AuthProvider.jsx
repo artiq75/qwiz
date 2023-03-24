@@ -6,6 +6,7 @@ import jwt_decode from 'jwt-decode'
 const initialUserState = {
   username: '',
   email: '',
+  isAuth: false
 }
 
 const AuthContext = createContext({
@@ -25,28 +26,43 @@ export default function AuthProvider({ children }) {
     if (token) {
       const data = jwt_decode(token)
       setUser({
-        email: data.email
+        username: data.username,
+        email: data.email,
+        isAuth: true
       })
     }
   }, [])
 
-  const signin = function (user) {
+  const signin = function (user, callback) {
     login(user).then((token) => {
       Storage.set('token', token)
-      setUser({ email: user.email })
+      const data = jwt_decode(token)
+      setUser({
+        username: data.username,
+        email: data.email,
+        isAuth: true
+      })
+      callback()
     })
   }
 
-  const signup = function (user) {
+  const signup = function (user, callback) {
     register(user).then((token) => {
       Storage.set('token', token)
-      setUser({ email: user.email })
+      const data = jwt_decode(token)
+      setUser({
+        username: data.username,
+        email: data.email,
+        isAuth: true
+      })
+      callback()
     })
   }
 
-  const signout = function () {
+  const signout = function (callback = () => {}) {
     Storage.set('token', '')
     setUser(initialUserState)
+    callback()
   }
 
   const value = {

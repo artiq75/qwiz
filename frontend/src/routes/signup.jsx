@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../components/providers/AuthProvider'
 
 export default function Signup() {
@@ -7,19 +7,17 @@ export default function Signup() {
 
   const from = '/'
 
-  if (auth.user.token) {
-    return <Navigate to={from} replace />
-  }
-
-  const handleSubmit = async function (e) {
+  const handleSubmit = function (e) {
     e.preventDefault()
     const data = new FormData(e.target)
-    auth.signup({
+    const user = {
       username: data.get('username'),
       email: data.get('email'),
       password: data.get('password')
+    }
+    auth.signup(user, () => {
+      navigate(from, { replace: true })
     })
-    navigate(from, { replace: true })
   }
 
   return (

@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../components/providers/AuthProvider'
 
 export default function Signin() {
@@ -9,10 +8,6 @@ export default function Signin() {
 
   const from = location.state?.from?.pathname || '/'
 
-  if (auth.user.token) {
-    return <Navigate to={from} replace />
-  }
-
   const handleSubmit = async function (e) {
     e.preventDefault()
     const data = new FormData(e.target)
@@ -20,8 +15,9 @@ export default function Signin() {
       email: data.get('email'),
       password: data.get('password')
     }
-    auth.signin(user)
-    navigate(from, { replace: true })
+    auth.signin(user, () => {
+      navigate(from, { replace: true })
+    })
   }
 
   return (
