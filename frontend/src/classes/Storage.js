@@ -10,7 +10,7 @@ export default class Storage {
 
   static get(key) {
     const storage = localStorage.getItem(key)
-    if (storage === 'undefined') return null
+    if (!Boolean(storage)) return null
     return JSON.parse(storage)
   }
 

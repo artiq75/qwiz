@@ -6,6 +6,12 @@
   --sucess: #60f32b;
   --danger: #f35a2b;
 
+  // FONT
+  --font-sans: 'Noto Sans', sans-serif;
+  --text-5xl: 3rem;
+  --text-7xl: 4.5rem;
+  --text-9xl: 8rem;
+
   // ROUNDED
   --rounded: 0.25rem;
   --rounded-sm: 0.125rem;
@@ -25,6 +31,8 @@
   // LAYOUT
   --topbar-height: 100px;
 
-  // CARD
-  --card-width: 500px;
+  // CONTAINER
+  --container: 100%;
+  --container-sm: 500px;
+  --container-md: 800px;
 }

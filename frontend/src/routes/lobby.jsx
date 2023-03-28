@@ -73,11 +73,7 @@ export default function Lobby() {
     <main className="lobby">
       <section className="lobby-question card">
         <p className="center tag primary">{question.category.title}</p>
-        {!hasChoose && (
-          <div>
-            <time-indicator time={timer}></time-indicator>
-          </div>
-        )}
+        {!hasChoose && <time-indicator time={timer}></time-indicator>}
         <h1 className="lobby-question__title">{question.title}</h1>
         <ul className="lobby-question__answers">
           {question.answers.map((answer) => (

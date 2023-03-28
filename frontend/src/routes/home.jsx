@@ -4,6 +4,7 @@ import { RoutesName } from './router'
 export default function Home() {
   return (
     <main className="home">
+      <h1>Qwiz</h1>
       <ul className="card">
         <li>
           <Link className="btn primary outlined w-full" to={RoutesName.LOBBY}>

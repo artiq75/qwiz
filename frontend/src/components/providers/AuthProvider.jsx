@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { isAuth } from '../../api/auth'
 import Storage from '../../classes/Storage'
 import { StorageKeys } from '../../constants/app'
 
@@ -40,8 +41,8 @@ export default function AuthProvider({ children }) {
 
   const value = {
     user,
-    isAuth: !!user.id,
     login,
+    isAuth: isAuth(),
     logout
   }
 

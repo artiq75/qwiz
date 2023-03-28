@@ -34,7 +34,11 @@ export const router = createBrowserRouter([
       },
       {
         path: RoutesName.RESULT,
-        element: <Result />
+        element: (
+          <RequireAuth>
+            <Result />
+          </RequireAuth>
+        )
       }
     ]
   },

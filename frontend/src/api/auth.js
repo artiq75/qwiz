@@ -1,4 +1,6 @@
 import Http from '../classes/Http'
+import Storage from '../classes/Storage'
+import { StorageKeys } from '../constants/app'
 
 export async function login(user) {
   return await Http.post('/login', {
@@ -14,4 +16,8 @@ export async function register(user) {
 
 export async function logout() {
   await Http.post('/logout', {}, false)
+}
+
+export function isAuth() {
+  return !!Storage.get(StorageKeys.USER)?.id
 }

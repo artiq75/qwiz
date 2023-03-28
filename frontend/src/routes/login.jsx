@@ -26,7 +26,7 @@ export default function Login() {
 
   return (
     <main className="login">
-      <form onSubmit={handleSubmit} className="card">
+      <form onSubmit={handleSubmit}>
         <h1 className="txt-center">Connexion</h1>
         <input type="text" name="email" placeholder="Email" />
         <input type="password" name="password" placeholder="Mot de passe" />
