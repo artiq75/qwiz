@@ -19,7 +19,6 @@ export default function Login() {
     }
     login(user).then((user) => {
       auth.login(user, () => {
-        // navigate(from, { replace: true })
         navigate('/', { replace: true })
       })
     })

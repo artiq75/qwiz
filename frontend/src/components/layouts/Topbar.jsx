@@ -1,13 +1,13 @@
 import { useAuth } from '../providers/AuthProvider'
 import { Link } from 'react-router-dom'
-// import * as Auth from '../../api/auth'
+import { logout } from '../../api/auth'
 import { RoutesName } from '../../routes/router'
 
 export default function Topbar() {
-  const { user, isAuth, logout } = useAuth()
+  const { user, isAuth, ...auth } = useAuth()
 
   const handleLogout = function () {
-    logout()
+    logout().then(() => auth.logout())
   }
 
   return (

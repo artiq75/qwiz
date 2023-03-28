@@ -13,5 +13,5 @@ export async function register(user) {
 }
 
 export async function logout() {
-  await Http.post('/logout')
+  await Http.post('/logout', {}, false)
 }

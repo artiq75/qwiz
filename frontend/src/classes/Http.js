@@ -6,21 +6,22 @@ export default class Http {
     Accept: 'application/json'
   }
 
-  static async http(uri, options) {
+  static async http(uri, options, json = false) {
+    options = { ...options, credentials: 'include' }
+    options.headers = { ...options.headers, ...Http.headers }
     const response = await fetch(`${BASE_URL}${uri}`, options)
+    if (!json) return response
     return await response.json()
   }
 
-  static async get(uri, options = {}) {
+  static async get(uri, options = {}, json = true) {
     options.method = 'GET'
-    options.headers = { ...options.headers, ...Http.headers }
-    return Http.http(uri, options)
+    return Http.http(uri, options, json)
   }
 
-  static async post(uri, options = {}) {
+  static async post(uri, options = {}, json = true) {
     options.method = 'POST'
     options.body = JSON.stringify(options.body)
-    options.headers = { ...options.headers, ...Http.headers }
-    return Http.http(uri, options)
+    return Http.http(uri, options, json)
   }
 }

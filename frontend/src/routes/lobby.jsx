@@ -4,7 +4,6 @@ import {
   initialScoreState,
   useScore
 } from '../components/providers/ScoreProvider'
-import { useAuth } from '../components/providers/AuthProvider'
 import AnswerItem from '../components/AnswerItem'
 import useTimer from '../hooks/useTimer'
 import useAsyncEffect from '../hooks/useAsyncEffect'
@@ -16,7 +15,6 @@ export default function Lobby() {
   const [hasChoose, setHasChoose] = useState(false)
   const { count: timer, stop: timerStop, reload: timerReload } = useTimer()
   const { setScore } = useScore()
-  const { user } = useAuth()
 
   const isLastQuestion = useMemo(() => {
     return index + 1 >= questions.length
@@ -75,9 +73,11 @@ export default function Lobby() {
     <main className="lobby">
       <section className="lobby-question card">
         <p className="center tag primary">{question.category.title}</p>
-        <div>
-          {!hasChoose && <time-indicator time={timer}></time-indicator>}
-        </div>
+        {!hasChoose && (
+          <div>
+            <time-indicator time={timer}></time-indicator>
+          </div>
+        )}
         <h1 className="lobby-question__title">{question.title}</h1>
         <ul className="lobby-question__answers">
           {question.answers.map((answer) => (
