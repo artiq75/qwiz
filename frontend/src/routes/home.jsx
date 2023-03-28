@@ -1,14 +1,19 @@
 import { Link } from 'react-router-dom'
+import { RoutesName } from './router'
 
 export default function Home() {
   return (
     <main className="home">
-      <ul className='card'>
+      <ul className="card">
         <li>
-          <Link className='btn primary outlined w-full' to="/lobby">Nouvelle partie</Link>
+          <Link className="btn primary outlined w-full" to={RoutesName.LOBBY}>
+            Nouvelle partie
+          </Link>
         </li>
         <li>
-          <Link className='btn primary outlined w-full' to="/lobby">Partie personnalisé</Link>
+          <Link className="btn primary outlined w-full" to={RoutesName.LOBBY}>
+            Partie personnalisé
+          </Link>
         </li>
       </ul>
     </main>

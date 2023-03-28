@@ -1,3 +1,5 @@
+import { BASE_URL } from '../constants/app'
+
 export default class Http {
   static headers = {
     'Content-Type': 'application/json',
@@ -5,7 +7,7 @@ export default class Http {
   }
 
   static async http(uri, options) {
-    const response = await fetch(`http://localhost/api${uri}`, options)
+    const response = await fetch(`${BASE_URL}${uri}`, options)
     return await response.json()
   }
 

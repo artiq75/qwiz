@@ -1,17 +1,23 @@
 import { useAuth } from '../providers/AuthProvider'
 import { Link } from 'react-router-dom'
+// import * as Auth from '../../api/auth'
+import { RoutesName } from '../../routes/router'
 
 export default function Topbar() {
-  const { user, signout } = useAuth()
+  const { user, isAuth, logout } = useAuth()
+
+  const handleLogout = function () {
+    logout()
+  }
 
   return (
     <header className="topbar">
-      <Link to="/">
+      <Link to={RoutesName.HOME}>
         <h1>Qwiz</h1>
       </Link>
       <h2>{user.username}</h2>
-      {user.isAuth && (
-        <button className="btn danger" onClick={() => signout()}>
+      {isAuth && (
+        <button className="btn danger" onClick={handleLogout}>
           Déconnexion
         </button>
       )}

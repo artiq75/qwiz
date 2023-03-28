@@ -1,10 +1,5 @@
-import Http from "../classes/Http"
-import Storage from "../classes/Storage"
+import Http from '../classes/Http'
 
 export async function findAllQueston() {
-  return Http.get('/questions', {
-    headers: {
-      Authorization: `Bearer ${Storage.get('token')}`
-    }
-  })
+  return Http.get(`/api/questions`)
 }

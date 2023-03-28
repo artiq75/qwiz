@@ -1,7 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../components/providers/AuthProvider'
+import { register } from '../api/auth'
+import { RoutesName } from '../routes/router'
 
-export default function Signup() {
+export default function Register() {
   const navigate = useNavigate()
   const auth = useAuth()
 
@@ -13,8 +15,10 @@ export default function Signup() {
       email: data.get('email'),
       password: data.get('password')
     }
-    auth.signup(user, () => {
-      navigate('/', { replace: true })
+    register(user).then((user) => {
+      auth.login(user, () => {
+        navigate('/', { replace: true })
+      })
     })
   }
 
@@ -25,7 +29,7 @@ export default function Signup() {
         <input type="text" name="username" placeholder="Pseaudo" />
         <input type="text" name="email" placeholder="Email" />
         <input type="password" name="password" placeholder="Mot de passe" />
-        <Link to={'/login'}>Déjà inscrit ?</Link>
+        <Link to={RoutesName.LOGIN}>Déjà inscrit ?</Link>
         <button className="btn primary w-full" type="submit">
           S'inscrire
         </button>

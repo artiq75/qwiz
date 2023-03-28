@@ -13,4 +13,13 @@ export default class Storage {
     if (storage === 'undefined') return null
     return JSON.parse(storage)
   }
+
+  static remove(key) {
+    try {
+      localStorage.removeItem(key)
+      return true
+    } catch (e) {
+      return false
+    }
+  }
 }

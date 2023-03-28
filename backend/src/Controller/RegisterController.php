@@ -4,25 +4,25 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ApiRegisterController extends AbstractController
+class RegisterController extends AbstractController
 {
     public function __construct(
         private UserPasswordHasherInterface $hasher,
         private EntityManagerInterface $em,
-        private JWTTokenManagerInterface $JWTManager,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private Security $security
     ) {
     }
 
-    #[Route('/api/register', name: 'api_register', methods: ['POST'])]
+    #[Route('/register', name: 'api_register', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
     {
         if ($request->headers->get('Content-Type') !== 'application/json') {
@@ -59,8 +59,15 @@ class ApiRegisterController extends AbstractController
         $this->em->persist($user);
         $this->em->flush();
 
-        return new JsonResponse([
-            "token" => $this->JWTManager->create($user)
+        $this->security->login($user, 'json_login', 'main');
+
+        $user = $this->getUser();
+
+        return $this->json([
+            'id' => $user->getId(),
+            'username' => $user->getUsername(),
+            'email' => $user->getEmail(),
+            'roles' => $user->getRoles(),
         ]);
     }
 }

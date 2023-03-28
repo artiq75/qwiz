@@ -16,18 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
-#[ApiResource(
-    operations: [
-        new Post(
-            name: 'register',
-            uriTemplate: '/register',
-            formats: ['json'],
-            controller: ApiRegisterController::class,
-            denormalizationContext: ['groups' => 'write:User:collection'],
-            normalizationContext: ['groups' => 'register'],
-        )
-    ]
-)]
+#[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
