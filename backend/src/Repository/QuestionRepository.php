@@ -21,6 +21,29 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
+    public function findRandom(): ?Question
+    {
+        $qb = $this->createQueryBuilder('entity')
+            ->select('COUNT(entity)')
+        ;
+
+        $totalRecords = $qb->getQuery()->getSingleScalarResult();
+
+        if ($totalRecords < 1) {
+            return null;
+        }
+
+        $rowToFetch = rand(0, $totalRecords - 1);
+
+        return $qb
+            ->select('entity')
+            ->setMaxResults(1)
+            ->setFirstResult($rowToFetch)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function save(Question $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

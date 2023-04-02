@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\Controller\RandomQuestionController;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,11 +14,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 #[ApiResource(
+    operations: [
+        new GetCollection(
+            name: 'random_question',
+            uriTemplate: '/questions/random',
+            controller: RandomQuestionController::class
+        ),
+        new GetCollection()
+    ],
     normalizationContext: [
         'groups' => ['read:Question']
     ],
     paginationItemsPerPage: 10,
-    security: "is_granted('ROLE_USER')"
+    // security: "is_granted('ROLE_USER')"
 )]
 class Question
 {
