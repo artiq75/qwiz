@@ -3,6 +3,11 @@ import { useAuth } from '../components/providers/AuthProvider'
 export default function Account() {
   const { user } = useAuth()
 
+  const handleSubmit = function(e) {
+    e.preventDefault()
+    console.log(new FormData(e.target))
+  }
+
   return (
     <main className="container-md account">
       <div className="account-personal">
@@ -11,7 +16,7 @@ export default function Account() {
           src="https://picsum.photos/200/300"
           alt=""
         />
-        <form className="account-form-personal">
+        <form className="account-form-personal" onSubmit={handleSubmit}>
           <div className="g2 gap1">
             <p>
               <label htmlFor="username">Pseudo</label>
