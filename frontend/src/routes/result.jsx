@@ -1,35 +1,16 @@
 import { Link } from 'react-router-dom'
 import { useScore } from '../components/providers/ScoreProvider'
 import { RoutesName } from './router'
+import Stats from '../components/layouts/Stats'
 
 export default function Result() {
   const { scores } = useScore()
 
-  console.log(scores)
-
   return (
     <main className="result">
-      <div className="card">
-        <h1 className="txt-center">Score</h1>
-        {/* <table>
-          <thead>
-            <tr></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>Bonne réponse</th>
-              <td>{score.goodAnswer}</td>
-            </tr>
-            <tr>
-              <th>Mauvaise réponse</th>
-              <td>{score.badAnswer}</td>
-            </tr>
-            <tr>
-              <th>Nombre de tentative</th>
-              <td>{score.attempt}</td>
-            </tr>
-          </tbody>
-        </table> */}
+      <div className="result-inner w-full container-lg">
+        <h1 className="txt-center">Résultats</h1>
+        <Stats scores={scores} />
         <div className="g2 gap1">
           <Link className="btn primary w-full" to={RoutesName.LOBBY}>
             Rejouer

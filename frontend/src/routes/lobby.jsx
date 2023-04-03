@@ -6,13 +6,23 @@ import useTimer from '../hooks/useTimer'
 import useAsyncEffect from '../hooks/useAsyncEffect'
 import { findAllQueston } from '../api/question'
 import { RoutesName } from '../routes/router'
+import { useGameContext } from '../components/providers/GameProvider'
+import * as ApiScore from '../api/score'
+import { useAuth } from '../components/providers/AuthProvider'
 
 export default function Lobby() {
   const [questions, setQuestions] = useState([])
   const [index, setIndex] = useState(0)
   const [hasChoose, setHasChoose] = useState(false)
   const [timer, s, timerStop, r, timerReload] = useTimer(2)
-  const { updateScore, getScore, resetScore } = useScore()
+  const { scores, updateScore, getScore, resetScore } = useScore()
+  const { hasScore } = useGameContext()
+  const { user } = useAuth()
+
+  useAsyncEffect(async () => {
+    resetScore()
+    findAllQueston().then(setQuestions)
+  }, [])
 
   const question = useMemo(() => {
     return questions[index]
@@ -30,11 +40,6 @@ export default function Lobby() {
     setHasChoose(false)
     timerReload()
   }, [index])
-
-  useAsyncEffect(async () => {
-    resetScore()
-    findAllQueston().then(setQuestions)
-  }, [])
 
   useEffect(() => {
     if (isTimeFinish) {
@@ -54,13 +59,29 @@ export default function Lobby() {
   }, [isTimeFinish, hasChoose, question])
 
   const handleNext = () => {
+    setHasChoose(false)
     if (isLastQuestion) return
     setIndex((i) => i + 1)
   }
 
+  useAsyncEffect(async () => {
+    if (hasChoose && isLastQuestion) {
+      for (const score of scores) {
+        const data = { ...score, user }
+        if (!hasScore(data)) {
+          await ApiScore.addScore(data)
+        } else {
+          await ApiScore.updateScore(data)
+        }
+      }
+    }
+  }, [isLastQuestion, hasChoose])
+
   const handleChoose = useCallback(
     (answer) => {
       setHasChoose(true)
+      // On récupère le score associé à la catégorie actuelle
+      // Sinon un nouveau score puis on met à jour ces informations
       const newScore = getScore(question.category)
       if (answer.isValid) {
         newScore.goodAnswer += 1

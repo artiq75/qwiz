@@ -24,4 +24,10 @@ export default class Http {
     options.body = JSON.stringify(options.body)
     return Http.http(uri, options, json)
   }
+
+  static async put(uri, options = {}, json = true) {
+    options.method = 'PUT'
+    options.body = JSON.stringify(options.body)
+    return Http.http(uri, options, json)
+  }
 }

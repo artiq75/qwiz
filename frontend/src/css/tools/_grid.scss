@@ -1,3 +1,8 @@
+.g1 {
+  display: grid;
+  grid-template-columns: var(--grid-cols-1);
+}
+
 .g2 {
   display: grid;
   grid-template-columns: var(--grid-cols-2);

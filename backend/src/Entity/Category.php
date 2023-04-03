@@ -20,11 +20,11 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:Question'])]
+    #[Groups(['read:Question', 'read:Score'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:Question'])]
+    #[Groups(['read:Question', 'read:Score'])]
     private ?string $title = null;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Question::class)]

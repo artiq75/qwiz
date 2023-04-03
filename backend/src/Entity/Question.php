@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: [
         'groups' => ['read:Question']
     ],
-    paginationItemsPerPage: 10,
+    paginationItemsPerPage: 5,
     // security: "is_granted('ROLE_USER')"
 )]
 class Question

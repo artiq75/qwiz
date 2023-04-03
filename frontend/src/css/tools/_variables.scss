@@ -30,6 +30,7 @@
   --duration-300: 0.3s;
 
   // GRID
+  --grid-cols-1: repeat(1, minmax(0, 1fr));
   --grid-cols-2: repeat(2, minmax(0, 1fr));
   --grid-cols-3: repeat(3, minmax(0, 1fr));
 

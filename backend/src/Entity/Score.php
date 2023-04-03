@@ -2,12 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ScoreRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ScoreRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['read:Score']
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class, properties: ['user' => 'exact']
+)]
 class Score
 {
     #[ORM\Id]
@@ -16,19 +26,24 @@ class Score
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['read:Score'])]
     private ?int $goodAnswer = null;
 
     #[ORM\Column]
+    #[Groups(['read:Score'])]
     private ?int $badAnswer = null;
 
     #[ORM\Column]
+    #[Groups(['read:Score'])]
     private ?int $attempt = null;
 
     #[ORM\ManyToOne(inversedBy: 'scores')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:Score'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'scores')]
+    #[Groups(['read:Score'])]
     private ?Category $category = null;
 
     public function getId(): ?int

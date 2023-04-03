@@ -1,13 +1,15 @@
 import { Outlet } from 'react-router-dom'
 import ScoreProvider from './components/providers/ScoreProvider'
 import Topbar from './components/layouts/Topbar'
-import { useEffect } from 'react'
+import GameProvider from './components/providers/GameProvider'
 
 export default function App() {
   return (
-    <ScoreProvider>
-      <Topbar />
-      <Outlet />
-    </ScoreProvider>
+    <GameProvider>
+      <ScoreProvider>
+        <Topbar />
+        <Outlet />
+      </ScoreProvider>
+    </GameProvider>
   )
 }
