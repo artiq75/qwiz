@@ -4,8 +4,8 @@ import StatsItem from '../StatsItem'
 const Stats = memo(({ scores }) => {
   return (
     <div className="stats-items">
-      {scores?.map((score) => (
-        <StatsItem score={score} />
+      {scores?.map((score, i) => (
+        <StatsItem key={i} score={score} />
       ))}
     </div>
   )

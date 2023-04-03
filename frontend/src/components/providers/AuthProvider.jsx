@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { isAuth } from '../../api/auth'
 import Storage from '../../classes/Storage'
 import { StorageKeys } from '../../constants/app'
@@ -39,12 +39,14 @@ export default function AuthProvider({ children }) {
     callback()
   }
 
-  const value = {
-    user,
-    login,
-    isAuth: isAuth(),
-    logout
-  }
+  const value = useMemo(() => {
+    return {
+      user,
+      login,
+      isAuth: isAuth(),
+      logout
+    }
+  }, [user])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

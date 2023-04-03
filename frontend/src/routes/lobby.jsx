@@ -16,7 +16,7 @@ export default function Lobby() {
   const [hasChoose, setHasChoose] = useState(false)
   const [timer, s, timerStop, r, timerReload] = useTimer(2)
   const { scores, updateScore, getScore, resetScore } = useScore()
-  const { hasScore } = useGameContext()
+  const { scores: gameScores, hasScore } = useGameContext()
   const { user } = useAuth()
 
   useAsyncEffect(async () => {
@@ -49,13 +49,14 @@ export default function Lobby() {
   }, [isTimeFinish])
 
   useEffect(() => {
-    if (!isTimeFinish || hasChoose) return
-    // Si aucune réponse n'est clicker est que le temps est fini
-    // On récupère le score de la catégorie acutelle
-    const score = getScore(question.category)
-    // On ajoute increment le point mauvaise réponse du score
-    score.badAnswer += 1
-    updateScore(score)
+    // Si aucune réponse n'est cliquer est que le temps est fini
+    if (isTimeFinish && !hasChoose) {
+      // On récupère le score de la catégorie acutelle
+      const score = getScore(question.category)
+      // On ajoute increment le point mauvaise réponse du score
+      score.badAnswer += 1
+      updateScore(score)
+    }
   }, [isTimeFinish, hasChoose, question])
 
   const handleNext = () => {
@@ -71,11 +72,17 @@ export default function Lobby() {
         if (!hasScore(data)) {
           await ApiScore.addScore(data)
         } else {
+          const gameScore = gameScores.find(
+            (s) => s.category.id === score.category.id
+          )
+          data.goodAnswer += gameScore.goodAnswer
+          data.badAnswer += gameScore.badAnswer
+          data.attempt += gameScore.attempt
           await ApiScore.updateScore(data)
         }
       }
     }
-  }, [isLastQuestion, hasChoose])
+  }, [isLastQuestion, hasChoose, gameScores, scores])
 
   const handleChoose = useCallback(
     (answer) => {
@@ -100,6 +107,8 @@ export default function Lobby() {
 
   return (
     <main className="lobby">
+      isTimeFinish: {JSON.stringify(isTimeFinish)} <br />
+      hasChoose: {JSON.stringify(hasChoose)}
       <section className="lobby-question card">
         <p className="center tag primary">{question.category.title}</p>
         {timer}

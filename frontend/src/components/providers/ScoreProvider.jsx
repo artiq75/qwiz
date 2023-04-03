@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useState } from 'react'
+import { createContext, useContext, useMemo, useReducer, useState } from 'react'
 import { scoreReducer } from './scoreReducer'
 
 const initialScore = {
@@ -44,13 +44,15 @@ export default function ScoreProvider({ children }) {
     return getScoreOrNull(category) || { ...initialScore, category }
   }
 
-  const value = {
-    scores: state,
-    getScoreOrNull,
-    getScore,
-    updateScore,
-    resetScore
-  }
+  const value = useMemo(() => {
+    return {
+      scores: state,
+      getScoreOrNull,
+      getScore,
+      updateScore,
+      resetScore
+    }
+  }, [state])
 
   return <ScoreContext.Provider value={value}>{children}</ScoreContext.Provider>
 }
