@@ -4,6 +4,7 @@ import Lobby from './lobby'
 import Result from './result'
 import Login from './login'
 import Register from './register'
+import Profil from './profil'
 import RequireAuth from '../components/RequireAuth'
 import { createBrowserRouter } from 'react-router-dom'
 
@@ -12,7 +13,8 @@ export const RoutesName = Object.freeze({
   LOBBY: '/partie',
   RESULT: '/resultat',
   LOGIN: '/connexion',
-  REGISTER: '/inscription'
+  REGISTER: '/inscription',
+  PROFIL: '/profile',
 })
 
 export const router = createBrowserRouter([
@@ -37,6 +39,14 @@ export const router = createBrowserRouter([
         element: (
           <RequireAuth>
             <Result />
+          </RequireAuth>
+        )
+      },
+      {
+        path: RoutesName.PROFIL,
+        element: (
+          <RequireAuth>
+            <Profil />
           </RequireAuth>
         )
       }

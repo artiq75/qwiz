@@ -17,9 +17,17 @@ export default function Topbar() {
       </Link>
       <h2>{user.username}</h2>
       {isAuth && (
-        <button className="btn danger" onClick={handleLogout}>
-          Déconnexion
-        </button>
+        <drop-down>
+          <button>
+            <img src="https://picsum.photos/200/300" alt="" />
+          </button>
+          <ul>
+            <li>
+              <Link to={RoutesName.PROFIL}>Profile</Link>
+            </li>
+            <li onClick={handleLogout}>Déconnexion</li>
+          </ul>
+        </drop-down>
       )}
     </header>
   )

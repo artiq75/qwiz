@@ -9,3 +9,14 @@
   color: var(--secondary);
   box-shadow: var(--shadow);
 }
+
+.topbar drop-down button {
+  all: unset;
+}
+
+.topbar drop-down ul {
+  width: 200px;
+  left: unset;
+  right: 0%;
+  min-width: 100%;
+}
