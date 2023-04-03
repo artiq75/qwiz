@@ -73,3 +73,30 @@
 .card {
   width: var(--container-sm);
 }
+
+.separator {
+  height: 1px;
+  width: 100%;
+  background: var(--primary);
+}
+
+[class^="container"] {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container {
+  max-width: var(--container);
+}
+
+.container-md {
+  max-width: var(--container-md);
+}
+
+.container-sm {
+  max-width: var(--container-sm);
+}
+
+.container-lg {
+  max-width: var(--container-lg);
+}

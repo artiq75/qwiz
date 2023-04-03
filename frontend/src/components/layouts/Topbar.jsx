@@ -15,7 +15,6 @@ export default function Topbar() {
       <Link to={RoutesName.HOME}>
         <h1>Qwiz</h1>
       </Link>
-      <h2>{user.username}</h2>
       {isAuth && (
         <drop-down>
           <button>
