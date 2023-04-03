@@ -1,0 +1,25 @@
+.g2 {
+  display: grid;
+  grid-template-columns: var(--grid-cols-2);
+}
+
+.g3 {
+  display: grid;
+  grid-template-columns: var(--grid-cols-3);
+}
+
+.gap1 {
+  gap: 1em;
+}
+
+@media (max-width: 500px) {
+  .g2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .g3 {
+    grid-template-columns: 2fr;
+  }
+}

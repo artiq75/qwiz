@@ -5,6 +5,8 @@
   --tertiary: #f3752b;
   --sucess: #60f32b;
   --danger: #f35a2b;
+  --light: #ffffff;
+  --dark: #1d1d1d;
 
   // FONT
   --font-sans: 'Noto Sans', sans-serif;
@@ -21,12 +23,15 @@
   // SHADOW
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 
   // ANIMATION
   --duration-300: 0.3s;
 
   // GRID
   --grid-cols-2: repeat(2, minmax(0, 1fr));
+  --grid-cols-3: repeat(3, minmax(0, 1fr));
 
   // LAYOUT
   --topbar-height: 100px;

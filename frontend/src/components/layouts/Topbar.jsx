@@ -24,6 +24,9 @@ export default function Topbar() {
             <li>
               <Link to={RoutesName.PROFIL}>Profile</Link>
             </li>
+            <li>
+              <Link to={RoutesName.ACCOUNT}>Compte</Link>
+            </li>
             <li onClick={handleLogout}>Déconnexion</li>
           </ul>
         </drop-down>

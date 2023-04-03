@@ -1,4 +1,8 @@
+import { useAuth } from '../components/providers/AuthProvider'
+
 export default function Profil() {
+  const { user } = useAuth()
+
   return (
     <main className="container-lg profil">
       <div className="profil-header">
@@ -7,10 +11,10 @@ export default function Profil() {
           src="https://picsum.photos/200/300"
           alt=""
         />
-        <h1 className="profil-username">Tariq Chawki</h1>
+        <h1 className="profil-username">{user.username}</h1>
       </div>
       <div className="profil-stats">
-      <div className="separator"></div>
+        <div className="separator"></div>
         <h2>Statistiques</h2>
         <ul className="profil-stats__items">
           {Array(20)

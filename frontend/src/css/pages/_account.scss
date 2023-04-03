@@ -1,0 +1,27 @@
+.account {
+  padding: 5em 1em;
+}
+
+.account form {
+  gap: 2em;
+}
+
+.account-personal {
+  padding: 2em;
+  padding-top: 5em;
+  position: relative;
+  box-shadow: var(--shadow);
+  background-color: var(--light);
+  border-radius: var(--rounded);
+}
+
+.account-logo {
+  height: 100px;
+  width: 100px;
+  border-radius: var(--rounded-full);
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  box-shadow: var(--shadow);
+}

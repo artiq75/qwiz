@@ -1,7 +1,17 @@
+form {
+  display: grid;
+  gap: 1em;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.5em;
+}
+
 input {
   width: 100%;
   border: 1px solid transparent;
-  border-radius: var(--rounded-md);
+  border-radius: var(--rounded);
   padding: 1em;
   font: inherit;
   color: inherit;

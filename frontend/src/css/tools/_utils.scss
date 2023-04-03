@@ -4,6 +4,11 @@
 }
 
 [class~='secondary'] {
+  background-color: var(--secondary);
+  color: var(--primary);
+}
+
+[class~='tertiary'] {
   background-color: var(--tertiary);
   color: var(--primary);
 }
@@ -44,15 +49,6 @@
 
 .w-full {
   width: 100%;
-}
-
-.g2 {
-  display: grid;
-  grid-template-columns: var(--grid-cols-2);
-}
-
-.gap1 {
-  gap: 1em;
 }
 
 .tag {
