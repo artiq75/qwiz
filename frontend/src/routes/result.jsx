@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useScore } from '../components/providers/ScoreProvider'
+import { RoutesName } from './router'
 
 export default function Result() {
-  const { score } = useScore()
+  const { scores } = useScore()
+
+  console.log(scores)
 
   return (
     <main className="result">
       <div className="card">
         <h1 className="txt-center">Score</h1>
-        <table>
+        {/* <table>
           <thead>
             <tr></tr>
           </thead>
@@ -26,12 +29,12 @@ export default function Result() {
               <td>{score.attempt}</td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
         <div className="g2 gap1">
-          <Link className="btn primary w-full" to="/lobby">
+          <Link className="btn primary w-full" to={RoutesName.LOBBY}>
             Rejouer
           </Link>
-          <Link className="btn primary outlined w-full" to="/">
+          <Link className="btn primary outlined w-full" to={RoutesName.HOME}>
             Accueil
           </Link>
         </div>

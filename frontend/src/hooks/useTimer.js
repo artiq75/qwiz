@@ -30,5 +30,5 @@ export default function useTimer(initial = 30) {
     start()
   }
 
-  return { count, start, stop, reset, reload }
+  return [count, start, stop, reset, reload]
 }
