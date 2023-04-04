@@ -11,15 +11,17 @@ import {
 const canStart = (ctx) =>
   (ctx.timer && ctx.timer === ctx.start) || ctx.timer > 0
 
-const decrement = (ctx) => ({ ...ctx, timer: ctx.timer - 1 })
+const decrement = (ctx) => {
+  clearTimeout(timeoutID)
+  timeoutID = null
+  return { ...ctx, timer: ctx.timer - 1 }
+}
 
 let timeoutID = null
 
 const canContinue = async (ctx) =>
   new Promise((res, rej) => {
     if (ctx.timer > 0) {
-      clearTimeout(timeoutID)
-      timeoutID = null
       timeoutID = setTimeout(() => {
         res()
       }, 1000)
@@ -32,11 +34,14 @@ const resetReducer = (ctx) => ({ ...ctx, timer: ctx.start })
 
 const timerMachine = createMachine(
   {
-    stop: state(transition('start', 'start', reduce(resetReducer))),
+    stop: state(
+      transition('start', 'start', reduce(resetReducer))
+    ),
     start: invoke(
       canContinue,
       transition('done', 'start', reduce(decrement)),
-      transition('error', 'stop')
+      transition('error', 'stop'),
+      transition('stop', 'stop')
     )
   },
   (ctx) => ({ ...ctx, timer: ctx.start ?? 30 })

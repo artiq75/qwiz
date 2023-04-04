@@ -1,6 +1,7 @@
 import {
   createMachine,
   guard,
+  immediate,
   invoke,
   reduce,
   state,
@@ -9,7 +10,7 @@ import {
 import { findRandomQuestion } from '../api/question'
 
 const defaulCtx = {
-  round: 0,
+  round: 1,
   limit: 3,
   question: null,
   loading: true
@@ -31,7 +32,7 @@ const choosePlayReduce = (ctx) => ({
   loading: true
 })
 
-const canPlay = (ctx) => ctx.round && ctx.round < ctx.limit
+const canPlay = (ctx) => ctx.round && ctx.round <= ctx.limit
 
 const gameMachine = createMachine(
   {
@@ -42,6 +43,10 @@ const gameMachine = createMachine(
     ),
     play: state(transition('choose', 'choose')),
     choose: state(
+      immediate(
+        'end',
+        guard((ctx) => !canPlay(ctx))
+      ),
       transition(
         'play',
         'loading',
@@ -49,7 +54,6 @@ const gameMachine = createMachine(
         reduce(choosePlayReduce)
       )
     ),
-    last: state(transition('replay', 'play')),
     end: state(transition('replay', 'play'))
   },
   (ctx) => ({ ...ctx, ...defaulCtx })

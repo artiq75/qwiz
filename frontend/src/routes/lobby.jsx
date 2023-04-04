@@ -49,7 +49,10 @@ export default function Lobby() {
 
   useEffect(() => {
     // Si aucune réponse n'est cliquer est que le temps est fini
-    if (timerIsIn('stop') && gameIsIn('choose')) {
+    if (
+      timerIsIn('stop') &&
+      (gameIsIn('choose') || gameIsIn('end'))
+    ) {
       // On récupère le score de la catégorie acutelle
       const score = getScore(gameCtx.question.category)
       // On ajoute increment le point mauvaise réponse du score
@@ -58,12 +61,8 @@ export default function Lobby() {
     }
   }, [gameIsIn, gameCtx, timerIsIn])
 
-  const handleNext = () => {
-    gameSend('play')
-  }
-
   useAsyncEffect(async () => {
-    if (!gameCan('play') && gameIsIn('choose')) return
+    if (!gameIsIn('end')) return
     for (const score of scores) {
       const data = { ...score, user }
       const gameScore = gameScores.find(
@@ -72,7 +71,6 @@ export default function Lobby() {
       data.goodAnswer += gameScore.goodAnswer
       data.badAnswer += gameScore.badAnswer
       data.attempt += gameScore.attempt
-      console.log(gameScore)
       return
       await ApiScore.updateScore(data)
     }
@@ -96,6 +94,10 @@ export default function Lobby() {
     [gameCtx, gameSend, timerSend]
   )
 
+  const handleNext = () => {
+    gameSend('play')
+  }
+
   return (
     <main className="lobby">
       <section className="lobby-question card">
@@ -103,7 +105,8 @@ export default function Lobby() {
           <time-indicator></time-indicator>
         ) : (
           <>
-          state: {JSON.stringify(gameState)}
+            gameState: {JSON.stringify(gameState)} <br />
+            timerState: {JSON.stringify(timerState)}
             {gameIsIn('play') && (
               <time-indicator
                 time={timerCtx.timer}
@@ -120,7 +123,9 @@ export default function Lobby() {
                 <li key={answer.id}>
                   <AnswerItem
                     answer={answer}
-                    hasChoose={gameIsIn('choose')}
+                    hasChoose={
+                      gameIsIn('choose') || gameIsIn('end')
+                    }
                     onChoose={handleChoose}
                   />
                 </li>
@@ -128,7 +133,7 @@ export default function Lobby() {
             </ul>
           </>
         )}
-        {gameCan('play') && gameIsIn('choose') && (
+        {gameCan('play') && !gameIsIn('end') && (
           <button
             className="btn tertiary w-full"
             onClick={handleNext}
@@ -136,7 +141,7 @@ export default function Lobby() {
             Question suivante
           </button>
         )}
-        {!gameCan('play') && gameIsIn('choose') && (
+        {gameIsIn('end') && (
           <Link
             className="btn primary outlined w-full"
             to={RoutesName.RESULT}
