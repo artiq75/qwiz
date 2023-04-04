@@ -4,15 +4,13 @@ import { useScoreContext } from '../components/providers/ScoreProvider'
 import AnswerItem from '../components/AnswerItem'
 import useAsyncEffect from '../hooks/useAsyncEffect'
 import { RoutesName } from '../routes/router'
-import { useGameContext } from '../components/providers/GameProvider'
-import * as ApiScore from '../api/score'
 import useMachine from '../hooks/useMachine'
 import gameMachine from '../machines/gameMachine'
 import timerMachine from '../machines/timerMachine'
 
 export default function Lobby() {
-  const { scores, updateScore, getScore } = useScoreContext()
-  const { scores: gameScores } = useGameContext()
+  const { updateScore, getScore, persistScores } =
+    useScoreContext()
   const [gameState, gameCtx, gameSend, gameCan, gameIsIn] =
     useMachine(gameMachine)
   const [timerState, timerCtx, timerSend, timerCan, timerIsIn] =
@@ -49,22 +47,11 @@ export default function Lobby() {
   }, [gameIsIn, gameCtx, timerIsIn])
 
   useAsyncEffect(async () => {
-    if (!gameIsIn('end') || !gameScores.length || !scores.length) {
-      return
-    }
+    if (!gameIsIn('end')) return
     // Si je suis à la dérnière round
     // On pérsiste les scores dans la DB
-    for (const score of scores) {
-      const oldScore = gameScores.find(
-        (s) => s.category.id === score.category.id
-      )
-      const newScore = { id: oldScore.id, ...score }
-      newScore.goodAnswer += oldScore.goodAnswer
-      newScore.badAnswer += oldScore.badAnswer
-      newScore.attempt += oldScore.attempt
-      await ApiScore.updateScore(newScore)
-    }
-  }, [gameScores, scores, gameIsIn])
+    persistScores()
+  }, [gameIsIn])
 
   const handleChoose = useCallback(
     (answer) => {
@@ -98,7 +85,9 @@ export default function Lobby() {
             gameState: {JSON.stringify(gameState)} <br />
             timerState: {JSON.stringify(timerState)}
             {gameIsIn('play') && (
-              <time-indicator time={timerCtx.timer}></time-indicator>
+              <time-indicator
+                time={timerCtx.timer}
+              ></time-indicator>
             )}
             <p className="center tag primary">
               {gameCtx.question.category.title}
@@ -111,7 +100,9 @@ export default function Lobby() {
                 <li key={answer.id}>
                   <AnswerItem
                     answer={answer}
-                    hasChoose={gameIsIn('choose') || gameIsIn('end')}
+                    hasChoose={
+                      gameIsIn('choose') || gameIsIn('end')
+                    }
                     onChoose={handleChoose}
                   />
                 </li>
