@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import { useScore } from '../components/providers/ScoreProvider'
+import { useScoreContext } from '../components/providers/ScoreProvider'
 import { RoutesName } from './router'
 import Stats from '../components/layouts/Stats'
 
 export default function Result() {
-  const { scores } = useScore()
+  const { scores } = useScoreContext()
 
   return (
     <main className="result">

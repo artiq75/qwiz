@@ -1,23 +1,21 @@
 import Http from '../classes/Http'
 
+/**
+ * Récupère tout les scores de l'utilisateur actuelle
+ * @param {integer} userID
+ * @returns Promise
+ */
 export async function findAllScore(userID) {
   return Http.get(`/api/scores?user=${userID}`)
 }
 
-export async function addScore(score) {
-  const { user, category, ...other } = score
-  return Http.post(`/api/scores`, {
-    body: {
-      ...other,
-      user: `/api/users/${user.id}`,
-      category: `/api/categories/${category.id}`
-    }
-  })
-}
-
+/**
+ * Met à jour les infos du score
+ * @param {object} score
+ * @returns
+ */
 export async function updateScore(score) {
-  const { user, category, ...other } = score
-  return Http.put(`/api/scores/${user.id}`, {
-    body: other
+  return Http.put(`/api/scores/${score.id}`, {
+    body: score
   })
 }

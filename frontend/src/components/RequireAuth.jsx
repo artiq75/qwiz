@@ -7,7 +7,13 @@ export default function RequireAuth({ children }) {
   const { isAuth } = useAuth()
 
   if (!isAuth) {
-    return <Navigate to={RoutesName.LOGIN} state={{ from: location }} replace />
+    return (
+      <Navigate
+        to={RoutesName.LOGIN}
+        state={{ from: location }}
+        replace
+      />
+    )
   }
 
   return children

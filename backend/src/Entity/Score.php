@@ -13,6 +13,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: [
         'groups' => ['read:Score']
+    ],
+    denormalizationContext: [
+        'groups' => ['write:Score']
     ]
 )]
 #[ApiFilter(
@@ -23,18 +26,19 @@ class Score
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:Score'])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['read:Score'])]
+    #[Groups(['read:Score', 'write:Score'])]
     private ?int $goodAnswer = null;
 
     #[ORM\Column]
-    #[Groups(['read:Score'])]
+    #[Groups(['read:Score', 'write:Score'])]
     private ?int $badAnswer = null;
 
     #[ORM\Column]
-    #[Groups(['read:Score'])]
+    #[Groups(['read:Score', 'write:Score'])]
     private ?int $attempt = null;
 
     #[ORM\ManyToOne(inversedBy: 'scores')]

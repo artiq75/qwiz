@@ -15,7 +15,7 @@ const ScoreContext = createContext({
   resetScore: () => {}
 })
 
-export const useScore = () => useContext(ScoreContext)
+export const useScoreContext = () => useContext(ScoreContext)
 
 export default function ScoreProvider({ children }) {
   const [state, dispatch] = useReducer(scoreReducer, [])

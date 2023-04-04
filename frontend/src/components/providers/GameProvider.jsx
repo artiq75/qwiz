@@ -9,8 +9,7 @@ import { findAllScore } from '../../api/score'
 import { useAuth } from './AuthProvider'
 
 const Context = createContext({
-  scores: [],
-  hasScore: () => {}
+  scores: []
 })
 
 export const useGameContext = () => useContext(Context)
@@ -25,22 +24,11 @@ export default function GameProvider({ children }) {
     }
   }, [user])
 
-  const hasScore = function (score) {
-    return scores.some(
-      (s) => s.category.id === score.category.id
-    )
-  }
-
   const value = useMemo(() => {
     return {
-      scores,
-      hasScore
+      scores
     }
   }, [scores])
 
-  return (
-    <Context.Provider value={value}>
-      {children}
-    </Context.Provider>
-  )
+  return <Context.Provider value={value}>{children}</Context.Provider>
 }
