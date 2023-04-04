@@ -9,128 +9,119 @@ import { RoutesName } from '../routes/router'
 import { useGameContext } from '../components/providers/GameProvider'
 import * as ApiScore from '../api/score'
 import { useAuth } from '../components/providers/AuthProvider'
+import useMachine from '../hooks/useMachine'
+import gameMachine from '../machines/gameMachine'
+import timerMachine from '../machines/timerMachine'
 
 export default function Lobby() {
-  const [questions, setQuestions] = useState([])
-  const [index, setIndex] = useState(0)
-  const [hasChoose, setHasChoose] = useState(false)
-  const [timer, s, timerStop, r, timerReload] = useTimer(2)
+  const [timer, s, timerStop, r, timerReload] = useTimer(1)
   const { scores, updateScore, getScore, resetScore } = useScore()
   const { scores: gameScores, hasScore } = useGameContext()
   const { user } = useAuth()
-
-  useAsyncEffect(async () => {
-    resetScore()
-    findAllQueston().then(setQuestions)
-  }, [])
-
-  const question = useMemo(() => {
-    return questions[index]
-  }, [questions, index])
-
-  const isLastQuestion = useMemo(() => {
-    return index + 1 >= questions.length
-  }, [index, questions])
+  const [gameState, gameCtx, gameSend, gameCan, gameIsIn] =
+    useMachine(gameMachine)
 
   const isTimeFinish = useMemo(() => {
     return timer <= 0
   }, [timer])
 
   useEffect(() => {
-    setHasChoose(false)
-    timerReload()
-  }, [index])
-
-  useEffect(() => {
     if (isTimeFinish) {
-      setHasChoose(true)
+      gameSend('choose')
       timerStop()
     }
-  }, [isTimeFinish])
+  }, [isTimeFinish, gameSend])
 
-  useEffect(() => {
-    // Si aucune réponse n'est cliquer est que le temps est fini
-    if (isTimeFinish && !hasChoose) {
-      // On récupère le score de la catégorie acutelle
-      const score = getScore(question.category)
-      // On ajoute increment le point mauvaise réponse du score
-      score.badAnswer += 1
-      updateScore(score)
-    }
-  }, [isTimeFinish, hasChoose, question])
+  // useEffect(() => {
+  //   // Si aucune réponse n'est cliquer est que le temps est fini
+  //   if (isTimeFinish && gameIsIn('choose')) {
+  //     // On récupère le score de la catégorie acutelle
+  //     const score = getScore(gameCtx.question.category)
+  //     // On ajoute increment le point mauvaise réponse du score
+  //     score.badAnswer += 1
+  //     updateScore(score)
+  //   }
+  // }, [isTimeFinish, gameIsIn, gameCtx])
 
   const handleNext = () => {
-    setHasChoose(false)
-    if (isLastQuestion) return
-    setIndex((i) => i + 1)
+    gameSend('play')
+    timerReload()
   }
 
-  useAsyncEffect(async () => {
-    if (hasChoose && isLastQuestion) {
-      for (const score of scores) {
-        const data = { ...score, user }
-        if (!hasScore(data)) {
-          await ApiScore.addScore(data)
-        } else {
-          const gameScore = gameScores.find(
-            (s) => s.category.id === score.category.id
-          )
-          data.goodAnswer += gameScore.goodAnswer
-          data.badAnswer += gameScore.badAnswer
-          data.attempt += gameScore.attempt
-          await ApiScore.updateScore(data)
-        }
-      }
-    }
-  }, [isLastQuestion, hasChoose, gameScores, scores])
+  // useAsyncEffect(async () => {
+  //   if (gameIsIn('choose')) {
+  //     for (const score of scores) {
+  //       const data = { ...score, user }
+  //       if (!hasScore(data)) {
+  //         await ApiScore.addScore(data)
+  //       } else {
+  //         const gameScore = gameScores.find(
+  //           (s) => s.category.id === score.category.id
+  //         )
+  //         data.goodAnswer += gameScore.goodAnswer
+  //         data.badAnswer += gameScore.badAnswer
+  //         data.attempt += gameScore.attempt
+  //         await ApiScore.updateScore(data)
+  //       }
+  //     }
+  //   }
+  // }, [gameIsIn, gameScores, scores])
 
   const handleChoose = useCallback(
     (answer) => {
-      setHasChoose(true)
+      gameSend('choose')
       // On récupère le score associé à la catégorie actuelle
       // Sinon un nouveau score puis on met à jour ces informations
-      const newScore = getScore(question.category)
-      if (answer.isValid) {
-        newScore.goodAnswer += 1
-      } else {
-        newScore.badAnswer += 1
-      }
-      newScore.attempt += 1
-      updateScore(newScore)
+      // const newScore = getScore(gameCtx.question.category)
+      // if (answer.isValid) {
+      //   newScore.goodAnswer += 1
+      // } else {
+      //   newScore.badAnswer += 1
+      // }
+      // newScore.attempt += 1
+      // updateScore(newScore)
     },
-    [question]
+    [gameCtx, gameSend]
   )
-
-  if (!question) {
-    return <h1>Loading...</h1>
-  }
 
   return (
     <main className="lobby">
-      isTimeFinish: {JSON.stringify(isTimeFinish)} <br />
-      hasChoose: {JSON.stringify(hasChoose)}
       <section className="lobby-question card">
-        <p className="center tag primary">{question.category.title}</p>
-        {timer}
-        {!hasChoose && <time-indicator time={timer}></time-indicator>}
-        <h1 className="lobby-question__title">{question.title}</h1>
-        <ul className="lobby-question__answers">
-          {question.answers.map((answer) => (
-            <li key={answer.id}>
-              <AnswerItem
-                answer={answer}
-                hasChoose={hasChoose}
-                onChoose={handleChoose}
-              />
-            </li>
-          ))}
-        </ul>
-        {hasChoose && !isLastQuestion && (
+        <div>
+          gameState: {JSON.stringify(gameState)} <br />
+          loading: {JSON.stringify(gameCtx.loading)} <br />
+          limit: {JSON.stringify(gameCtx.limit)} <br />
+          round: {JSON.stringify(gameCtx.round)} <br />
+          isTimeFinish: {JSON.stringify(isTimeFinish)} <br />
+        </div>
+        {gameCtx.loading ? (
+          <time-indicator></time-indicator>
+        ) : (
+          <>
+            {gameIsIn('play') && <time-indicator time={timer}></time-indicator>}
+            <p className="center tag primary">
+              {gameCtx.question.category.title}
+            </p>
+            <h1 className="lobby-question__title">{gameCtx.question.title}</h1>
+            <ul className="lobby-question__answers">
+              {gameCtx.question.answers.map((answer) => (
+                <li key={answer.id}>
+                  <AnswerItem
+                    answer={answer}
+                    hasChoose={gameIsIn('choose')}
+                    onChoose={handleChoose}
+                  />
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+        {gameCan('play') && gameIsIn('choose') && (
           <button className="btn tertiary w-full" onClick={handleNext}>
             Question suivante
           </button>
         )}
-        {hasChoose && isLastQuestion && (
+        {!gameCan('play') && gameIsIn('choose') && (
           <Link className="btn primary outlined w-full" to={RoutesName.RESULT}>
             Voir les résultats
           </Link>
