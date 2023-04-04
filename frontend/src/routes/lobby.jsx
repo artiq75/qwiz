@@ -14,23 +14,29 @@ import gameMachine from '../machines/gameMachine'
 import timerMachine from '../machines/timerMachine'
 
 export default function Lobby() {
-  const [timer, s, timerStop, r, timerReload] = useTimer(1)
   const { scores, updateScore, getScore, resetScore } = useScore()
   const { scores: gameScores, hasScore } = useGameContext()
   const { user } = useAuth()
   const [gameState, gameCtx, gameSend, gameCan, gameIsIn] =
     useMachine(gameMachine)
-
-  const isTimeFinish = useMemo(() => {
-    return timer <= 0
-  }, [timer])
+  const [timerState, timerCtx, timerSend, timerCan, timerIsIn] = useMachine(
+    timerMachine,
+    {
+      start: 3
+    }
+  )
 
   useEffect(() => {
-    if (isTimeFinish) {
-      gameSend('choose')
-      timerStop()
+    if (!gameCtx.loading) {
+      timerSend('start')
     }
-  }, [isTimeFinish, gameSend])
+  }, [gameCtx])
+
+  useEffect(() => {
+    if (timerIsIn('stop')) {
+      gameSend('choose')
+    }
+  }, [timerIsIn, gameSend])
 
   // useEffect(() => {
   //   // Si aucune réponse n'est cliquer est que le temps est fini
@@ -45,7 +51,6 @@ export default function Lobby() {
 
   const handleNext = () => {
     gameSend('play')
-    timerReload()
   }
 
   // useAsyncEffect(async () => {
@@ -70,6 +75,7 @@ export default function Lobby() {
   const handleChoose = useCallback(
     (answer) => {
       gameSend('choose')
+      timerSend('stop')
       // On récupère le score associé à la catégorie actuelle
       // Sinon un nouveau score puis on met à jour ces informations
       // const newScore = getScore(gameCtx.question.category)
@@ -81,24 +87,19 @@ export default function Lobby() {
       // newScore.attempt += 1
       // updateScore(newScore)
     },
-    [gameCtx, gameSend]
+    [gameCtx, gameSend, timerSend]
   )
 
   return (
     <main className="lobby">
       <section className="lobby-question card">
-        <div>
-          gameState: {JSON.stringify(gameState)} <br />
-          loading: {JSON.stringify(gameCtx.loading)} <br />
-          limit: {JSON.stringify(gameCtx.limit)} <br />
-          round: {JSON.stringify(gameCtx.round)} <br />
-          isTimeFinish: {JSON.stringify(isTimeFinish)} <br />
-        </div>
         {gameCtx.loading ? (
           <time-indicator></time-indicator>
         ) : (
           <>
-            {gameIsIn('play') && <time-indicator time={timer}></time-indicator>}
+            {gameIsIn('play') && (
+              <time-indicator time={timerCtx.timer}></time-indicator>
+            )}
             <p className="center tag primary">
               {gameCtx.question.category.title}
             </p>
