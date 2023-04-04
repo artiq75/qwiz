@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
 import { findAllScore } from '../../api/score'
 import { useAuth } from './AuthProvider'
 
@@ -20,7 +26,9 @@ export default function GameProvider({ children }) {
   }, [user])
 
   const hasScore = function (score) {
-    return scores.some((s) => s.category.id === score.category.id)
+    return scores.some(
+      (s) => s.category.id === score.category.id
+    )
   }
 
   const value = useMemo(() => {
@@ -30,5 +38,9 @@ export default function GameProvider({ children }) {
     }
   }, [scores])
 
-  return <Context.Provider value={value}>{children}</Context.Provider>
+  return (
+    <Context.Provider value={value}>
+      {children}
+    </Context.Provider>
+  )
 }

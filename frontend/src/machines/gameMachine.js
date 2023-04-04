@@ -1,7 +1,6 @@
 import {
   createMachine,
   guard,
-  immediate,
   invoke,
   reduce,
   state,
@@ -9,10 +8,15 @@ import {
 } from 'robot3'
 import { findRandomQuestion } from '../api/question'
 
-const defaulCtx = { round: 0, limit: 3, question: null, loading: true }
+const defaulCtx = {
+  round: 0,
+  limit: 3,
+  question: null,
+  loading: true
+}
 
 const findQuestion = async () => {
-  return await findRandomQuestion()
+  return findRandomQuestion()
 }
 
 const loadingDoneReduce = (ctx, e) => ({
@@ -22,7 +26,10 @@ const loadingDoneReduce = (ctx, e) => ({
   round: ctx.round + 1
 })
 
-const choosePlayReduce = (ctx) => ({ ...ctx, loading: true })
+const choosePlayReduce = (ctx) => ({
+  ...ctx,
+  loading: true
+})
 
 const canPlay = (ctx) => ctx.round && ctx.round < ctx.limit
 
@@ -35,8 +42,14 @@ const gameMachine = createMachine(
     ),
     play: state(transition('choose', 'choose')),
     choose: state(
-      transition('play', 'loading', guard(canPlay), reduce(choosePlayReduce))
+      transition(
+        'play',
+        'loading',
+        guard(canPlay),
+        reduce(choosePlayReduce)
+      )
     ),
+    last: state(transition('replay', 'play')),
     end: state(transition('replay', 'play'))
   },
   (ctx) => ({ ...ctx, ...defaulCtx })

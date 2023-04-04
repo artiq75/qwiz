@@ -18,7 +18,7 @@ const ScoreContext = createContext({
 export const useScore = () => useContext(ScoreContext)
 
 export default function ScoreProvider({ children }) {
-  const [state, dispatch] = useReducer(scoreReducer)
+  const [state, dispatch] = useReducer(scoreReducer, [])
 
   const appendScore = function (newScore) {
     dispatch({ type: 'APPEND', payload: newScore })

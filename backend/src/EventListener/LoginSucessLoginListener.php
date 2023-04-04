@@ -2,22 +2,44 @@
 
 namespace App\EventListener;
 
+use App\Entity\Score;
+use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
-use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
 
-// #[AsEventListener(event: LoginSuccessEvent::class, method: 'onSymfonyComponentSecurityHttpEventLoginSuccessEvent')]
+#[AsEventListener(event: LoginSuccessEvent::class)]
 class LoginSucessLoginListener
 {
-  public function onSymfonyComponentSecurityHttpEventLoginSuccessEvent(LoginSuccessEvent $loginEvent)
+  public function __construct(
+    private CategoryRepository $categoryRepository,
+    private EntityManagerInterface $entityManager
+  ) {
+  }
+
+  public function __invoke(LoginSuccessEvent $loginEvent)
   {
-    $passport = $loginEvent->getPassport();
-    $passport->addBadge(new RememberMeBadge());
-    
-    // Add _remember_me from JSON body to attributes
-    $request = $loginEvent->getRequest();
-    $data = json_decode($request->getContent());
-    $request->attributes->set('_remember_me', $data->_remember_me ?? '');
-    dd($request->attributes);
+    /**
+     * @var \App\Entity\User
+     */
+    $user = $loginEvent->getAuthenticatedToken()->getUser();
+
+    $categories = $this->categoryRepository->findAll();
+
+    if ($user->getScores()->isEmpty()) {
+
+      foreach ($categories as $category) {
+        $score = new Score();
+        $score
+          ->setGoodAnswer(0)
+          ->setBadAnswer(0)
+          ->setAttempt(0)
+          ->setCategory($category)
+          ->setUser($user);
+        $this->entityManager->persist($score);
+      }
+
+      $this->entityManager->flush();
+    }
   }
 }
