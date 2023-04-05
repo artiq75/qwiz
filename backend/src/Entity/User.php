@@ -2,26 +2,46 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
-use App\Controller\ApiRegisterController;
+use App\Controller\Api\ApiUserImageController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[Vich\Uploadable]
 #[UniqueEntity('email')]
 #[ApiResource(
+    normalizationContext: [
+        'groups' => ['read:User']
+    ],
     denormalizationContext: [
         'groups' => ['write:User']
-    ]
+    ],
+    operations: [
+        new Post(
+            uriTemplate: '/users/image',
+            deserialize: false,
+            controller: ApiUserImageController::class,
+            normalizationContext: [
+                'groups' => 'write:User:image'
+            ],
+            denormalizationContext: [
+                'groups' => 'write:User:image'
+            ],
+        )
+    ],
+    security: "is_granted('ROLE_USER')"
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -33,10 +53,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email]
-    #[Groups(['groups' => 'write:User'])]
+    #[Groups(['read:User', 'write:User'])]
     private ?string $email = null;
 
-    #[Groups(['groups' => 'register'])]
+    #[Groups(['register'])]
     public ?string $token = null;
 
     #[ORM\Column]
@@ -47,20 +67,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank]
-    #[Groups(['groups' => 'write:User'])]
+    #[Groups(['write:User'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['groups' => 'write:User'])]
+    #[Groups(['read:User', 'write:User'])]
     private ?string $username = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Score::class, orphanRemoval: true)]
     private Collection $scores;
 
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['read:User', 'write:User:image'])]
+    private ?string $image = null;
+
+    #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
+    private ?File $imageFile = null;
+
     public function __construct()
     {
         $this->scores = new ArrayCollection();
+    }
+
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
     }
 
     public function getId(): ?int
@@ -171,6 +215,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $score->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image = null): self
+    {
+        $this->image = $image;
 
         return $this;
     }

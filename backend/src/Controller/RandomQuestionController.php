@@ -10,8 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class RandomQuestionController extends AbstractController
 {
   public function __construct(
-    private QuestionRepository $questionRepository,
-    private Connection $connection
+    private readonly QuestionRepository $questionRepository
   ) {
   }
 
