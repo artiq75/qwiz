@@ -11,6 +11,9 @@ class SecurityController extends AbstractController
     #[Route('/login', name: 'api_login')]
     public function index(): JsonResponse
     {
+        /**
+         * @var \App\Entity\User
+         */
         $user = $this->getUser();
 
         return $this->json([
@@ -18,6 +21,7 @@ class SecurityController extends AbstractController
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
             'roles' => $user->getRoles(),
+            'image' => $user->getImage()
         ]);
     }
 

@@ -3,7 +3,7 @@ import { useAuth } from '../components/providers/AuthProvider'
 export default function Account() {
   const { user } = useAuth()
 
-  const handleSubmit = function(e) {
+  const handleSubmit = function (e) {
     e.preventDefault()
     console.log(new FormData(e.target))
   }
@@ -13,7 +13,7 @@ export default function Account() {
       <div className="account-personal">
         <img
           className="account-logo"
-          src="https://picsum.photos/200/300"
+          src={`http://localhost/images/users/${user?.image}`}
           alt=""
         />
         <form className="account-form-personal" onSubmit={handleSubmit}>
