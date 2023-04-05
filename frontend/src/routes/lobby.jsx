@@ -1,16 +1,18 @@
 import { useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useScoreContext } from '../components/providers/ScoreProvider'
-import useAsyncEffect from '../hooks/useAsyncEffect'
 import { RoutesName } from '../routes/router'
 import QuestionItem from '../components/QuestionItem'
 import { useGameContext } from '../components/providers/GameProvider'
+import GameMachine from '../machines/GameMachine'
+import useMachine from '../hooks/useMachine'
 
 export default function Lobby() {
   const { updateScore, getScore, persistScores } = useScoreContext()
-  const { timerMachine, gameMachine } = useGameContext()
+  const { timerMachine } = useGameContext()
   const [timerState, timerCtx, timerSend, timerCan, timerIsIn] = timerMachine
-  const [gameState, gameCtx, gameSend, gameCan, gameIsIn] = gameMachine
+  const [gameState, gameCtx, gameSend, gameCan, gameIsIn] =
+    useMachine(GameMachine)
 
   useEffect(() => {
     // Réexecute le timer à chaque round
@@ -37,7 +39,7 @@ export default function Lobby() {
     }
   }, [gameIsIn, gameCtx, timerIsIn])
 
-  useAsyncEffect(async () => {
+  useEffect(() => {
     if (!gameIsIn('end')) return
     // Si je suis à la dérnière round
     // On pérsiste les scores dans la DB

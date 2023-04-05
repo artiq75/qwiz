@@ -12,7 +12,6 @@ import { findRandomQuestion } from '../api/question'
 const defaulCtx = {
   round: 1,
   limit: 3,
-  isAttempt: false,
   question: null,
   loading: true
 }
@@ -25,7 +24,6 @@ const loadingDoneReduce = (ctx, e) => ({
   ...ctx,
   question: e.data,
   loading: false,
-  isAttempt: false,
   round: ctx.round + 1
 })
 

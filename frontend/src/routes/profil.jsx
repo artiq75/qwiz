@@ -16,9 +16,9 @@ export default function Profil() {
         />
         <h1 className="profil-username">{user.username}</h1>
       </div>
+      <div className="separator"></div>
       <div className="profil-stats">
-        <div className="separator"></div>
-        <h2>Statistiques</h2>
+        <h2>Score</h2>
         <Stats scores={scores} />
       </div>
     </main>

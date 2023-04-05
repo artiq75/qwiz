@@ -3,12 +3,10 @@ import { findAllScore } from '../../api/score'
 import { useAuth } from './AuthProvider'
 import useMachine from '../../hooks/useMachine'
 import TimerMachine from '../../machines/TimerMachine'
-import GameMachine from '../../machines/GameMachine'
 
 const Context = createContext({
   scores: [],
-  timerMachine: [],
-  gameMachine: []
+  timerMachine: []
 })
 
 export const useGameContext = () => useContext(Context)
@@ -16,7 +14,6 @@ export const useGameContext = () => useContext(Context)
 export default function GameProvider({ children }) {
   const { user } = useAuth()
   const [scores, setScores] = useState([])
-  const gameMachine = useMachine(GameMachine)
   const timerMachine = useMachine(TimerMachine, {
     start: 3
   })
@@ -30,10 +27,9 @@ export default function GameProvider({ children }) {
   const value = useMemo(() => {
     return {
       scores,
-      timerMachine,
-      gameMachine
+      timerMachine
     }
-  }, [scores, timerMachine, gameMachine])
+  }, [scores, timerMachine])
 
   return <Context.Provider value={value}>{children}</Context.Provider>
 }

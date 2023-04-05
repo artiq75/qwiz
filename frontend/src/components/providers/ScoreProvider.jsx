@@ -2,8 +2,7 @@ import {
   createContext,
   useContext,
   useMemo,
-  useReducer,
-  useState
+  useReducer
 } from 'react'
 import { scoreReducer } from './scoreReducer'
 import * as ApiScore from '../../api/score'
