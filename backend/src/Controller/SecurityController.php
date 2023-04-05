@@ -5,9 +5,15 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 class SecurityController extends AbstractController
 {
+    public function __construct(
+        private StorageInterface $storage
+    ) {
+    }
+
     #[Route('/login', name: 'api_login')]
     public function index(): JsonResponse
     {
@@ -21,7 +27,7 @@ class SecurityController extends AbstractController
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
             'roles' => $user->getRoles(),
-            'image' => $user->getImage()
+            'image' => $this->storage->resolveUri($user, 'imageFile')
         ]);
     }
 
