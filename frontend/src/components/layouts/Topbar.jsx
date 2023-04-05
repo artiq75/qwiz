@@ -2,9 +2,13 @@ import { useAuth } from '../providers/AuthProvider'
 import { Link } from 'react-router-dom'
 import { logout } from '../../api/auth'
 import { RoutesName } from '../../routes/router'
+import { useGameContext } from '../providers/GameProvider'
 
 export default function Topbar() {
   const { user, isAuth, ...auth } = useAuth()
+  const { timerMachine } = useGameContext()
+
+  const [timerState, timerCtx] = timerMachine
 
   const handleLogout = function () {
     logout().then(() => auth.logout())
@@ -15,6 +19,7 @@ export default function Topbar() {
       <Link to={RoutesName.HOME}>
         <h1>Qwiz</h1>
       </Link>
+      <div>{timerState === 'start' && <h1>{timerCtx.timer}</h1>}</div>
       {isAuth && (
         <drop-down>
           <button>

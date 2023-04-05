@@ -1,0 +1,20 @@
+.question-item {
+  display: grid;
+  gap: 3em;
+  text-align: center;
+}
+
+.question-item__title {
+  font-size: 1.5em;
+}
+
+.question-item__answers {
+  display: grid;
+  gap: 1em;
+}
+
+.question-item__answers .btn:not(:disabled):hover,
+.question-item__answers .btn.validate {
+  background-color: var(--tertiary);
+  color: var(--primary);
+}

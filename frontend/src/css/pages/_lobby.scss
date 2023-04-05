@@ -6,23 +6,7 @@
   justify-content: center;
 }
 
-.lobby-question {
+.lobby .card {
   display: grid;
   gap: 3em;
-  text-align: center;
-}
-
-.lobby-question__title {
-  font-size: 1.5em;
-}
-
-.lobby-question__answers {
-  display: grid;
-  gap: 1em;
-}
-
-.lobby-question__answers .btn:not(:disabled):hover,
-.lobby-question__answers .btn.validate {
-  background-color: var(--tertiary);
-  color: var(--primary);
 }

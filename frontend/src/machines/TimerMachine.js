@@ -32,7 +32,7 @@ const canContinue = async (ctx) =>
 
 const resetReducer = (ctx) => ({ ...ctx, timer: ctx.start })
 
-const timerMachine = createMachine(
+const TimerMachine = createMachine(
   {
     stop: state(
       transition('start', 'start', reduce(resetReducer))
@@ -47,4 +47,4 @@ const timerMachine = createMachine(
   (ctx) => ({ ...ctx, timer: ctx.start ?? 30 })
 )
 
-export default timerMachine
+export default TimerMachine
