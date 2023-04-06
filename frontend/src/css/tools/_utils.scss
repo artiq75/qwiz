@@ -71,9 +71,9 @@
 }
 
 .separator {
-  height: 1px;
   width: 100%;
-  background: var(--primary);
+  border-radius: var(--rounded);
+  box-shadow: var(--shadow-lg);
 }
 
 [class^="container"] {
@@ -95,4 +95,11 @@
 
 .container-lg {
   max-width: var(--container-lg);
+}
+
+.avatar {
+  object-fit: cover;
+  object-position: center center;
+  border-radius: var(--rounded-full);
+  box-shadow: var(--shadow);
 }

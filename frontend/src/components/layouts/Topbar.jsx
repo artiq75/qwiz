@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { logout } from '../../api/auth'
 import { RoutesName } from '../../routes/router'
 import { useGameContext } from '../providers/GameProvider'
-import { BASE_URL } from '../../constants/app'
+import { Avatar } from '../Tools'
 
 export default function Topbar() {
   const { user, isAuth, ...auth } = useAuth()
@@ -24,14 +24,7 @@ export default function Topbar() {
       {isAuth && (
         <drop-down>
           <button>
-            <img
-              src={
-                user.image
-                  ? `${BASE_URL + user.image}`
-                  : 'https://picsum.photos/200/300'
-              }
-              alt=""
-            />
+            <Avatar src={user.image} />
           </button>
           <ul>
             <li>

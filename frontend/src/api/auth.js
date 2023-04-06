@@ -15,7 +15,13 @@ export async function register(user) {
 }
 
 export async function logout() {
-  await Http.post('/logout', {}, false)
+  return Http.http(
+    '/logout',
+    {
+      method: 'POST'
+    },
+    false
+  )
 }
 
 export function isAuth() {

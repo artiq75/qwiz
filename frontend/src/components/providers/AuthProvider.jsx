@@ -28,7 +28,7 @@ export default function AuthProvider({ children }) {
     }
   }, [])
 
-  const login = function (user, callback) {
+  const login = function (user, callback = () => {}) {
     setUser(Storage.set(StorageKeys.USER, user))
     callback()
   }
