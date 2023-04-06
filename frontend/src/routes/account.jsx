@@ -4,14 +4,14 @@ import { updateImage } from '../api/account'
 import { InputField } from '../components/Tools'
 
 export default function Account() {
-  const { user, login } = useAuth()
+  const { user, updateAvatar } = useAuth()
 
   const handleSubmit = function (e) {
     e.preventDefault()
     const data = new FormData(e.target)
     const image = data.get('image')
     if (image.name) {
-      updateImage(image).then(login(user))
+      updateImage(image).then((data) => updateAvatar(data['image']))
     }
   }
 

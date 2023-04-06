@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-import { BASE_URL } from '../constants/app'
 
 export default function ImageField({ name, src, alt = '' }) {
   const imageRef = useRef(null)
@@ -15,7 +14,7 @@ export default function ImageField({ name, src, alt = '' }) {
     <label htmlFor={name} className="image-field">
       <img
         ref={imageRef}
-        src={src ? `${BASE_URL + src}` : 'https://picsum.photos/200/300'}
+        src={src ?? 'https://picsum.photos/200/300'}
         alt={alt}
       />
       <input type="file" name={name} id={name} onChange={handleChange} />

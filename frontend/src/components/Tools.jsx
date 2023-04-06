@@ -1,5 +1,4 @@
 import { forwardRef, memo } from 'react'
-import { BASE_URL } from '../constants/app'
 
 export const InputField = memo((props) => {
   const { type = 'text', name, label, ...other } = props
@@ -17,7 +16,7 @@ export const Avatar = memo(
       <img
         className="avatar"
         ref={ref}
-        src={src ? `${BASE_URL + src}` : 'https://picsum.photos/200/300'}
+        src={src ?? 'https://picsum.photos/200/300'}
         alt={alt}
         width={size}
         height={size}

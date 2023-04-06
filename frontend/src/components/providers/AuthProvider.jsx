@@ -6,14 +6,16 @@ import { StorageKeys } from '../../constants/app'
 const initialUserState = {
   id: 0,
   username: '',
-  email: ''
+  email: '',
+  image: ''
 }
 
 const AuthContext = createContext({
   user: initialUserState,
   isAuth: false,
   login: () => {},
-  logout: () => {}
+  logout: () => {},
+  updateAvatar: () => {}
 })
 
 export const useAuth = () => useContext(AuthContext)
@@ -39,12 +41,17 @@ export default function AuthProvider({ children }) {
     callback()
   }
 
+  const updateAvatar = function (image) {
+    login({ ...user, image })
+  }
+
   const value = useMemo(() => {
     return {
       user,
       login,
       isAuth: isAuth(),
-      logout
+      logout,
+      updateAvatar
     }
   }, [user])
 

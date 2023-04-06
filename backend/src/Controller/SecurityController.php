@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
@@ -15,19 +16,27 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/login', name: 'api_login')]
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
         /**
          * @var \App\Entity\User
          */
         $user = $this->getUser();
+
+        $server = $request->server;
+
+        $baseUrl = $server->get('REQUEST_SCHEME') . '://' . $server->get('HTTP_HOST');
+
+        $imageUri = $this->storage->resolveUri($user, 'imageFile');
 
         return $this->json([
             'id' => $user->getId(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
             'roles' => $user->getRoles(),
-            'image' => $this->storage->resolveUri($user, 'imageFile')
+            'image' => $baseUrl . $imageUri
         ]);
     }
 
