@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom'
-import { RoutesName } from '../routes/router'
-import { useAuth } from './providers/AuthProvider'
+import { RoutesName } from '../../routes/router'
+import { useAuth } from '../providers/AuthProvider'
 
 export default function RequireAuth({ children }) {
   let location = useLocation()

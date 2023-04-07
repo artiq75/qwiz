@@ -103,3 +103,9 @@
   border-radius: var(--rounded-full);
   box-shadow: var(--shadow);
 }
+
+.card {
+  padding: 1em;
+  border-radius: var(--rounded);
+  box-shadow: var(--shadow-lg);
+}

@@ -7,7 +7,8 @@ const initialUserState = {
   id: 0,
   username: '',
   email: '',
-  image: ''
+  image: '',
+  isPremium: false
 }
 
 const AuthContext = createContext({

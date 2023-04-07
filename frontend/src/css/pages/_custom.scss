@@ -1,13 +1,12 @@
-.home {
-  padding-left: 1em;
+.custom {
   min-height: calc(100vh - var(--topbar-height));
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 3em;
 }
 
-.home-body {
-  width: var(--container-sm);
-  display: grid;
-  gap: 1em;
+.custom h2 {
+  font-size: var(--text-1xl);
 }

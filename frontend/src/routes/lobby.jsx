@@ -81,7 +81,7 @@ export default function Lobby() {
 
   return (
     <main className="lobby">
-      <section className="card">
+      <section className="lobby-body">
         {/* Affichage du loader lors du chargement de la question */}
         {gameCtx.loading && <time-indicator></time-indicator>}
         {/* Affichage du round lorsque la question est chargé */}

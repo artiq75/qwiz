@@ -6,7 +6,8 @@
   justify-content: center;
 }
 
-.lobby .card {
+.lobby-body {
+  width: var(--container-sm);
   display: grid;
   gap: 3em;
 }

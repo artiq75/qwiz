@@ -10,6 +10,18 @@ export const InputField = memo((props) => {
   )
 })
 
+export const Select = memo((props) => {
+  const { name, label, children, ...other } = props
+  return (
+    <>
+      <label htmlFor={name}>{label}</label>
+      <select name={name} id={name} {...other}>
+        {children}
+      </select>
+    </>
+  )
+})
+
 export const Avatar = memo(
   forwardRef(({ src, alt = '', size = 100 }, ref) => {
     return (

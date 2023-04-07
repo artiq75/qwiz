@@ -8,10 +8,12 @@ label {
   margin-bottom: 0.5em;
 }
 
-input {
+input,
+select {
   width: 100%;
   border: 1px solid transparent;
   border-radius: var(--rounded);
+  background-color: var(--light);
   padding: 1em;
   font: inherit;
   color: inherit;
