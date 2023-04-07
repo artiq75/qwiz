@@ -8,8 +8,7 @@ export async function updateUser(user) {
 }
 
 export async function updatePassword(passwords) {
-  return Http.http('/api/users/password', {
-    method: 'PUT',
+  return Http.put('/api/users/update/password', {
     body: passwords
   })
 }

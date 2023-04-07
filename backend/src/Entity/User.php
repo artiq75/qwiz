@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Controller\Api\ApiUserUpdateController;
+use App\Controller\Api\ApiUserUpdatePasswordController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,19 +27,25 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     normalizationContext: [
         'groups' => ['read:User']
     ],
-    denormalizationContext: [
-        'groups' => ['write:User']
-    ],
     operations: [
         new Post(
             uriTemplate: '/users/update',
             deserialize: false,
             controller: ApiUserUpdateController::class,
             denormalizationContext: [
-                'groups' => 'write:User:image'
+                'groups' => ['write:User']
             ],
+        ),
+        new Put(
+            uriTemplate: '/users/update/password',
+            deserialize: false,
+            controller: ApiUserUpdatePasswordController::class,
+            denormalizationContext: [
+                'groups' => ['write:User:password']
+            ]
         )
     ],
+    security: "is_granted('ROLE_USER')"
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -52,9 +60,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['read:User', 'write:User'])]
     private ?string $email = null;
 
-    #[Groups(['register'])]
-    public ?string $token = null;
-
     #[ORM\Column]
     private array $roles = [];
 
@@ -63,7 +68,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank]
+    #[Groups(['write:User:password'])]
     private ?string $password = null;
+
+    #[Groups(['write:User:password'])]
+    private ?string $oldPassword = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -77,7 +86,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['read:User', 'write:User:image'])]
+    #[Groups(['read:User', 'write:User'])]
     private ?string $image = null;
 
     #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
@@ -235,6 +244,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImage(?string $image = null): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getOldPassword(): ?string
+    {
+        return $this->oldPassword;
+    }
+
+    public function setOldPassword(?string $oldPassword): self
+    {
+        $this->oldPassword = $oldPassword;
 
         return $this;
     }
