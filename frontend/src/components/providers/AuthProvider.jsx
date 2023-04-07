@@ -14,8 +14,7 @@ const AuthContext = createContext({
   user: initialUserState,
   isAuth: false,
   login: () => {},
-  logout: () => {},
-  updateAvatar: () => {}
+  logout: () => {}
 })
 
 export const useAuth = () => useContext(AuthContext)
@@ -41,17 +40,12 @@ export default function AuthProvider({ children }) {
     callback()
   }
 
-  const updateAvatar = function (image) {
-    login({ ...user, image })
-  }
-
   const value = useMemo(() => {
     return {
       user,
       login,
       isAuth: isAuth(),
-      logout,
-      updateAvatar
+      logout
     }
   }, [user])
 

@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
-use App\Controller\Api\ApiUserImageController;
+use App\Controller\Api\ApiUserUpdateController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,25 +30,21 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     ],
     operations: [
         new Post(
-            uriTemplate: '/users/image',
+            uriTemplate: '/users/update',
             deserialize: false,
-            controller: ApiUserImageController::class,
-            normalizationContext: [
-                'groups' => 'write:User:image'
-            ],
+            controller: ApiUserUpdateController::class,
             denormalizationContext: [
                 'groups' => 'write:User:image'
             ],
         )
     ],
-    security: "is_granted('ROLE_USER')"
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:Score'])]
+    #[Groups(['read:User', 'read:Score'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -67,7 +63,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank]
-    #[Groups(['write:User'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -86,6 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $image = null;
 
     #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'image')]
+    #[Assert\Image]
     public ?File $imageFile = null;
 
     public function __construct()
