@@ -12,8 +12,8 @@ const Stats = memo(({ scores }) => {
   })
 
   useEffect(() => {
-    // TODO: corriger le problème de duplication du calcul
     for (const score of scores) {
+      console.log('sdfsdf')
       total.goodAnswer += score.goodAnswer
       total.badAnswer += score.badAnswer
       total.attempt += score.attempt

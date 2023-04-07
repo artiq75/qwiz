@@ -5,7 +5,7 @@
  * @property {boolean} isOpen
  */
 export default class Dropdown extends HTMLElement {
-  constructor () {
+  constructor() {
     super()
     this.open = this.open.bind(this)
     this.close = this.close.bind(this)
@@ -15,7 +15,7 @@ export default class Dropdown extends HTMLElement {
     this.onBlur = this.onBlur.bind(this)
   }
 
-  connectedCallback () {
+  connectedCallback() {
     const button = this.querySelector('button')
     const ul = this.querySelector('ul')
     const id = this.getAttribute('id')
@@ -29,7 +29,7 @@ export default class Dropdown extends HTMLElement {
     ul.setAttribute('role', 'listbox')
     ul.addEventListener('keydown', this.onKeyDown)
     ul.addEventListener('blur', this.onBlur)
-    ul.querySelectorAll('a').forEach(a => a.setAttribute('tabindex', '-1'))
+    ul.querySelectorAll('a').forEach((a) => a.setAttribute('tabindex', '-1'))
     document.addEventListener('keyup', this.onKeyUp)
     Array.from(ul.children).forEach((li, index) => {
       li.setAttribute('role', 'option')
@@ -43,11 +43,11 @@ export default class Dropdown extends HTMLElement {
     this.close()
   }
 
-  disconnectedCallback () {
+  disconnectedCallback() {
     document.removeEventListener('keyup', this.onKeyUp)
   }
 
-  toggleMenu (e) {
+  toggleMenu(e) {
     e.preventDefault()
     if (this.isOpen) {
       this.close()
@@ -56,14 +56,14 @@ export default class Dropdown extends HTMLElement {
     }
   }
 
-  onKeyUp (e) {
+  onKeyUp(e) {
     if (e.key === 'Escape' && this.isOpen) {
       this.button.focus()
       this.close()
     }
   }
 
-  onKeyDown (e) {
+  onKeyDown(e) {
     if (e.key === 'ArrowDown' && this.isOpen) {
       e.preventDefault()
       this.select(this.index + 1)
@@ -92,7 +92,7 @@ export default class Dropdown extends HTMLElement {
     }
   }
 
-  onBlur (e) {
+  onBlur(e) {
     if (!this.ul.contains(e.relatedTarget)) {
       this.close()
     } else {
@@ -101,7 +101,7 @@ export default class Dropdown extends HTMLElement {
     }
   }
 
-  open () {
+  open() {
     this.button.setAttribute('aria-expanded', 'true')
     this.ul.removeAttribute('aria-hidden', 'true')
     this.ul.removeAttribute('hidden')
@@ -110,14 +110,14 @@ export default class Dropdown extends HTMLElement {
     this.select(this.index || 0)
   }
 
-  close () {
+  close() {
     this.button.removeAttribute('aria-expanded')
     this.ul.setAttribute('aria-hidden', 'true')
     this.ul.setAttribute('hidden', 'hidden')
     this.isOpen = false
   }
 
-  select (index) {
+  select(index) {
     if (this.index !== undefined) {
       const current = this.ul.children[this.index]
       current && current.removeAttribute('aria-selected')

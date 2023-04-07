@@ -40,6 +40,6 @@ drop-down li {
 }
 
 drop-down li:hover,
-li[aria-selected] {
+drop-dow li:focus {
   color: var(--tertiary);
 }
