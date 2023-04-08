@@ -43,8 +43,9 @@ export const router = createBrowserRouter([
         path: RoutesName.CUSTOM,
         element: (
           <RequireAuth>
-            {/* <RequirePremium></RequirePremium> */}
-            <Custom />
+            <RequirePremium>
+              <Custom />
+            </RequirePremium>
           </RequireAuth>
         )
       },

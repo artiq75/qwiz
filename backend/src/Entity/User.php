@@ -93,6 +93,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Image]
     public ?File $imageFile = null;
 
+    #[ORM\Column(options: [
+        'default' => false
+    ])]
+    #[Groups(['read:User'])]
+    private ?bool $isPremium = false;
+
     public function __construct()
     {
         $this->scores = new ArrayCollection();
@@ -256,6 +262,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setOldPassword(?string $oldPassword): self
     {
         $this->oldPassword = $oldPassword;
+
+        return $this;
+    }
+
+    public function isIsPremium(): ?bool
+    {
+        return $this->isPremium;
+    }
+
+    public function setIsPremium(bool $isPremium): self
+    {
+        $this->isPremium = $isPremium;
 
         return $this;
     }
