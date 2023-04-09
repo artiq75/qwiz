@@ -11,6 +11,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import Account from './account'
 import RequirePremium from '../components/Auth/RequirePremium'
 
+// Constantes des noms des routes
 export const RoutesName = Object.freeze({
   HOME: '/',
   LOBBY: '/partie',

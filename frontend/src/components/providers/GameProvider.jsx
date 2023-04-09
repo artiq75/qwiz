@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { findAllScore } from '../../api/score'
-import { useAuth } from './AuthProvider'
+import { useAuthContext } from './AuthProvider'
 import useMachine from '../../hooks/useMachine'
 import TimerMachine from '../../machines/TimerMachine'
 
@@ -12,7 +12,7 @@ const Context = createContext({
 export const useGameContext = () => useContext(Context)
 
 export default function GameProvider({ children }) {
-  const { user } = useAuth()
+  const { user } = useAuthContext()
   const [scores, setScores] = useState([])
   const timerMachine = useMachine(TimerMachine, {
     start: 3

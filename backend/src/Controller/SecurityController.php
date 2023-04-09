@@ -35,7 +35,7 @@ class SecurityController extends AbstractController
             'id' => $user->getId(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
-            'roles' => $user->getRoles(),
+            'isPremium' => $user->isIsPremium(),
             'image' => $baseUrl . $imageUri
         ]);
     }

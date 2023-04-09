@@ -19,13 +19,18 @@ class StripeCheckoutController extends AbstractController
     #[Route('/checkout', name: 'checkout')]
     public function index(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        // Si l'utilisateur n'est pas connecter
+        // il est rediréger
+        if (!$this->isGranted('ROLE_USER')) {
+            return $this->redirect('http://localhost:5173');
+        }
 
         /**
          * @var \App\Entity\User
          */
         $user = $this->getUser();
 
+        // Création du session checkout
         $checkoutSession = Session::create([
             'line_items' => [
                 [
@@ -35,10 +40,11 @@ class StripeCheckoutController extends AbstractController
             ],
             'customer_email' => $user->getEmail(),
             'mode' => 'payment',
-            'success_url' => 'http://localhost:5173',
-            'cancel_url' => 'http://localhost:5173',
+            'success_url' => 'http://localhost:5173?success=true',
+            'cancel_url' => 'http://localhost:5173?canceled=true',
         ]);
 
+        // On redirige vers la page paiment de stripe
         return $this->redirect($checkoutSession->url);
     }
 }

@@ -14,11 +14,11 @@ const initialUserState = {
 const AuthContext = createContext({
   user: initialUserState,
   isAuth: false,
-  login: () => {},
+  persist: () => {},
   logout: () => {}
 })
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuthContext = () => useContext(AuthContext)
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(initialUserState)
@@ -30,11 +30,20 @@ export default function AuthProvider({ children }) {
     }
   }, [])
 
-  const login = function (user, callback = () => {}) {
+  /**
+   * Persiste l'utilisateur dans le storage et le store
+   * @param {object} user 
+   * @param {Function} callback Pour accomplir des traitements en plus
+   */
+  const persist = function (user, callback = () => {}) {
     setUser(Storage.set(StorageKeys.USER, user))
     callback()
   }
 
+  /**
+   * Déconnecte l'utilisateur puis le supprime du storage
+   * @param {Function} callback Pour accomplir des traitements en plus
+   */
   const logout = function (callback = () => {}) {
     setUser(initialUserState)
     Storage.remove(StorageKeys.USER)
@@ -44,7 +53,7 @@ export default function AuthProvider({ children }) {
   const value = useMemo(() => {
     return {
       user,
-      login,
+      persist,
       isAuth: isAuth(),
       logout
     }

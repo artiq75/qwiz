@@ -1,9 +1,9 @@
 import { updatePassword } from '../../api/account'
 import { InputField } from '../Tools'
-import { useAuth } from '../providers/AuthProvider'
+import { useAuthContext } from '../providers/AuthProvider'
 
 export default function PasswordForm() {
-  const { logout } = useAuth()
+  const { logout } = useAuthContext()
 
   const handleSubmit = function (e) {
     e.preventDefault()

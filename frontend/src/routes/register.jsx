@@ -1,11 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../components/providers/AuthProvider'
+import { useAuthContext } from '../components/providers/AuthProvider'
 import { register } from '../api/auth'
 import { RoutesName } from '../routes/router'
 
 export default function Register() {
   const navigate = useNavigate()
-  const auth = useAuth()
+  const { persist } = useAuthContext()
 
   const handleSubmit = function (e) {
     e.preventDefault()
@@ -16,7 +16,7 @@ export default function Register() {
       password: data.get('password')
     }
     register(user).then((user) => {
-      auth.login(user, () => {
+      persist(user, () => {
         navigate('/', { replace: true })
       })
     })

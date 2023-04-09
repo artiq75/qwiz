@@ -1,12 +1,12 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from '../components/providers/AuthProvider'
+import { useAuthContext } from '../components/providers/AuthProvider'
 import { login } from '../api/auth'
 import { RoutesName } from '../routes/router'
 
 export default function Login() {
   const navigate = useNavigate()
   const location = useLocation()
-  const auth = useAuth()
+  const { persist } = useAuthContext()
 
   const from = location.state?.from?.pathname || '/'
 
@@ -18,7 +18,7 @@ export default function Login() {
       password: data.get('password')
     }
     login(user).then((user) => {
-      auth.login(user, () => {
+      persist(user, () => {
         navigate('/', { replace: true })
       })
     })

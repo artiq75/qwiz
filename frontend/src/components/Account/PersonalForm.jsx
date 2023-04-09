@@ -1,15 +1,15 @@
 import { updateUser } from '../../api/account'
-import { useAuth } from '../providers/AuthProvider'
+import { useAuthContext } from '../providers/AuthProvider'
 import { InputField } from '../Tools'
 import ImageField from '../ImageField'
 
 export default function PersonalForm() {
-  const { user, login } = useAuth()
+  const { user, persist } = useAuthContext()
 
   const handleSubmit = function (e) {
     e.preventDefault()
     const user = new FormData(e.target)
-    updateUser(user).then(login)
+    updateUser(user).then(persist)
   }
 
   return (

@@ -61,13 +61,16 @@ class RegisterController extends AbstractController
 
         $this->security->login($user, 'json_login', 'main');
 
+        /**
+         * @var User
+         */
         $user = $this->getUser();
 
         return $this->json([
             'id' => $user->getId(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
-            'roles' => $user->getRoles(),
+            'isPremium' => $user->isIsPremium(),
         ]);
     }
 }

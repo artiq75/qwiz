@@ -1,5 +1,11 @@
 import { useRef } from 'react'
+import { Avatar } from './Tools'
 
+/**
+ * Réprésente un champ de formulaire pour l'upload d'image
+ * @param {object}
+ * @returns
+ */
 export default function ImageField({ name, src, alt = '' }) {
   const imageRef = useRef(null)
 
@@ -12,11 +18,7 @@ export default function ImageField({ name, src, alt = '' }) {
 
   return (
     <label htmlFor={name} className="image-field">
-      <img
-        ref={imageRef}
-        src={src ?? 'https://picsum.photos/200/300'}
-        alt={alt}
-      />
+      <Avatar ref={imageRef} src={src} alt={alt} />
       <input type="file" name={name} id={name} onChange={handleChange} />
     </label>
   )

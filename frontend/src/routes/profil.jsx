@@ -1,10 +1,10 @@
-import { useAuth } from '../components/providers/AuthProvider'
+import { useAuthContext } from '../components/providers/AuthProvider'
 import { useGameContext } from '../components/providers/GameProvider'
 import Stats from '../components/layouts/Stats'
 import { Avatar } from '../components/Tools'
 
 export default function Profil() {
-  const { user } = useAuth()
+  const { user } = useAuthContext()
   const { scores } = useGameContext()
 
   return (

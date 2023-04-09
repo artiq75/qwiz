@@ -12,3 +12,24 @@ body {
 #root {
   min-height: 100vh;
 }
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  background: var(--secondary);
+  color: var(--primary);
+}
+
+.modal-close {
+  all: unset;
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.75em;
+  transform: translate3d(50%, -50%, 0);
+  color: var(--primary);
+  cursor: pointer;
+}

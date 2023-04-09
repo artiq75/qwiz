@@ -1,4 +1,4 @@
-import { useAuth } from '../providers/AuthProvider'
+import { useAuthContext } from '../providers/AuthProvider'
 import { Link } from 'react-router-dom'
 import { logout } from '../../api/auth'
 import { RoutesName } from '../../routes/router'
@@ -6,7 +6,7 @@ import { useGameContext } from '../providers/GameProvider'
 import { Avatar } from '../Tools'
 
 export default function Topbar() {
-  const { user, isAuth, ...auth } = useAuth()
+  const { user, isAuth, ...auth } = useAuthContext()
   const { timerMachine } = useGameContext()
 
   const [timerState, timerCtx] = timerMachine
