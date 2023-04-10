@@ -10,6 +10,14 @@ export default function Play() {
   const [gameState, gameCtx, gameSend, gameCan, gameIsIn] = gameMachine
 
   useEffect(() => {
+    // Stop le timer est donc la partie si on quite
+    return () => {
+      timerSend('stop')
+    }
+  }, [])
+
+  useEffect(() => {
+    // Lance la game on lui passant le scores de la DB
     if (gameCan('run') && scores.length) {
       gameSend('run', { scores })
     }

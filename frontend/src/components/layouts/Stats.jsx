@@ -12,6 +12,7 @@ const Stats = memo(({ scores }) => {
   })
 
   useEffect(() => {
+    console.log(scores)
     for (const score of scores) {
       total.goodAnswer += score.goodAnswer
       total.badAnswer += score.badAnswer
