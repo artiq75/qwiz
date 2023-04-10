@@ -1,4 +1,4 @@
-.lobby {
+.play {
   min-height: calc(100vh - var(--topbar-height));
   padding: 1em;
   display: flex;
@@ -6,7 +6,7 @@
   justify-content: center;
 }
 
-.lobby-body {
+.play-body {
   width: var(--container-sm);
   display: grid;
   gap: 3em;

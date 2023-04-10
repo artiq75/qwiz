@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { isAuth } from '../../api/auth'
 import Storage from '../../classes/Storage'
 import { StorageKeys } from '../../constants/app'
+import { isAuth } from '../../api/auth'
 
 const initialUserState = {
   id: 0,
@@ -32,7 +32,7 @@ export default function AuthProvider({ children }) {
 
   /**
    * Persiste l'utilisateur dans le storage et le store
-   * @param {object} user 
+   * @param {object} user
    * @param {Function} callback Pour accomplir des traitements en plus
    */
   const persist = function (user, callback = () => {}) {

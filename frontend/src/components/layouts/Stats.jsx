@@ -13,7 +13,6 @@ const Stats = memo(({ scores }) => {
 
   useEffect(() => {
     for (const score of scores) {
-      console.log('sdfsdf')
       total.goodAnswer += score.goodAnswer
       total.badAnswer += score.badAnswer
       total.attempt += score.attempt

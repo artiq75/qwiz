@@ -1,12 +1,15 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useContext, useMemo, useState } from 'react'
+import useMachine from '../../hooks/useMachine'
+import useAsyncEffect from '../../hooks/useAsyncEffect'
+import TimerMachine from '../../machines/TimerMachine'
+import GameMachine from '../../machines/GameMachine'
 import { findAllScore } from '../../api/score'
 import { useAuthContext } from './AuthProvider'
-import useMachine from '../../hooks/useMachine'
-import TimerMachine from '../../machines/TimerMachine'
 
 const Context = createContext({
   scores: [],
-  timerMachine: []
+  timerMachine: [],
+  gameMachine: []
 })
 
 export const useGameContext = () => useContext(Context)
@@ -17,19 +20,22 @@ export default function GameProvider({ children }) {
   const timerMachine = useMachine(TimerMachine, {
     start: 3
   })
+  const gameMachine = useMachine(GameMachine)
 
-  useEffect(() => {
+  useAsyncEffect(async () => {
     if (user.id) {
-      findAllScore(user.id).then(setScores)
+      const scores = await findAllScore(user.id)
+      setScores(scores)
     }
   }, [user])
 
   const value = useMemo(() => {
     return {
       scores,
-      timerMachine
+      timerMachine,
+      gameMachine
     }
-  }, [scores, timerMachine])
+  }, [scores, timerMachine, gameMachine])
 
   return <Context.Provider value={value}>{children}</Context.Provider>
 }

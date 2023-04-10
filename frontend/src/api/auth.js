@@ -24,6 +24,10 @@ export async function logout() {
   )
 }
 
-export function isAuth() {
+export const isAuth = () => {
   return !!Storage.get(StorageKeys.USER)?.id
+}
+
+export const getUser = () => {
+  return Storage.get(StorageKeys.USER) || initialUserState
 }

@@ -1,6 +1,7 @@
 import App from '../App'
 import Home from './home'
 import Lobby from './lobby'
+import Play from './play'
 import Custom from './custom'
 import Result from './result'
 import Login from './login'
@@ -14,7 +15,8 @@ import RequirePremium from '../components/Auth/RequirePremium'
 // Constantes des noms des routes
 export const RoutesName = Object.freeze({
   HOME: '/',
-  LOBBY: '/partie',
+  LOBBY: '/hall',
+  PLAY: '/jouer',
   CUSTOM: '/personnaliser',
   RESULT: '/resultat',
   LOGIN: '/connexion',
@@ -37,6 +39,14 @@ export const router = createBrowserRouter([
         element: (
           <RequireAuth>
             <Lobby />
+          </RequireAuth>
+        )
+      },
+      {
+        path: RoutesName.PLAY,
+        element: (
+          <RequireAuth>
+            <Play />
           </RequireAuth>
         )
       },

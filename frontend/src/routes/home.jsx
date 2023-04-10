@@ -35,7 +35,12 @@ export default function Home() {
         <ul className="home-body">
           <li>
             <Link className="btn primary outlined w-full" to={RoutesName.LOBBY}>
-              Nouvelle partie
+              Multijoueur
+            </Link>
+          </li>
+          <li>
+            <Link className="btn primary outlined w-full" to={RoutesName.PLAY}>
+              Partie privé
             </Link>
           </li>
           <li>
@@ -43,7 +48,7 @@ export default function Home() {
               className="btn primary outlined w-full"
               onClick={handleClick}
             >
-              Partie personnalisé
+              Partie personnaliser
             </button>
           </li>
         </ul>

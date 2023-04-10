@@ -7,9 +7,10 @@ import { Avatar } from '../Tools'
 
 export default function Topbar() {
   const { user, isAuth, ...auth } = useAuthContext()
-  const { timerMachine } = useGameContext()
+  const { timerMachine, gameMachine } = useGameContext()
 
   const [timerState, timerCtx] = timerMachine
+  const [gameState, gameCtx] = gameMachine
 
   const handleLogout = function () {
     logout().then(() => auth.logout())
@@ -20,7 +21,10 @@ export default function Topbar() {
       <Link to={RoutesName.HOME}>
         <h1>Qwiz</h1>
       </Link>
-      <div>{timerState === 'start' && <h1>{timerCtx.timer}</h1>}</div>
+      <div>
+        {timerState === 'start' && <h1>{timerCtx.timer}</h1>}
+        <h1>{JSON.stringify(gameState)}</h1>
+      </div>
       {isAuth && (
         <drop-down>
           <button>

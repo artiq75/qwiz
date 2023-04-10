@@ -1,4 +1,5 @@
 import {
+  action,
   createMachine,
   guard,
   immediate,
@@ -8,10 +9,15 @@ import {
   transition
 } from 'robot3'
 import { findRandomQuestion } from '../api/question'
-import { playReduce, chooseReduce, loadingDoneReduce } from './GameReduces'
-import * as ApiScore from '../api/score'
+import {
+  playReduce,
+  chooseReduce,
+  loadingDoneReduce,
+  chooseAction,
+  initReduce
+} from './GameActions'
 
-const defaultCtx = {
+export const defaultCtx = {
   round: 1,
   limit: 3,
   question: null,
@@ -22,44 +28,26 @@ const defaultCtx = {
 }
 
 const canPlay = (ctx) => ctx.round && ctx.round <= ctx.limit
-
-const updateScores = async (ctx) => {
-  for (const score of ctx.gameScores) {
-    // On récupère le score stocker dans la DB
-    const oldScore = ctx.scores.find((s) => s.category.id === score.category.id)
-    const newScore = { id: oldScore.id, ...score }
-    newScore.goodAnswer += oldScore.goodAnswer
-    newScore.badAnswer += oldScore.badAnswer
-    newScore.attempt += oldScore.attempt
-    // Mise à jour du score dans la DB
-    await ApiScore.updateScore(newScore)
-  }
-}
+const cantPlay = (ctx) => !canPlay(ctx)
 
 const GameMachine = createMachine(
   {
-    lobby: state(
-      immediate(
-        'loading',
-        reduce((ctx) => ({ ...ctx, defaultCtx }))
-      )
-    ),
+    lobby: state(transition('run', 'loading', reduce(initReduce))),
     loading: invoke(
       findRandomQuestion,
       transition('done', 'play', reduce(loadingDoneReduce)),
       transition('error', 'loading')
     ),
-    play: state(transition('choose', 'choose', reduce(chooseReduce))),
+    play: state(
+      transition('choose', 'choose', reduce(chooseReduce), action(chooseAction))
+    ),
     choose: state(
-      immediate(
-        'end',
-        guard((ctx) => !canPlay(ctx))
-      ),
+      immediate('end', guard(cantPlay)),
       transition('play', 'loading', guard(canPlay), reduce(playReduce))
     ),
-    end: invoke(updateScores, transition('replay', 'lobby'))
+    end: state(transition('replay', 'lobby'))
   },
-  (ctx) => ({ ...ctx, ...defaultCtx })
+  (ctx) => ({ ...defaultCtx, ...ctx })
 )
 
 export default GameMachine

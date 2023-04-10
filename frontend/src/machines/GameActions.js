@@ -1,24 +1,42 @@
+import * as ApiScore from '../api/score'
+import { defaultCtx } from './GameMachine'
+
 const defaultScore = {
   goodAnswer: 0,
   badAnswer: 0,
   attempt: 0
 }
 
-export const loadingDoneReduce = (ctx, e) => {
+export const initReduce = (ctx, { scores }) => {
+  return { ...ctx, ...defaultCtx, scores }
+}
+
+export const loadingDoneReduce = (ctx, { data }) => {
   return {
     ...ctx,
-    question: e.data,
+    question: data,
     loading: false,
     round: ctx.round + 1
   }
 }
 
-export const playReduce = (ctx, e) => {
+export const playReduce = (ctx) => {
   return {
     ...ctx,
-    loading: true,
-    scores: e.scores
+    loading: true
   }
+}
+
+export const chooseAction = async (ctx) => {
+  const oldScore = ctx.scores.find(
+    (s) => s.category.id === ctx.score.category.id
+  )
+  const newScore = { ...oldScore, ...ctx.score }
+  newScore.goodAnswer += oldScore.goodAnswer
+  newScore.badAnswer += oldScore.badAnswer
+  newScore.attempt += oldScore.attempt
+  // Mise à jour du score dans la DB
+  await ApiScore.updateScore(newScore)
 }
 
 export const chooseReduce = (ctx, e) => {
