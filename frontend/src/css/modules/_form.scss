@@ -19,3 +19,7 @@ select {
   color: inherit;
   box-shadow: var(--shadow);
 }
+
+.invalid {
+  color: var(--danger);
+}
