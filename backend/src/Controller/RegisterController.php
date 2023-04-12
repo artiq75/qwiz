@@ -25,7 +25,7 @@ class RegisterController extends AbstractController
     #[Route('/register', name: 'api_register', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
     {
-        $data = $request->toArray() ?? $request->request->all();
+        $data = $request->toArray();
 
         $user = new User();
         $user
@@ -37,8 +37,7 @@ class RegisterController extends AbstractController
 
         if (count($errors) > 0) {
             return new JsonResponse([
-                'code' => JsonResponse::HTTP_UNAUTHORIZED,
-                'message' => JsonResponse::$statusTexts[JsonResponse::HTTP_UNAUTHORIZED]
+                'message' => 'Les données sont invalide!'
             ], JsonResponse::HTTP_UNAUTHORIZED);
         }
 

@@ -3,11 +3,10 @@
 namespace App\Serializer;
 
 use App\Entity\User;
-use Symfony\Component\HttpKernel\KernelInterface;
+use App\Service\ImageURLGenerator;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
-use Vich\UploaderBundle\Storage\StorageInterface;
 
 class UserNormalizer implements ContextAwareNormalizerInterface, NormalizerAwareInterface
 {
@@ -16,8 +15,7 @@ class UserNormalizer implements ContextAwareNormalizerInterface, NormalizerAware
   private const ALREADY_CALLED = 'USER_NORMALIZER_ALREADY_CALLED';
 
   public function __construct(
-    private StorageInterface $storage,
-    private KernelInterface $kernel
+    private ImageURLGenerator $imageURLGenerator
   ) {
   }
 
@@ -28,17 +26,8 @@ class UserNormalizer implements ContextAwareNormalizerInterface, NormalizerAware
   {
     $context[self::ALREADY_CALLED] = true;
 
-    // Récupération du context du router
-    $routerContext = $this->kernel->getContainer()->get('router')->getContext();
-
-    // Construction de la base url
-    $baseUrl = $routerContext->getScheme() . '://' . $routerContext->getHost();
-
-    // Résolution l'uri de l'image
-    $imageUri = $this->storage->resolveUri($object, 'imageFile');
-
-    // Définition du chemin de l'image
-    $object->setImage($baseUrl . $imageUri);
+    // Géneration de l'url de l'image
+    $object->setImage($this->imageURLGenerator->generate($object, 'imageFile'));
 
     // Suppreisson de la propriété 'imageFile'
     // pour éviter de la sérializer
