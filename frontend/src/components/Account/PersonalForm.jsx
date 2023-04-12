@@ -1,7 +1,7 @@
 import { updateUser } from '../../api/account'
 import { useAuthContext } from '../providers/AuthProvider'
-import { InputField } from '../Tools'
-import ImageField from '../ImageField'
+import { InputField } from '../Tools/Tools'
+import ImageField from '../Tools/ImageField'
 
 export default function PersonalForm() {
   const { user, persist } = useAuthContext()

@@ -18,7 +18,13 @@ class SecurityController extends AbstractController
     #[Route('/login', name: 'api_login')]
     public function index(Request $request): JsonResponse
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+        $user = $this->getUser();
+
+        if (null === $user) {
+            return $this->json([
+                'message' => "Les informations d'identification manquantes",
+            ], JsonResponse::HTTP_UNAUTHORIZED);
+        }
 
         /**
          * @var \App\Entity\User

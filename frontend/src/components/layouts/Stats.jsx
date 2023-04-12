@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from 'react'
-import StatsItem from '../StatsItem'
+import StatsItem from '../Item/StatsItem'
 
 const Stats = memo(({ scores }) => {
   const [total, setTotal] = useState({

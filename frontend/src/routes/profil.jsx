@@ -1,7 +1,6 @@
 import { useAuthContext } from '../components/providers/AuthProvider'
-import { useGameContext } from '../components/providers/GameProvider'
 import Stats from '../components/layouts/Stats'
-import { Avatar } from '../components/Tools'
+import { Avatar } from '../components/Tools/Tools'
 import { useState } from 'react'
 import useAsyncEffect from '../hooks/useAsyncEffect'
 import { findAllScore } from '../api/score'

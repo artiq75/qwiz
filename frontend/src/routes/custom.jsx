@@ -1,4 +1,4 @@
-import { InputField, Select } from '../components/Tools'
+import { InputField, Select } from '../components/Tools/Tools'
 
 export default function Custom() {
   const handleSubmit = function (e) {
@@ -20,7 +20,11 @@ export default function Custom() {
           </Select>
         </p>
         <p>
-          <InputField name="amount" label="Nombre de questions" defaultValue={10} />
+          <InputField
+            name="amount"
+            label="Nombre de questions"
+            defaultValue={10}
+          />
         </p>
         <button className="btn primary" type="submit">
           Créer la partie

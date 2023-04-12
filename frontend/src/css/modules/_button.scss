@@ -16,4 +16,5 @@
 
 .btn:disabled {
   cursor: unset;
+  filter: invert(.6);
 }

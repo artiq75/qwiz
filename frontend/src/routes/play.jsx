@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { RoutesName } from './router'
-import QuestionItem from '../components/QuestionItem'
+import QuestionItem from '../components/Item/QuestionItem'
 import { useGameContext } from '../components/providers/GameProvider'
 
 export default function Play() {

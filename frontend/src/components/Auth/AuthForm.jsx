@@ -1,7 +1,7 @@
 import { Field, Form, Formik } from 'formik'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
-import { RoutesName } from '../routes/router'
+import { RoutesName } from '../../routes/router'
 
 const schema = {
   email: Yup.string()
@@ -15,7 +15,7 @@ const initialValues = {
   password: ''
 }
 
-export default function AuthForm({ register, onSubmit }) {
+export default function AuthForm({ register, onSubmit, error }) {
   if (register) {
     schema['username'] = Yup.string().required('Le pseaudo est obligatoire')
     initialValues['username'] = ''
@@ -27,30 +27,39 @@ export default function AuthForm({ register, onSubmit }) {
       validationSchema={Yup.object().shape(schema)}
       onSubmit={onSubmit}
     >
-      {({ errors, touched }) => (
+      {({ errors, touched, isSubmitting }) => (
         <Form>
+          {error && <div className="alert danger mb1">{error}</div>}
+
           <h2 className="txt-center">
-            {register ? 'Connexion' : 'Inscription'}
+            {register ? "M'inscrire" : 'Me connecter'}
           </h2>
 
           {register && (
-            <>
+            <p>
+              <label htmlFor="username"></label>
               <Field name="username" placeholder="Pseaudo" />
               {errors.username && touched.username ? (
                 <span className="invalid">{errors.username}</span>
               ) : null}
-            </>
+            </p>
           )}
 
-          <Field name="email" placeholder="Email" />
-          {errors.email && touched.email ? (
-            <span className="invalid">{errors.email}</span>
-          ) : null}
+          <p>
+            <label htmlFor="email"></label>
+            <Field name="email" placeholder="Adresse email" />
+            {errors.email && touched.email ? (
+              <span className="invalid">{errors.email}</span>
+            ) : null}
+          </p>
 
-          <Field type="password" name="password" placeholder="Mot de passe" />
-          {errors.password && touched.password ? (
-            <span className="invalid">{errors.password}</span>
-          ) : null}
+          <p>
+            <label htmlFor="password"></label>
+            <Field type="password" name="password" placeholder="Mot de passe" />
+            {errors.password && touched.password ? (
+              <span className="invalid">{errors.password}</span>
+            ) : null}
+          </p>
 
           {register ? (
             <Link to={RoutesName.LOGIN}>Déjà inscrit ?</Link>
@@ -58,8 +67,12 @@ export default function AuthForm({ register, onSubmit }) {
             <Link to={RoutesName.REGISTER}>Pas encore inscrit ?</Link>
           )}
 
-          <button className="btn primary w-full" type="submit">
-            {register ? 'Se connecter' : "S'inscrire"}
+          <button
+            disabled={isSubmitting}
+            className="btn primary w-full"
+            type="submit"
+          >
+            {register ? "M'inscrire" : 'Me connecter'}
           </button>
         </Form>
       )}

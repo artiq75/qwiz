@@ -22,7 +22,6 @@ class ApiUserUpdatePasswordController extends AbstractController
   {
     $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
 
-
     $data = $request->toArray();
 
     $password = $data['password'];

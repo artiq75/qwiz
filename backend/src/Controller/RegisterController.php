@@ -25,14 +25,7 @@ class RegisterController extends AbstractController
     #[Route('/register', name: 'api_register', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
     {
-        if ($request->headers->get('Content-Type') !== 'application/json') {
-            return new JsonResponse([
-                'code' => JsonResponse::HTTP_NOT_ACCEPTABLE,
-                'message' => JsonResponse::$statusTexts[JsonResponse::HTTP_NOT_ACCEPTABLE]
-            ], JsonResponse::HTTP_NOT_ACCEPTABLE);
-        }
-
-        $data = $request->toArray();
+        $data = $request->toArray() ?? $request->request->all();
 
         $user = new User();
         $user

@@ -1,0 +1,48 @@
+[class~='primary'] {
+  background-color: var(--primary);
+  color: var(--secondary);
+}
+
+[class~='secondary'] {
+  background-color: var(--secondary);
+  color: var(--primary);
+}
+
+[class~='tertiary'] {
+  background-color: var(--tertiary);
+  color: var(--primary);
+}
+
+[class~='success'] {
+  background-color: var(--sucess);
+  color: var(--primary);
+}
+
+[class~='danger'] {
+  background-color: var(--danger);
+  color: var(--secondary);
+}
+
+[class~='primary'][class~='outlined'] {
+  background-color: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+
+  &:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--secondary);
+  }
+}
+
+[class~='secondary'][class~='outlined'] {
+  background-color: transparent;
+  border-color: var(--tertiary);
+  color: var(--primary);
+
+  &:hover {
+    background-color: var(--tertiary);
+    border-color: var(--tertiary);
+    color: var(--primary);
+  }
+}
