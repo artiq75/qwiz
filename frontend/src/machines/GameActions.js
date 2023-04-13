@@ -7,8 +7,12 @@ const defaultScore = {
   attempt: 0
 }
 
-export const initReduce = (ctx, { scores }) => {
-  return { ...ctx, ...defaultCtx, scores }
+export const initReduce = (ctx, { data }) => {
+  return { ...ctx, ...defaultCtx, scores: data }
+}
+
+export const lobbyReduce = (ctx, { limit, category }) => {
+  return { ...ctx, limit, category }
 }
 
 export const loadingDoneReduce = (ctx, { data }) => {

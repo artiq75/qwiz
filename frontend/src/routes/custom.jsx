@@ -8,6 +8,7 @@ import useAsyncEffect from '../hooks/useAsyncEffect'
 import Http from '../classes/Http'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
+import { useGameContext } from '../components/providers/GameProvider'
 
 const schema = Yup.object().shape({
   limit: Yup.string().required('Vous devez choisir une limite!')
@@ -19,22 +20,26 @@ export default function Custom() {
     loading: true
   })
 
+  const { gameMachine } = useGameContext()
+
+  const [gameState, gameCtx, gameSend] = gameMachine
+
   useAsyncEffect(async () => {
     const categories = await Http.get('/api/categories').catch(console.error)
     setState({ loading: false, categories })
   }, [])
 
-  const handleSubmit = async (filter) => {
-    console.log(filter)
+  const handleSubmit = ({ limit, category }, actions) => {
+    gameSend('run', { limit, category })
+    actions.setSubmitting(false)
   }
 
   return (
     <main className="container-sm custom">
-      <h2 className="txt-center">Partie Personnaliser</h2>
       {state.loading && <time-indicator></time-indicator>}
+      <h2 className="txt-center">Partie Personnaliser</h2>
       {!state.loading && (
         <Formik
-          className="card"
           initialValues={{
             category: '',
             limit: 10
@@ -43,7 +48,7 @@ export default function Custom() {
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
-            <Form>
+            <Form className="card">
               <SelectField name="category" label="Catégories">
                 <option value="">Toute les catégories</option>
                 {state.categories.map((category) => (

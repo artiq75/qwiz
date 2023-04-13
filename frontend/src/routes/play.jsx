@@ -5,7 +5,7 @@ import QuestionItem from '../components/Item/QuestionItem'
 import { useGameContext } from '../components/providers/GameProvider'
 
 export default function Play() {
-  const { scores, timerMachine, gameMachine } = useGameContext()
+  const { timerMachine, gameMachine } = useGameContext()
   const [timerState, timerCtx, timerSend, timerCan, timerIsIn] = timerMachine
   const [gameState, gameCtx, gameSend, gameCan, gameIsIn] = gameMachine
 
@@ -13,17 +13,14 @@ export default function Play() {
     // Stop le timer est donc la partie si on quite
     return () => {
       timerSend('stop')
+      gameSend('choose')
     }
   }, [])
 
   useEffect(() => {
-    // Lance la game on lui passant le scores de la DB
-    if (gameCan('run') && scores.length) {
-      gameSend('run', { scores })
+    if (gameCan('run')) {
+      gameSend('run')
     }
-  }, [gameCan, gameSend, scores])
-
-  useEffect(() => {
     // Réexecute le timer à chaque round
     if (gameCan('choose')) {
       timerSend('start')
@@ -49,6 +46,8 @@ export default function Play() {
     gameSend('play')
   }
 
+  const hasChoose = gameIsIn('choose') || gameIsIn('end')
+
   return (
     <main className="play">
       <section className="play-body">
@@ -61,13 +60,13 @@ export default function Play() {
               <time-indicator time={timerCtx.timer}></time-indicator>
             )}
             <QuestionItem
-              hasChoose={gameIsIn('choose') || gameIsIn('end')}
+              hasChoose={hasChoose}
               onChoose={handleChoose}
               question={gameCtx.question}
             />
             {gameCan('play') && !gameIsIn('end') && (
               <button
-                className="btn primary outlined w-full"
+                className="btn primary outlined w-full trans"
                 onClick={handleNext}
               >
                 Question suivante

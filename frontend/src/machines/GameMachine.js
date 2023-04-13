@@ -8,14 +8,17 @@ import {
   state,
   transition
 } from 'robot3'
-import { findRandomQuestion } from '../api/question'
+import { findQuestions, findRandomQuestion } from '../api/question'
 import {
   playReduce,
   chooseReduce,
   loadingDoneReduce,
   chooseAction,
-  initReduce
+  initReduce,
+  lobbyReduce
 } from './GameActions'
+import { findAllScore } from '../api/score'
+import { getUser } from '../api/auth'
 
 export const defaultCtx = {
   round: 1,
@@ -31,11 +34,25 @@ export const defaultCtx = {
 const canPlay = (ctx) => ctx.round && ctx.round <= ctx.limit
 const cantPlay = (ctx) => !canPlay(ctx)
 
+const asyncInit = async (ctx) => {
+  return findAllScore(getUser().id)
+}
+
+const findQuestion = async ({ category }) => {
+  if (category) {
+    const questions = await findQuestions({ category })
+    return questions[0]
+  } else {
+    return findRandomQuestion()
+  }
+}
+
 const GameMachine = createMachine(
   {
-    lobby: state(transition('run', 'loading', reduce(initReduce))),
+    init: invoke(asyncInit, transition('done', 'lobby', reduce(initReduce))),
+    lobby: state(transition('run', 'loading', reduce(lobbyReduce))),
     loading: invoke(
-      findRandomQuestion,
+      findQuestion,
       transition('done', 'play', reduce(loadingDoneReduce)),
       transition('error', 'loading')
     ),

@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Controller\RandomQuestionController;
 use App\Repository\QuestionRepository;
@@ -13,14 +14,19 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
+#[ApiFilter(
+    SearchFilter::class, properties: ['category' => 'exact']
+)]
 #[ApiResource(
     operations: [
         new GetCollection(
+            paginationItemsPerPage: 1
+        ),
+        new GetCollection(
             name: 'random_question',
             uriTemplate: '/questions/random',
-            controller: RandomQuestionController::class
+            controller: RandomQuestionController::class,
         ),
-        new GetCollection()
     ],
     normalizationContext: [
         'groups' => ['read:Question']
