@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { RoutesName } from '../../routes/router'
-import { useAuthContext } from '../providers/AuthProvider'
+import { getUser } from '../../api/auth'
 
 /**
  * Bloque l'accèes à l'utilisateur si il n'est pas connecter
@@ -9,12 +9,11 @@ import { useAuthContext } from '../providers/AuthProvider'
  */
 export default function RequirePremium({ children }) {
   let location = useLocation()
-  const { user } = useAuthContext()
 
   // Récupération du chemin de la route précedente sinon de la home
   const from = location.state?.from?.pathname || RoutesName.HOME
 
-  if (!user.isPremium) {
+  if (!getUser().isPremium) {
     return <Navigate to={from} replace />
   }
 

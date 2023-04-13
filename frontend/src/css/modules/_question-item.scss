@@ -13,8 +13,28 @@
   gap: 1em;
 }
 
-.question-item__answers .btn:not(:disabled):hover,
-.question-item__answers .btn.validate {
+.answer-item {
+  transition: none;
+  position: relative;
+}
+
+.answer-item:not(:disabled):hover,
+.answer-item.validate {
   background-color: var(--tertiary);
   color: var(--primary);
+}
+
+.answer-item .icon {
+  color: var(--light);
+  position: absolute;
+  top: 1em;
+  left: 1em;
+}
+
+.answer-item .good {
+  visibility: hidden;
+}
+
+.answer-item.validate .good {
+  visibility: visible;
 }

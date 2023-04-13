@@ -1,35 +1,71 @@
-import { InputField, Select } from '../components/Tools/Tools'
+import { useState } from 'react'
+import {
+  ButtonLoader,
+  InputField,
+  SelectField
+} from '../components/Tools/Tools'
+import useAsyncEffect from '../hooks/useAsyncEffect'
+import Http from '../classes/Http'
+import { Form, Formik } from 'formik'
+import * as Yup from 'yup'
+
+const schema = Yup.object().shape({
+  limit: Yup.string().required('Vous devez choisir une limite!')
+})
 
 export default function Custom() {
-  const handleSubmit = function (e) {
-    e.preventDefault()
-    const data = new FormData(e.target)
-    console.log(data)
+  const [state, setState] = useState({
+    categories: [],
+    loading: true
+  })
+
+  useAsyncEffect(async () => {
+    const categories = await Http.get('/api/categories').catch(console.error)
+    setState({ loading: false, categories })
+  }, [])
+
+  const handleSubmit = async (filter) => {
+    console.log(filter)
   }
 
   return (
-    <main className="container-md custom">
+    <main className="container-sm custom">
       <h2 className="txt-center">Partie Personnaliser</h2>
-      <form className="card" onSubmit={handleSubmit}>
-        <p>
-          <Select name="category" label="Catégories">
-            <option value="">Toute les catégories</option>
-            <option value="culture">Culture</option>
-            <option value="geographie">Géographie</option>
-            <option value="gastronomie">Gastronomie</option>
-          </Select>
-        </p>
-        <p>
-          <InputField
-            name="amount"
-            label="Nombre de questions"
-            defaultValue={10}
-          />
-        </p>
-        <button className="btn primary" type="submit">
-          Créer la partie
-        </button>
-      </form>
+      {state.loading && <time-indicator></time-indicator>}
+      {!state.loading && (
+        <Formik
+          className="card"
+          initialValues={{
+            category: '',
+            limit: 10
+          }}
+          validationSchema={schema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <SelectField name="category" label="Catégories">
+                <option value="">Toute les catégories</option>
+                {state.categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.title}
+                  </option>
+                ))}
+              </SelectField>
+
+              <InputField name="limit" label="Nombre de questions" />
+
+              <ButtonLoader
+                className="btn primary"
+                type="submit"
+                isLoading={isSubmitting}
+              >
+                Créer la partie
+              </ButtonLoader>
+            </Form>
+          )}
+        </Formik>
+      )}
     </main>
   )
 }

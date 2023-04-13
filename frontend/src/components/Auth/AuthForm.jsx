@@ -1,7 +1,8 @@
-import { Field, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 import { RoutesName } from '../../routes/router'
+import { ButtonLoader, InputField } from '../Tools/Tools'
 
 const schema = {
   email: Yup.string()
@@ -27,7 +28,7 @@ export default function AuthForm({ register, onSubmit, error }) {
       validationSchema={Yup.object().shape(schema)}
       onSubmit={onSubmit}
     >
-      {({ errors, touched, isSubmitting }) => (
+      {({ isSubmitting }) => (
         <Form>
           {error && <div className="alert danger mb1">{error}</div>}
 
@@ -35,31 +36,15 @@ export default function AuthForm({ register, onSubmit, error }) {
             {register ? "M'inscrire" : 'Me connecter'}
           </h2>
 
-          {register && (
-            <p>
-              <label htmlFor="username"></label>
-              <Field name="username" placeholder="Pseaudo" />
-              {errors.username && touched.username ? (
-                <span className="invalid">{errors.username}</span>
-              ) : null}
-            </p>
-          )}
+          {register && <InputField name="username" placeholder="Pseaudo" />}
 
-          <p>
-            <label htmlFor="email"></label>
-            <Field name="email" placeholder="Adresse email" />
-            {errors.email && touched.email ? (
-              <span className="invalid">{errors.email}</span>
-            ) : null}
-          </p>
+          <InputField type="email" name="email" placeholder="Adresse email" />
 
-          <p>
-            <label htmlFor="password"></label>
-            <Field type="password" name="password" placeholder="Mot de passe" />
-            {errors.password && touched.password ? (
-              <span className="invalid">{errors.password}</span>
-            ) : null}
-          </p>
+          <InputField
+            type="password"
+            name="password"
+            placeholder="Mot de passe"
+          />
 
           {register ? (
             <Link to={RoutesName.LOGIN}>Déjà inscrit ?</Link>
@@ -67,13 +52,13 @@ export default function AuthForm({ register, onSubmit, error }) {
             <Link to={RoutesName.REGISTER}>Pas encore inscrit ?</Link>
           )}
 
-          <button
-            disabled={isSubmitting}
+          <ButtonLoader
+            isLoading={isSubmitting}
             className="btn primary w-full"
             type="submit"
           >
             {register ? "M'inscrire" : 'Me connecter'}
-          </button>
+          </ButtonLoader>
         </Form>
       )}
     </Formik>

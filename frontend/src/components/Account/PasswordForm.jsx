@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { updatePassword } from '../../api/account'
 import { useAuthContext } from '../providers/AuthProvider'
-import { Field, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
+import { ButtonLoader, InputField } from '../Tools/Tools'
 
 const schema = Yup.object().shape({
   currentPassword: Yup.string().required(
@@ -18,14 +20,16 @@ const schema = Yup.object().shape({
 
 export default function PasswordForm() {
   const { logout } = useAuthContext()
+  const [error, setError] = useState(null)
 
-  const handleSubmit = async function ({ currentPassword, password }) {
+  const handleSubmit = async ({ currentPassword, password }) => {
     const credentials = { currentPassword, password }
     try {
+      setError(null)
       await updatePassword(credentials)
       logout() // On déconnecte l'utilisateur on cas de succès
     } catch (e) {
-      console.error('Password Form: ', e)
+      setError('Les données sont invalide!')
     }
   }
 
@@ -39,51 +43,40 @@ export default function PasswordForm() {
         passwordConfirmation: ''
       }}
     >
-      {({ errors, touched }) => (
+      {({ isSubmitting }) => (
         <Form>
-          <p>
-            <label htmlFor="currentPassword">Mot de passe actuelle</label>
-            <Field
-              type="password"
-              name="currentPassword"
-              label="Mot de passe actuelle"
-            />
-            {errors.currentPassword && touched.currentPassword ? (
-              <span className="invalid">{errors.currentPassword}</span>
-            ) : null}
-          </p>
+          {error && <div className="alert danger mb1">{error}</div>}
+
+          <InputField
+            type="password"
+            name="currentPassword"
+            label="Mot de passe actuelle"
+            placeholder="Mot de passe actuelle"
+          />
 
           <div className="g2 gap1">
-            <p>
-              <label htmlFor="password">Nouveau mot de passe</label>
-              <Field
-                type="password"
-                name="password"
-                label="Nouveau mot de passe"
-              />
-              {errors.password && touched.password ? (
-                <span className="invalid">{errors.password}</span>
-              ) : null}
-            </p>
+            <InputField
+              type="password"
+              name="password"
+              label="Nouveau mot de passe"
+              placeholder="Nouveau mot de passe"
+            />
 
-            <p>
-              <label htmlFor="passwordConfirmation">
-                Répétition du nouveau mot de passe
-              </label>
-              <Field
-                type="password"
-                name="passwordConfirmation"
-                label="Répétition du nouveau mot de passe"
-              />
-              {errors.passwordConfirmation && touched.passwordConfirmation ? (
-                <span className="invalid">{errors.passwordConfirmation}</span>
-              ) : null}
-            </p>
+            <InputField
+              type="password"
+              name="passwordConfirmation"
+              label="Répétition du nouveau mot de passe"
+              placeholder="Répétition du nouveau mot de passe"
+            />
           </div>
 
-          <button className="btn primary" type="submit">
+          <ButtonLoader
+            isLoading={isSubmitting}
+            className="btn primary"
+            type="submit"
+          >
             Mettre à jour
-          </button>
+          </ButtonLoader>
         </Form>
       )}
     </Formik>

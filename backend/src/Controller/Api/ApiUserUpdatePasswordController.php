@@ -25,15 +25,15 @@ class ApiUserUpdatePasswordController extends AbstractController
     $data = $request->toArray();
 
     $password = $data['password'];
-    $oldPassword = $data['oldPassword'];
+    $currentPassword = $data['currentPassword'];
 
     /**
      * @var User
      */
     $user = $this->getUser();
 
-    // Si l'ancien mot de passe n'est pas correcte
-    if (!$this->hasher->isPasswordValid($user, $oldPassword)) {
+    // Si mot de passe actuelle n'est pas correcte
+    if (!$this->hasher->isPasswordValid($user, $currentPassword)) {
       throw new AccessDeniedHttpException();
     }
 
@@ -48,7 +48,7 @@ class ApiUserUpdatePasswordController extends AbstractController
     // Validation des données
     $errors = $this->validator->validate($user);
 
-    // Si il des erreurs on lève une exception
+    // Si il y a des erreurs on lève une exception
     if (count($errors) > 0) {
       throw new BadRequestException();
     }

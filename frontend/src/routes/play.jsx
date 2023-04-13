@@ -66,7 +66,10 @@ export default function Play() {
               question={gameCtx.question}
             />
             {gameCan('play') && !gameIsIn('end') && (
-              <button className="btn tertiary w-full" onClick={handleNext}>
+              <button
+                className="btn primary outlined w-full"
+                onClick={handleNext}
+              >
                 Question suivante
               </button>
             )}

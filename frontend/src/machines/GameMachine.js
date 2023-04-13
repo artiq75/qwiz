@@ -24,7 +24,8 @@ export const defaultCtx = {
   loading: true,
   score: {},
   gameScores: [],
-  scores: []
+  scores: [],
+  category: null
 }
 
 const canPlay = (ctx) => ctx.round && ctx.round <= ctx.limit

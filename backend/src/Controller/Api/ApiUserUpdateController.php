@@ -44,17 +44,10 @@ class ApiUserUpdateController extends AbstractController
         $errors = $this->validator->validate($user);
 
         // Si il n'ya pas d'erreur on persiste les données
-        if (!count($errors)) {
-            return $user;
+        if (count($errors) > 0) {
+            throw new BadRequestHttpException();
         }
 
-        $jsonErrors = [];
-
-        // Construction du tableau d'erreurs pour l'envoie
-        foreach ($errors as $error) {
-            $jsonErrors[$error->getPropertyPath()] = $error->getMessage();
-        }
-
-        throw new BadRequestHttpException(json_encode($jsonErrors));
+        return $user;
     }
 }
