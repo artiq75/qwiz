@@ -13,7 +13,7 @@ export default function Play() {
     // Stop le timer est donc la partie si on quite
     return () => {
       timerSend('stop')
-      gameSend('choose')
+      gameSend('leave')
     }
   }, [])
 

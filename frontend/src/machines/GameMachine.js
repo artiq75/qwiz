@@ -51,11 +51,18 @@ const GameMachine = createMachine(
       transition('error', 'loading')
     ),
     play: state(
-      transition('choose', 'choose', reduce(chooseReduce), action(chooseAction))
+      transition(
+        'choose',
+        'choose',
+        reduce(chooseReduce),
+        action(chooseAction)
+      ),
+      transition('leave', 'lobby')
     ),
     choose: state(
       immediate('end', guard(cantPlay)),
-      transition('play', 'loading', guard(canPlay), reduce(playReduce))
+      transition('play', 'loading', guard(canPlay), reduce(playReduce)),
+      transition('leave', 'lobby')
     ),
     end: state(transition('replay', 'lobby'))
   },
