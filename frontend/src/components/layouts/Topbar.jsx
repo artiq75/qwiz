@@ -21,6 +21,7 @@ export default function Topbar() {
       <Link to={RoutesName.HOME}>
         <h1>Qwiz</h1>
       </Link>
+      <h1>{JSON.stringify(gameState)}</h1>
       {gameCan('choose') && (
         <div className="topbar-play">
           <div className="tag primary">

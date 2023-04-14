@@ -51,7 +51,7 @@ class AppFixtures extends Fixture
             $categories[] = $category;
         }
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $question = new Question();
             $question
                 ->setTitle($this->faker->sentence())

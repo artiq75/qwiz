@@ -24,18 +24,20 @@ class LoginSucessLoginListener
      */
     $user = $loginEvent->getAuthenticatedToken()->getUser();
 
-    $categories = $this->categoryRepository->findAll();
-
+    
     if ($user->getScores()->isEmpty()) {
+      $categories = $this->categoryRepository->findAll();
 
       foreach ($categories as $category) {
         $score = new Score();
+
         $score
           ->setGoodAnswer(0)
           ->setBadAnswer(0)
           ->setAttempt(0)
           ->setCategory($category)
           ->setUser($user);
+
         $this->entityManager->persist($score);
       }
 

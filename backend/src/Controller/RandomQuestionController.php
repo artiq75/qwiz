@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Question;
 use App\Repository\QuestionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 class RandomQuestionController extends AbstractController
 {
@@ -13,8 +14,10 @@ class RandomQuestionController extends AbstractController
   ) {
   }
 
-  public function __invoke(): ?Question
+  public function __invoke(Request $request): ?Question
   {
-    return $this->questionRepository->findRandom();
+    $category = (int) $request->query->get('category');
+
+    return $this->questionRepository->findRandom($category);
   }
 }

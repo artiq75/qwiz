@@ -9,6 +9,8 @@ import Http from '../classes/Http'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useGameContext } from '../components/providers/GameProvider'
+import { useNavigate } from 'react-router-dom'
+import { RoutesName } from './router'
 
 const schema = Yup.object().shape({
   limit: Yup.string().required('Vous devez choisir une limite!')
@@ -22,16 +24,20 @@ export default function Custom() {
 
   const { gameMachine } = useGameContext()
 
-  const [gameState, gameCtx, gameSend] = gameMachine
+  const [gameState, gameCtx, gameSend, gameCan] = gameMachine
+
+  const navigate = useNavigate()
 
   useAsyncEffect(async () => {
     const categories = await Http.get('/api/categories').catch(console.error)
     setState({ loading: false, categories })
   }, [])
 
-  const handleSubmit = ({ limit, category }, actions) => {
-    gameSend('run', { limit, category })
-    actions.setSubmitting(false)
+  const handleSubmit = ({ limit, category }) => {
+    if (gameCan('run')) {
+      gameSend('run', { limit, category })
+      navigate(RoutesName.PLAY)
+    }
   }
 
   return (

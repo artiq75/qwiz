@@ -20,9 +20,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(
-            paginationItemsPerPage: 1
-        ),
-        new GetCollection(
             name: 'random_question',
             uriTemplate: '/questions/random',
             controller: RandomQuestionController::class,
@@ -30,8 +27,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     normalizationContext: [
         'groups' => ['read:Question']
-    ],
-    paginationItemsPerPage: 5,
+    ]
     // security: "is_granted('ROLE_USER')"
 )]
 class Question

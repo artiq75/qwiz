@@ -12,7 +12,7 @@ export const initReduce = (ctx, { data }) => {
 }
 
 export const lobbyReduce = (ctx, { limit, category }) => {
-  return { ...ctx, limit, category }
+  return { ...ctx, limit: limit ?? ctx.limit, category }
 }
 
 export const loadingDoneReduce = (ctx, { data }) => {
