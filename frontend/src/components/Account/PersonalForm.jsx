@@ -3,37 +3,41 @@ import { useAuthContext } from '../providers/AuthProvider'
 import { ButtonLoader, InputField } from '../Tools/Tools'
 import ImageField from '../Tools/ImageField'
 import { Form, Formik } from 'formik'
-import { useMemo } from 'react'
+import { useState } from 'react'
 
 export default function PersonalForm() {
   const { user, persist } = useAuthContext()
+  const [error, setError] = useState(null)
 
   const handleSubmit = async (credentials) => {
-    console.log(credentials)
-    return
-    const user = await updateUser(credentials).catch(console.error)
-    persist(user)
-  }
-
-  const initialValues = useMemo(() => {
-    if (user) {
-      return {
-        username: user.username,
-        email: user.email,
-        image: ''
-      }
+    try {
+      setError(null)
+      const user = await updateUser(credentials)
+      persist(user)
+    } catch (e) {
+      setError('Les informations sont invalide!')
     }
-  }, [user])
+  }
 
   return (
     <Formik
       className="account-form"
-      initialValues={initialValues}
+      initialValues={{
+        username: user.username,
+        email: user.email,
+        image: ''
+      }}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, setFieldValue }) => (
         <Form>
-          <ImageField name="image" src={user.image} />
+          {error && <div className="alert danger mb1">{error}</div>}
+
+          <ImageField
+            name="image"
+            src={user.image}
+            setFieldValue={setFieldValue}
+          />
 
           <div className="g2 gap1">
             <InputField name="username" label="Pseaudo" />

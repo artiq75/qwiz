@@ -1,9 +1,14 @@
 import Http from '../classes/Http'
 
-export async function updateUser(user) {
+export async function updateUser(credentials) {
+  const formData = new FormData()
+  for (const field in credentials) {
+    formData.append(field, credentials[field])
+  }
   return Http.http('/api/users/update', {
+    Accept: 'application/json',
     method: 'POST',
-    body: user
+    body: formData
   })
 }
 

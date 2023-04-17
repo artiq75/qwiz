@@ -6,11 +6,15 @@ import { Avatar } from './Tools'
  * @param {object}
  * @returns
  */
-export default function ImageField({ name, src, alt = '' }) {
+export default function ImageField({ name, src, alt = '', setFieldValue }) {
   const imageRef = useRef(null)
 
   const handleChange = function (e) {
     const file = e.target.files[0]
+    // Si on est dans un formulaire formik
+    if (setFieldValue) {
+      setFieldValue(name, file)
+    }
     if (file?.name) {
       imageRef.current.src = URL.createObjectURL(file)
     }
