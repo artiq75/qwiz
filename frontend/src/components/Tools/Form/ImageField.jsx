@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Avatar } from './Tools'
+import { Avatar } from '../Tools'
 
 /**
  * Réprésente un champ de formulaire pour l'upload d'image

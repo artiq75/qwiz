@@ -3,7 +3,8 @@ import { updatePassword } from '../../api/account'
 import { useAuthContext } from '../providers/AuthProvider'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import { ButtonLoader, InputField } from '../Tools/Tools'
+import { ButtonLoader } from '../Tools/Button/Tools'
+import { InputField } from '../Tools/Form/Tools'
 
 const schema = Yup.object().shape({
   currentPassword: Yup.string().required(

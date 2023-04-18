@@ -40,7 +40,12 @@ export const chooseAction = async (ctx) => {
   newScore.badAnswer += oldScore.badAnswer
   newScore.attempt += oldScore.attempt
   // Mise à jour du score dans la DB
-  await ApiScore.updateScore(newScore)
+  const updatedScore = await ApiScore.updateScore(newScore)
+  // On modifie le score actuelle avec le nouveau score
+  ctx.scores = ctx.scores.map((score) => {
+    if (score.id !== updatedScore.id) return score
+    return updatedScore
+  })
 }
 
 export const chooseReduce = (ctx, e) => {

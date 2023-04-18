@@ -1,34 +1,6 @@
-import { useField } from 'formik'
-import { forwardRef, memo } from 'react'
+import { forwardRef, memo, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import 'external-svg-loader'
-
-export const InputField = memo(({ label = '', ...props }) => {
-  const [field, meta, helpers] = useField(props)
-  return (
-    <p>
-      <label htmlFor={props.name}>{label}</label>
-      <input {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <span className="invalid">{meta.error}</span>
-      ) : null}
-    </p>
-  )
-})
-
-export const SelectField = memo(({ label, children, ...props }) => {
-  const [field, meta, helpers] = useField(props)
-  return (
-    <p>
-      <label htmlFor={props.name}>{label}</label>
-      <select {...field} {...props}>
-        {children}
-      </select>
-      {meta.touched && meta.error ? (
-        <span className="invalid">{meta.error}</span>
-      ) : null}
-    </p>
-  )
-})
 
 export const Avatar = memo(
   forwardRef(({ src, alt = '', size = 100 }, ref) => {
@@ -45,17 +17,6 @@ export const Avatar = memo(
   })
 )
 
-export const ButtonLoader = (props) => {
-  const { children, isLoading, ...other } = props
-
-  return (
-    <button disabled={isLoading} {...other}>
-      {isLoading && <time-indicator></time-indicator>}
-      {!isLoading ? children : null}
-    </button>
-  )
-}
-
 export const Icon = ({ name, size = 25, className, ...props }) => {
   return (
     <svg
@@ -66,5 +27,19 @@ export const Icon = ({ name, size = 25, className, ...props }) => {
       className={`icon ${className}`}
       {...props}
     />
+  )
+}
+
+export default function Modal({ children, onClose }) {
+  const modalRef = useRef(null)
+
+  return createPortal(
+    <div className="modal card" ref={modalRef}>
+      <button className="modal-close" onClick={onClose}>
+        x
+      </button>
+      {children}
+    </div>,
+    document.body
   )
 }

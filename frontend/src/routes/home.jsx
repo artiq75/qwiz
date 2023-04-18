@@ -1,7 +1,7 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { RoutesName } from './router'
 import { BASE_URL } from '../constants/app'
-import Modal from '../components/Tools/Modal'
+import Modal from '../components/Tools/Tools'
 import { useAuthContext } from '../components/providers/AuthProvider'
 import { useEffect, useState } from 'react'
 

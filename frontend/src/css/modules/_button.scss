@@ -16,3 +16,12 @@
     cursor: unset;
   }
 }
+
+.btn.back {
+  position: fixed;
+  top: calc(var(--topbar-height) + 1em);
+  left: 1em;
+  padding: 0.5em;
+  gap: 0.25em;
+  color: var(--light);
+}

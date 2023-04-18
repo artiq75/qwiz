@@ -2,7 +2,8 @@ import { Form, Formik } from 'formik'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 import { RoutesName } from '../../routes/router'
-import { ButtonLoader, InputField } from '../Tools/Tools'
+import { InputField } from '../Tools/Form/Tools'
+import { ButtonLoader } from '../Tools/Button/Tools'
 
 const schema = {
   email: Yup.string()

@@ -1,7 +1,8 @@
 import { updateUser } from '../../api/account'
 import { useAuthContext } from '../providers/AuthProvider'
-import { ButtonLoader, InputField } from '../Tools/Tools'
-import ImageField from '../Tools/ImageField'
+import { ButtonLoader } from '../Tools/Button/Tools'
+import ImageField from '../Tools/Form/ImageField'
+import { InputField } from '../Tools/Form/Tools'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
 

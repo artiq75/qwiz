@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { RoutesName } from './router'
 import QuestionItem from '../components/Item/QuestionItem'
 import { useGameContext } from '../components/providers/GameProvider'
+import { ButtonBack } from '../components/Tools/Button/Tools'
 
 export default function Play() {
   const { timerMachine, gameMachine } = useGameContext()
@@ -50,6 +51,7 @@ export default function Play() {
 
   return (
     <main className="play">
+      <ButtonBack />
       <section className="play-body">
         {/* Affichage du loader lors du chargement de la question */}
         {gameCtx.loading && <time-indicator></time-indicator>}
@@ -64,7 +66,7 @@ export default function Play() {
               onChoose={handleChoose}
               question={gameCtx.question}
             />
-            {gameCan('play') && !gameIsIn('end') && (
+            {gameCan('play') && !gameCan('replay') && (
               <button
                 className="btn primary outlined w-full trans"
                 onClick={handleNext}
@@ -72,7 +74,7 @@ export default function Play() {
                 Question suivante
               </button>
             )}
-            {gameIsIn('end') && (
+            {gameCan('replay') && (
               <Link
                 className="btn primary outlined w-full"
                 to={RoutesName.RESULT}

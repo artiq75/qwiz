@@ -1,9 +1,6 @@
 import { useState } from 'react'
-import {
-  ButtonLoader,
-  InputField,
-  SelectField
-} from '../components/Tools/Tools'
+import { InputField, SelectField } from '../components/Tools/Form/Tools'
+import { ButtonBack, ButtonLoader } from '../components/Tools/Button/Tools'
 import useAsyncEffect from '../hooks/useAsyncEffect'
 import Http from '../classes/Http'
 import { Form, Formik } from 'formik'
@@ -42,6 +39,7 @@ export default function Custom() {
 
   return (
     <main className="container-sm custom">
+      <ButtonBack />
       {state.loading && <time-indicator></time-indicator>}
       <h2 className="txt-center">Partie Personnaliser</h2>
       {!state.loading && (
