@@ -36,12 +36,11 @@ export default function Topbar() {
             <Avatar src={user.image} />
           </button>
           <ul>
-            <li>{user.username}</li>
             <li>
-              <div className="separator"></div>
+              <Link to={RoutesName.PROFIL}>{user.username}</Link>
             </li>
             <li>
-              <Link to={RoutesName.PROFIL}>Profile</Link>
+              <div className="separator"></div>
             </li>
             <li>
               <Link to={RoutesName.ACCOUNT}>Compte</Link>

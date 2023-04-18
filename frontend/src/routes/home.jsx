@@ -6,14 +6,17 @@ import { useAuthContext } from '../components/providers/AuthProvider'
 import { useEffect, useState } from 'react'
 
 export default function Home() {
-  const { user, isAuth, logout } = useAuthContext()
+  const { user, isAuth, persist } = useAuthContext()
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
 
   useEffect(() => {
-    if (searchParams.has('success') && !user.isPremium) {
-      logout()
+    if (searchParams.has('success') && user.id && !user.isPremium) {
+      persist({
+        ...user,
+        isPremium: true
+      })
     }
   }, [user, searchParams])
 
