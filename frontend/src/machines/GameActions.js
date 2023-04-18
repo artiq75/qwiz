@@ -7,6 +7,10 @@ const defaultScore = {
   attempt: 0
 }
 
+export const resetReduce = (ctx) => {
+  return { ...defaultCtx, scores: ctx.scores, gameScores: ctx.gameScores }
+}
+
 export const initReduce = (ctx, { data }) => {
   return { ...ctx, ...defaultCtx, scores: data }
 }

@@ -13,8 +13,10 @@ export default function Play() {
   useEffect(() => {
     // Stop le timer est donc la partie si on quite
     return () => {
-      timerSend('stop')
-      gameSend('leave')
+      if (gameCan('leave') && timerCan('stop')) {
+        timerSend('stop')
+        gameSend('leave')
+      }
     }
   }, [])
 
@@ -30,7 +32,7 @@ export default function Play() {
 
   useEffect(() => {
     // On Valide la réponse si le timer est stoper
-    if (timerIsIn('stop')) {
+    if (timerCan('start')) {
       gameSend('choose')
     }
   }, [timerIsIn, gameSend])

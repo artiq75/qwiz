@@ -15,12 +15,13 @@ import {
   loadingDoneReduce,
   chooseAction,
   initReduce,
-  lobbyReduce
+  lobbyReduce,
+  resetReduce
 } from './GameActions'
 import { findAllScore } from '../api/score'
 
 export const defaultCtx = {
-  round: 1,
+  round: 0,
   limit: 3,
   question: null,
   loading: true,
@@ -30,7 +31,7 @@ export const defaultCtx = {
   category: null
 }
 
-const canPlay = (ctx) => ctx.round && ctx.round <= ctx.limit
+const canPlay = (ctx) => ctx.round && ctx.round < ctx.limit
 const cantPlay = (ctx) => !canPlay(ctx)
 
 const asyncInit = async (ctx) => {
@@ -57,14 +58,14 @@ const GameMachine = createMachine(
         reduce(chooseReduce),
         action(chooseAction)
       ),
-      transition('leave', 'lobby')
+      transition('leave', 'lobby', reduce(resetReduce))
     ),
     choose: state(
       immediate('end', guard(cantPlay)),
       transition('play', 'loading', guard(canPlay), reduce(playReduce)),
-      transition('leave', 'lobby')
+      transition('leave', 'lobby', reduce(resetReduce))
     ),
-    end: state(transition('replay', 'lobby'))
+    end: state(transition('replay', 'lobby', reduce(resetReduce)))
   },
   (ctx) => ({ ...defaultCtx, ...ctx })
 )
