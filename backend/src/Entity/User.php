@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use ApiPlatform\OpenApi\Model\Operation;
 use App\Controller\Api\ApiUserUpdateController;
 use App\Controller\Api\ApiUserUpdatePasswordController;
 use App\Repository\UserRepository;
@@ -32,9 +33,14 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
             uriTemplate: '/users/update',
             deserialize: false,
             controller: ApiUserUpdateController::class,
+            description: 'Update user informations',
             denormalizationContext: [
                 'groups' => ['write:User']
             ],
+            openapi: new Operation(
+                summary: 'Update user informations',
+                description: 'Update user informations'
+            )
         ),
         new Put(
             uriTemplate: '/users/update/password',
@@ -42,7 +48,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
             controller: ApiUserUpdatePasswordController::class,
             denormalizationContext: [
                 'groups' => ['write:User:password']
-            ]
+            ],
+            openapi: new Operation(
+                summary: 'Update user password',
+                description: 'Update user password'
+            )
         )
     ],
     security: "is_granted('ROLE_USER')"

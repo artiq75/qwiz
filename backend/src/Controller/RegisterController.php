@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\UserCreatedEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -15,14 +17,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class RegisterController extends AbstractController
 {
     public function __construct(
-        private UserPasswordHasherInterface $hasher,
-        private EntityManagerInterface $em,
-        private ValidatorInterface $validator,
-        private Security $security
+        private readonly UserPasswordHasherInterface $hasher,
+        private readonly EntityManagerInterface $em,
+        private readonly ValidatorInterface $validator,
+        private readonly JWTTokenManagerInterface $JWTManager,
+        private readonly EventDispatcherInterface $dispatcher
     ) {
     }
 
-    #[Route('/register', name: 'api_register', methods: ['POST'])]
+    #[Route('/api/register', name: 'api_register', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
     {
         $data = $request->toArray();
@@ -36,7 +39,7 @@ class RegisterController extends AbstractController
         $errors = $this->validator->validate($user);
 
         if (count($errors) > 0) {
-            return new JsonResponse([
+            return $this->json([
                 'message' => 'Les données sont invalide!'
             ], JsonResponse::HTTP_UNAUTHORIZED);
         }
@@ -51,18 +54,10 @@ class RegisterController extends AbstractController
         $this->em->persist($user);
         $this->em->flush();
 
-        $this->security->login($user, 'json_login', 'main');
-
-        /**
-         * @var User
-         */
-        $user = $this->getUser();
+        $this->dispatcher->dispatch(new UserCreatedEvent($user), UserCreatedEvent::class);
 
         return $this->json([
-            'id' => $user->getId(),
-            'username' => $user->getUsername(),
-            'email' => $user->getEmail(),
-            'isPremium' => $user->isIsPremium(),
+            'token' => $this->JWTManager->create($user)
         ]);
     }
 }
