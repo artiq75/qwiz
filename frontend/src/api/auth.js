@@ -3,29 +3,23 @@ import Storage from '../classes/Storage'
 import { StorageKeys } from '../constants/app'
 
 export async function login(user) {
-  return await Http.post('/login', {
+  return await Http.post('/api/login', {
     body: user
   })
 }
 
 export async function register(user) {
-  return await Http.post('/register', {
+  return await Http.post('/api/register', {
     body: user
   })
 }
 
-export async function logout() {
-  return Http.http(
-    '/logout',
-    {
-      method: 'POST'
-    },
-    false
-  )
+export const isAuth = () => {
+  return !!getUser().id
 }
 
-export const isAuth = () => {
-  return !!Storage.get(StorageKeys.USER)?.id
+export const isPremium = () => {
+  return !!getUser().isPremium
 }
 
 export const getUser = () => {
