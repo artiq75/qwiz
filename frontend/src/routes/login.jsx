@@ -14,8 +14,8 @@ export default function Login() {
 
   const handleSubmit = async function (credentials) {
     try {
-      const user = await login(credentials)
-      persist(user, () => {
+      const { token } = await login(credentials)
+      persist(token, () => {
         navigate(from, { replace: true })
       })
     } catch (e) {

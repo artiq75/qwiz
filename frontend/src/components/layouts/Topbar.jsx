@@ -1,19 +1,18 @@
 import { useAuthContext } from '../providers/AuthProvider'
 import { Link } from 'react-router-dom'
-import { logout } from '../../api/auth'
 import { RoutesName } from '../../routes/router'
 import { useGameContext } from '../providers/GameProvider'
 import { Avatar } from '../Tools/Tools'
 
 export default function Topbar() {
-  const { user, isAuth, ...auth } = useAuthContext()
+  const { user, isAuth, logout } = useAuthContext()
   const { timerMachine, gameMachine } = useGameContext()
 
   const [timerState, timerCtx] = timerMachine
   const [gameState, gameCtx, gameSend, gameCan] = gameMachine
 
   const handleLogout = function () {
-    logout().then(() => auth.logout())
+    logout()
   }
 
   return (

@@ -1,5 +1,6 @@
 import Http from '../classes/Http'
 import Storage from '../classes/Storage'
+import { initialUserState } from '../components/providers/AuthProvider'
 import { StorageKeys } from '../constants/app'
 
 export async function login(user) {

@@ -3,7 +3,7 @@ import Storage from '../../classes/Storage'
 import { StorageKeys } from '../../constants/app'
 import { isAuth } from '../../api/auth'
 
-const initialUserState = {
+export const initialUserState = {
   id: 0,
   username: '',
   email: '',
@@ -24,8 +24,9 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(initialUserState)
 
   useEffect(() => {
-    const user = Storage.get(StorageKeys.USER)
-    if (user) {
+    const token = Storage.get(StorageKeys.USER)
+    if (token) {
+      const user = jwt_decode(token)
       setUser(user)
     }
   }, [])
@@ -35,8 +36,9 @@ export default function AuthProvider({ children }) {
    * @param {object} user
    * @param {Function} callback Pour accomplir des traitements en plus
    */
-  const persist = function (user, callback = () => {}) {
-    setUser(Storage.set(StorageKeys.USER, user))
+  const persist = function (token, callback = () => {}) {
+    const user = jwt_decode(Storage.set(StorageKeys.USER, token))
+    setUser(user)
     callback()
   }
 

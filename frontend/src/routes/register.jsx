@@ -12,8 +12,8 @@ export default function Register() {
   const handleSubmit = async function (credentials) {
     try {
       setError(null)
-      const user = await register(credentials)
-      persist(user, () => {
+      const { token } = await register(credentials)
+      persist(token, () => {
         navigate('/', { replace: true })
       })
     } catch (e) {
