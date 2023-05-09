@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import Storage from '../../classes/Storage'
 import { StorageKeys } from '../../constants/app'
 import { isAuth } from '../../api/auth'
+import jwtDecode from 'jwt-decode'
 
 export const initialUserState = {
   id: 0,
@@ -26,7 +27,7 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     const token = Storage.get(StorageKeys.USER)
     if (token) {
-      const user = jwt_decode(token)
+      const user = jwtDecode(token)
       setUser(user)
     }
   }, [])
@@ -37,9 +38,11 @@ export default function AuthProvider({ children }) {
    * @param {Function} callback Pour accomplir des traitements en plus
    */
   const persist = function (token, callback = () => {}) {
-    const user = jwt_decode(Storage.set(StorageKeys.USER, token))
-    setUser(user)
-    callback()
+    if (token) {
+      const user = jwtDecode(Storage.set(StorageKeys.USER, token))
+      setUser(user)
+      callback()
+    }
   }
 
   /**
@@ -47,9 +50,10 @@ export default function AuthProvider({ children }) {
    * @param {Function} callback Pour accomplir des traitements en plus
    */
   const logout = function (callback = () => {}) {
-    setUser(initialUserState)
-    Storage.remove(StorageKeys.USER)
-    callback()
+    if (Storage.remove(StorageKeys.USER)) {
+      setUser(initialUserState)
+      callback()
+    }
   }
 
   const value = useMemo(() => {

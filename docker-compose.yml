@@ -12,9 +12,10 @@ services:
       - MARIADB_PASSWORD=qwiz
     ports:
       - "3307:3306"
+
   app:
-    user: "${UID}:${GID}"
-    build: 
+    user: "1000:1000"
+    build:
       context: ./php
     restart: always
     volumes:
@@ -23,8 +24,9 @@ services:
       - "9000:9000"
     depends_on:
       - db
+
   caddy:
-    user: "${UID}:${GID}"
+    user: "1000:1000"
     build: .
     restart: always
     ports:
@@ -37,6 +39,20 @@ services:
       - caddy_config:/config
     depends_on:
       - app
+
+  node:
+    restart: always
+    user: "1000:1000"
+    image: node:latest
+    tty: true
+    working_dir: /frontend
+    volumes:
+      - ./frontend:/frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - caddy
+
 volumes:
   caddy_data:
   caddy_config:

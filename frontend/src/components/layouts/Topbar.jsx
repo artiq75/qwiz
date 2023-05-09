@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import { RoutesName } from '../../routes/router'
 import { useGameContext } from '../providers/GameProvider'
 import { Avatar } from '../Tools/Tools'
+import { isAuth } from '../../api/auth'
 
 export default function Topbar() {
-  const { user, isAuth, logout } = useAuthContext()
+  const { user, logout } = useAuthContext()
   const { timerMachine, gameMachine } = useGameContext()
 
   const [timerState, timerCtx] = timerMachine
@@ -29,7 +30,7 @@ export default function Topbar() {
           <h2 className="topbar-play__timer">{timerCtx.timer}</h2>
         </div>
       )}
-      {isAuth && (
+      {isAuth() && (
         <drop-down>
           <button>
             <Avatar src={user.image} />

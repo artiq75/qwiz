@@ -17,8 +17,6 @@ class ApiUserUpdateController extends AbstractController
 
     public function __invoke(Request $request): User
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
         $image = $request->files->get('image');
         $email = $request->request->get('email');
         $username = $request->request->get('username');

@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode'
 import Http from '../classes/Http'
 import Storage from '../classes/Storage'
 import { initialUserState } from '../components/providers/AuthProvider'
@@ -24,5 +25,9 @@ export const isPremium = () => {
 }
 
 export const getUser = () => {
-  return Storage.get(StorageKeys.USER) || initialUserState
+  const token = Storage.get(StorageKeys.USER)
+  if (token) {
+    return jwtDecode(token)
+  }
+  return initialUserState
 }

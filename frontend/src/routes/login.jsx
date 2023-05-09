@@ -13,6 +13,7 @@ export default function Login() {
   const from = location.state?.from?.pathname || '/'
 
   const handleSubmit = async function (credentials) {
+    setError('')
     try {
       const { token } = await login(credentials)
       persist(token, () => {

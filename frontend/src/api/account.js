@@ -6,7 +6,9 @@ export async function updateUser(credentials) {
     formData.append(field, credentials[field])
   }
   return Http.http('/api/users/update', {
-    Accept: 'application/json',
+    headers: {
+      Accept: 'application/json'
+    },
     method: 'POST',
     body: formData
   })
