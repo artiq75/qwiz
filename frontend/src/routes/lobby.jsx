@@ -1,12 +1,8 @@
-import { useGameContext } from '../components/providers/GameProvider'
 import { Link } from 'react-router-dom'
 import { RoutesName } from './router'
 import { ButtonBack } from '../components/Tools/Button/Tools'
 
 export default function Lobby() {
-  const { gameMachine } = useGameContext()
-  const [gameState, gameCtx, gameSend] = gameMachine
-
   return (
     <main className="container-sm lobby">
       <ButtonBack />

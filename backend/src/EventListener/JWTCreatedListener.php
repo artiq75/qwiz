@@ -25,6 +25,7 @@ class JWTCreatedListener
     $payload = $event->getData();
 
     $payload['id'] = $user->getId();
+    $payload['username'] = $user->getUsername();
     $payload['email'] = $user->getEmail();
     $payload['image'] = $this->imageURLGenerator->generate($user, 'imageFile');
     $payload['isPremium'] = $user->isIsPremium();

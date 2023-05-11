@@ -3,22 +3,27 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ApiUserUpdatePasswordController extends AbstractController
 {
   public function __construct(
-    private UserPasswordHasherInterface $hasher,
-    private ValidatorInterface $validator
+    private readonly UserPasswordHasherInterface $hasher,
+    private readonly ValidatorInterface $validator,
+    private readonly JWTTokenManagerInterface $JWTManager,
+    private readonly EntityManagerInterface $em
   ) {
   }
 
-  public function __invoke(Request $request): User
+  public function __invoke(Request $request): JsonResponse
   {
     $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
 
@@ -48,11 +53,18 @@ class ApiUserUpdatePasswordController extends AbstractController
     // Validation des données
     $errors = $this->validator->validate($user);
 
-    // Si il y a des erreurs on lève une exception
+    // Si il n'ya pas d'erreur on lève une exception
     if (count($errors) > 0) {
-      throw new BadRequestException();
+      throw new BadRequestHttpException();
     }
 
-    return $user;
+    // Si il n'ya pas d'erreur on persiste les données
+    $this->em->persist($user);
+    $this->em->flush();
+
+    // On génére un nouveau token
+    return $this->json([
+      'token' => $this->JWTManager->create($user)
+    ]);
   }
 }

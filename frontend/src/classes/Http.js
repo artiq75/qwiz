@@ -7,7 +7,7 @@ export default class Http {
   }
 
   static async http(uri, options, json = true) {
-    options = { ...options, credentials: 'include' }
+    options = { ...options }
     const response = await fetch(`${BASE_URL}${uri}`, options)
     if (!response.ok) {
       throw new Error(`${response.status}: ${response.statusText}`)

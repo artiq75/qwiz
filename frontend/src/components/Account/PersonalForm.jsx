@@ -13,11 +13,15 @@ export default function PersonalForm() {
   const handleSubmit = async (credentials) => {
     try {
       setError(null)
-      const user = await updateUser(credentials)
-      persist(user)
+      const { token } = await updateUser(credentials)
+      persist(token)
     } catch (e) {
       setError('Les informations sont invalide!')
     }
+  }
+
+  if (!user.email || !user.username) {
+    return <time-indicator></time-indicator>
   }
 
   return (

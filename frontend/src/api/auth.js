@@ -17,7 +17,11 @@ export async function register(user) {
 }
 
 export const isAuth = () => {
-  return !!getUser().id
+  const token = getToken()
+  if (!token) return false
+  const user = jwtDecode(getToken())
+  if (!user) return false
+  return Date.now() + (user.exp - user.iat) > Date.now()
 }
 
 export const isPremium = () => {
@@ -30,4 +34,8 @@ export const getUser = () => {
     return jwtDecode(token)
   }
   return initialUserState
+}
+
+export const getToken = () => {
+  return Storage.get(StorageKeys.USER) ?? ''
 }

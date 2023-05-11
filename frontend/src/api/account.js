@@ -1,4 +1,5 @@
 import Http from '../classes/Http'
+import { getToken } from './auth'
 
 export async function updateUser(credentials) {
   const formData = new FormData()
@@ -7,7 +8,8 @@ export async function updateUser(credentials) {
   }
   return Http.http('/api/users/update', {
     headers: {
-      Accept: 'application/json'
+      Accept: 'application/json',
+      Authorization: `Bearer ${getToken()}`
     },
     method: 'POST',
     body: formData
@@ -16,6 +18,9 @@ export async function updateUser(credentials) {
 
 export async function updatePassword(passwords) {
   return Http.put('/api/users/update/password', {
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    },
     body: passwords
   })
 }

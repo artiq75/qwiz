@@ -54,8 +54,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
                 description: 'Update user password'
             )
         )
-    ],
-    security: "is_granted('ROLE_USER')"
+    ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
