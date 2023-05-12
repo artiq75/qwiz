@@ -2,12 +2,18 @@
   padding-left: 1em;
   min-height: calc(100vh - var(--topbar-height));
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .home-body {
   width: var(--container-sm);
   display: grid;
   gap: 1em;
+}
+
+.home .alert {
+  width: var(--container-sm);
 }

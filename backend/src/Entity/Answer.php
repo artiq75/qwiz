@@ -27,6 +27,11 @@ class Answer
     #[ORM\JoinColumn(nullable: false)]
     private ?Question $question = null;
 
+    public function __toString(): string
+    {
+        return $this->title;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

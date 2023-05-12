@@ -21,13 +21,13 @@ export default function Topbar() {
       <Link to={RoutesName.HOME}>
         <h1>Qwiz</h1>
       </Link>
-      <h1>{JSON.stringify(gameState)}</h1>
+      {/* <h1>{JSON.stringify(gameState)}</h1> */}
       {gameCan('choose') && (
         <div className="topbar-play">
+          <h2 className="topbar-play__timer">{timerCtx.timer}s</h2>
           <div className="tag primary">
             Question: {gameCtx.round} / {gameCtx.limit}
           </div>
-          <h2 className="topbar-play__timer">{timerCtx.timer}</h2>
         </div>
       )}
       {isAuth() && (

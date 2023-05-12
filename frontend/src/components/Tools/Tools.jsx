@@ -30,7 +30,7 @@ export const Icon = ({ name, size = 25, className, ...props }) => {
   )
 }
 
-export default function Modal({ children, onClose }) {
+export function Modal({ children, onClose }) {
   const modalRef = useRef(null)
 
   return createPortal(
@@ -41,5 +41,16 @@ export default function Modal({ children, onClose }) {
       {children}
     </div>,
     document.body
+  )
+}
+
+export function Alert({ type = 'success', children, onClose }) {
+  return (
+    <div className={`alert ${type} mb1`}>
+      <button className="modal-close" onClick={onClose}>
+        x
+      </button>
+      {children}
+    </div>
   )
 }

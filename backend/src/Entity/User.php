@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\OpenApi\Model\Operation;
+use App\Controller\Api\ApiUserTokenRegenerateController;
 use App\Controller\Api\ApiUserUpdateController;
 use App\Controller\Api\ApiUserUpdatePasswordController;
 use App\Repository\UserRepository;
@@ -29,6 +31,12 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         'groups' => ['read:User']
     ],
     operations: [
+        new GetCollection(
+            uriTemplate: '/users/token/regenerate',
+            deserialize: false,
+            serialize: false,
+            controller: ApiUserTokenRegenerateController::class
+        ),
         new Post(
             uriTemplate: '/users/update',
             deserialize: false,

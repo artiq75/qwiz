@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class StripeCheckoutWebhookController extends AbstractController
 {
     public function __construct(
-        private UserRepository $userRepository
+        private readonly UserRepository $userRepository
     ) {
         Stripe::setApiKey($_ENV['STRIPE_SK_KEY']);
     }

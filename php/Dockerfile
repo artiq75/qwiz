@@ -4,7 +4,9 @@ RUN apt-get update && apt-get install -y git unzip \
 		libfreetype6-dev \
 		libjpeg62-turbo-dev \
 		libpng-dev \
-		&& docker-php-ext-install -j$(nproc) gd pdo_mysql
+        libicu-dev \
+        && docker-php-ext-configure intl \
+		&& docker-php-ext-install -j$(nproc) gd pdo_mysql intl
 
 WORKDIR /srv/app
 

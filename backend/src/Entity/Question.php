@@ -6,7 +6,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
-use App\Controller\RandomQuestionController;
+use App\Controller\Api\ApiRandomQuestionController;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new GetCollection(
             name: 'random_question',
             uriTemplate: '/questions/random',
-            controller: RandomQuestionController::class,
+            controller: ApiRandomQuestionController::class,
         ),
     ],
     normalizationContext: [

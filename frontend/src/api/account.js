@@ -24,3 +24,11 @@ export async function updatePassword(passwords) {
     body: passwords
   })
 }
+
+export async function regenerateToken() {
+  return Http.get('/api/users/token/regenerate', {
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    }
+  })
+}

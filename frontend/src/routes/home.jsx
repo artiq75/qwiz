@@ -1,22 +1,24 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { RoutesName } from './router'
 import { BASE_URL } from '../constants/app'
-import Modal from '../components/Tools/Tools'
+import { Alert, Modal } from '../components/Tools/Tools'
 import { useAuthContext } from '../components/providers/AuthProvider'
 import { useEffect, useState } from 'react'
+import useAsyncEffect from '../hooks/useAsyncEffect'
+import { regenerateToken } from '../api/account'
 
 export default function Home() {
   const { user, isAuth, persist } = useAuthContext()
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const [isPremium, setIsPremium] = useState(false)
 
-  useEffect(() => {
+  useAsyncEffect(async () => {
     if (searchParams.has('success') && user.id && !user.isPremium) {
-      persist({
-        ...user,
-        isPremium: true
-      })
+      // const { token } = await regenerateToken()
+      // persist(token)
+      setIsPremium(true)
     }
   }, [user, searchParams])
 
@@ -32,8 +34,16 @@ export default function Home() {
     }
   }
 
+  const handleClose = () => {
+    setIsPremium(false)
+    searchParams.delete('success')
+  }
+
   return (
     <main className="home">
+      {isPremium && (
+        <Alert onClose={handleClose}>Bravo, vous désormais premium</Alert>
+      )}
       {!isOpen && (
         <ul className="home-body">
           <li>
