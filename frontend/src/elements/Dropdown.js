@@ -12,7 +12,7 @@ export default class Dropdown extends HTMLElement {
     this.toggleMenu = this.toggleMenu.bind(this)
     this.onKeyUp = this.onKeyUp.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
-    this.onBlur = this.onBlur.bind(this)
+    this.onClick = this.onClick.bind(this)
   }
 
   connectedCallback() {
@@ -28,8 +28,8 @@ export default class Dropdown extends HTMLElement {
     ul.setAttribute('tabindex', '-1')
     ul.setAttribute('role', 'listbox')
     ul.addEventListener('keydown', this.onKeyDown)
-    ul.addEventListener('blur', this.onBlur)
     ul.querySelectorAll('a').forEach((a) => a.setAttribute('tabindex', '-1'))
+    document.addEventListener('click', this.onClick)
     document.addEventListener('keyup', this.onKeyUp)
     Array.from(ul.children).forEach((li, index) => {
       li.setAttribute('role', 'option')
@@ -92,12 +92,9 @@ export default class Dropdown extends HTMLElement {
     }
   }
 
-  onBlur(e) {
-    if (!this.ul.contains(e.relatedTarget)) {
+  onClick(e) {
+    if (!this.contains(e.target)) {
       this.close()
-    } else {
-      e.preventDefault()
-      e.stopPropagation()
     }
   }
 

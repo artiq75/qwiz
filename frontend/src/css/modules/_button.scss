@@ -25,3 +25,18 @@
   gap: 0.25em;
   color: var(--light);
 }
+
+.btn-close {
+  all: unset;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  transform: translate3d(50%, -40%, 0);
+
+  svg {
+    color: var(--primary);
+    height: 30px;
+    width: 30px;
+  }
+}

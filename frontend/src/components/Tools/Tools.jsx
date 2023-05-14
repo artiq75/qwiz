@@ -1,6 +1,7 @@
-import { forwardRef, memo, useRef } from 'react'
+import { Children, forwardRef, memo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import 'external-svg-loader'
+import { CloseButton } from './Button/Tools'
 
 export const Avatar = memo(
   forwardRef(({ src, alt = '', size = 100 }, ref) => {
@@ -35,9 +36,7 @@ export function Modal({ children, onClose }) {
 
   return createPortal(
     <div className="modal card" ref={modalRef}>
-      <button className="modal-close" onClick={onClose}>
-        x
-      </button>
+      <CloseButton onClose={onClose} />
       {children}
     </div>,
     document.body
@@ -47,9 +46,7 @@ export function Modal({ children, onClose }) {
 export function Alert({ type = 'success', children, onClose }) {
   return (
     <div className={`alert ${type} mb1`}>
-      <button className="modal-close" onClick={onClose}>
-        x
-      </button>
+      <CloseButton onClose={onClose} />
       {children}
     </div>
   )

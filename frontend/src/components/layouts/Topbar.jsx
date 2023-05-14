@@ -2,7 +2,7 @@ import { useAuthContext } from '../providers/AuthProvider'
 import { Link } from 'react-router-dom'
 import { RoutesName } from '../../routes/router'
 import { useGameContext } from '../providers/GameProvider'
-import { Avatar } from '../Tools/Tools'
+import { Avatar, Dropdown } from '../Tools/Tools'
 import { isAuth } from '../../api/auth'
 
 export default function Topbar() {

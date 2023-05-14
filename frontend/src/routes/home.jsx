@@ -11,16 +11,16 @@ export default function Home() {
   const { user, isAuth, persist } = useAuthContext()
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [isPremium, setIsPremium] = useState(false)
 
   useAsyncEffect(async () => {
-    if (searchParams.has('success') && user.id && !user.isPremium) {
-      // const { token } = await regenerateToken()
-      // persist(token)
+    if (searchParams.has('success')) {
+      const { token } = await regenerateToken()
+      persist(token)
       setIsPremium(true)
     }
-  }, [user, searchParams])
+  }, [searchParams])
 
   const handleClick = function (e) {
     if (!user.isPremium) {
@@ -37,12 +37,13 @@ export default function Home() {
   const handleClose = () => {
     setIsPremium(false)
     searchParams.delete('success')
+    setSearchParams(searchParams)
   }
 
   return (
     <main className="home">
       {isPremium && (
-        <Alert onClose={handleClose}>Bravo, vous désormais premium</Alert>
+        <Alert onClose={handleClose}>Bravo, vous êtes désormais premium</Alert>
       )}
       {!isOpen && (
         <ul className="home-body">

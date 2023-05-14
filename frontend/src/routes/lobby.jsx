@@ -4,12 +4,14 @@ import { ButtonBack } from '../components/Tools/Button/Tools'
 
 export default function Lobby() {
   return (
-    <main className="container-sm lobby">
+    <main className="lobby">
       <ButtonBack />
-      <h1>Multijoueur</h1>
-      <Link className="btn tertiary w-full" to={RoutesName.PLAY}>
-        Lancer la partie
-      </Link>
+      <section className="lobby-body">
+        <h2 className="lobby-title txt-center">Multijoueur</h2>
+        <Link className="btn tertiary w-full" to={RoutesName.PLAY}>
+          Lancer la partie
+        </Link>
+      </section>
     </main>
   )
 }

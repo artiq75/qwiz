@@ -1,6 +1,12 @@
 import Fastify from 'fastify'
 import Websocket from '@fastify/websocket'
-import { randomUUID } from 'node:crypto'
+import * as dotenv from 'dotenv'
+import { resolve } from 'node:path'
+import jwt from 'jsonwebtoken'
+
+dotenv.config({
+  path: resolve('.env')
+})
 
 const connections = new Map()
 
@@ -11,17 +17,25 @@ const fastify = Fastify({
 fastify.register(Websocket)
 
 fastify.register(async () => {
-  fastify.get('/ws', { websocket: true }, (connection, req) => {
+  fastify.get('/game', { websocket: true }, (connection, req) => {
     const query = req.query
-    const playerId = query.playerId ?? randomUUID()
-    console.log(connections)
+    const token = query.token ?? ''
 
-    connections.set(playerId, connection)
+    if (!jwt.verify(token, process.env.JWT_PUBLIC, { algorithms: 'RS256' })) {
+      connection.socket.send(
+        JSON.stringify({
+          type: 'error',
+          message: "Vous n'ête pas autorisez à effectuer cette opération"
+        })
+      )
+    }
+
+    connections.set(token, connection)
 
     connection.socket.send(
       JSON.stringify({
         type: 'connexion',
-        playerId
+        token
       })
     )
 

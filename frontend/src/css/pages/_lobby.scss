@@ -1,0 +1,17 @@
+.lobby {
+  min-height: calc(100vh - var(--topbar-height));
+  padding: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lobby-body {
+  display: grid;
+  gap: 1em;
+  width: var(--container-sm);
+}
+
+.lobby-title {
+  font-size: var(--text-1xl);
+}
