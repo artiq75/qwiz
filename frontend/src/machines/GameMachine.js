@@ -19,6 +19,7 @@ import {
   resetReduce
 } from './GameActions'
 import { findAllScore } from '../api/score'
+import { isAuth } from '../api/auth'
 
 export const defaultCtx = {
   round: 0,
@@ -35,6 +36,7 @@ const canPlay = (ctx) => ctx.round && ctx.round < ctx.limit
 const cantPlay = (ctx) => !canPlay(ctx)
 
 const asyncInit = async (ctx) => {
+  if (!isAuth()) return []
   return findAllScore()
 }
 

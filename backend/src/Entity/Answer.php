@@ -19,9 +19,11 @@ class Answer
     #[Groups(['read:Question'])]
     private ?string $title = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: [
+        'default' => false
+    ])]
     #[Groups(['read:Question'])]
-    private ?bool $isValid = null;
+    private ?bool $isValid = false;
 
     #[ORM\ManyToOne(inversedBy: 'answers')]
     #[ORM\JoinColumn(nullable: false)]
@@ -29,7 +31,7 @@ class Answer
 
     public function __toString(): string
     {
-        return $this->title;
+        return $this->title ?? '';
     }
 
     public function getId(): ?int

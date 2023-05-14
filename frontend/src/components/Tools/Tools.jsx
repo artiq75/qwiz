@@ -9,7 +9,10 @@ export const Avatar = memo(
       <img
         className="avatar"
         ref={ref}
-        src={src ?? 'https://picsum.photos/200/300'}
+        src={
+          src ||
+          'https://source.boringavatars.com/beam/40/Stefan?colors=264653,f4a261,e76f51'
+        }
         alt={alt}
         width={size}
         height={size}

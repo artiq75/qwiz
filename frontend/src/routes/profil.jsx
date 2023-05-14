@@ -6,15 +6,15 @@ import useAsyncEffect from '../hooks/useAsyncEffect'
 import { findAllScore } from '../api/score'
 
 export default function Profil() {
-  const { user } = useAuthContext()
+  const { user, isAuth } = useAuthContext()
   const [scores, setScores] = useState([])
 
   useAsyncEffect(async () => {
-    if (user.id) {
+    if (isAuth && user.id) {
       const scores = await findAllScore(user.id)
       setScores(scores)
     }
-  }, [user])
+  }, [isAuth, user])
 
   return (
     <main className="container-lg profil">

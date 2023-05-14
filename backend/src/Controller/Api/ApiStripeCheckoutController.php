@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
@@ -9,22 +9,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class StripeCheckoutController extends AbstractController
+class ApiStripeCheckoutController extends AbstractController
 {
     public function __construct()
     {
         Stripe::setApiKey($_ENV['STRIPE_SK_KEY']);
+        Stripe::setApiVersion('2022-11-15');
     }
 
-    #[Route('/checkout', name: 'checkout')]
+    #[Route('/api/checkout', name: 'checkout', methods: ['POST'])]
     public function index(Request $request): Response
     {
-        // Si l'utilisateur n'est pas connecter
-        // il est rediréger
-        if (!$this->isGranted('ROLE_USER')) {
-            return $this->redirect('http://localhost:5173');
-        }
-
         /**
          * @var \App\Entity\User
          */
@@ -34,7 +29,7 @@ class StripeCheckoutController extends AbstractController
         $checkoutSession = Session::create([
             'line_items' => [
                 [
-                    'price' => 'price_1MuXq4C22cMRK3R3xUOdFQyk',
+                    'price' => 'price_1N7gepC22cMRK3R3b8THSOXA',
                     'quantity' => 1,
                 ]
             ],
@@ -45,6 +40,8 @@ class StripeCheckoutController extends AbstractController
         ]);
 
         // On redirige vers la page paiment de stripe
-        return $this->redirect($checkoutSession->url);
+        return $this->json([
+            'sessionUrl' => $checkoutSession->url
+        ]);
     }
 }

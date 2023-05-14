@@ -15,7 +15,7 @@ class UserNormalizer implements ContextAwareNormalizerInterface, NormalizerAware
   private const ALREADY_CALLED = 'USER_NORMALIZER_ALREADY_CALLED';
 
   public function __construct(
-    private ImageURLGenerator $imageURLGenerator
+    private readonly ImageURLGenerator $imageURLGenerator
   ) {
   }
 

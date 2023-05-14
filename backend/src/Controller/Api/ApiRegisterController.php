@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use App\Entity\User;
 use App\Event\UserCreatedEvent;
@@ -14,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class RegisterController extends AbstractController
+class ApiRegisterController extends AbstractController
 {
     public function __construct(
         private readonly UserPasswordHasherInterface $hasher,

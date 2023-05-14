@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { InputField, SelectField } from '../components/Tools/Form/Tools'
 import { ButtonBack, ButtonLoader } from '../components/Tools/Button/Tools'
 import useAsyncEffect from '../hooks/useAsyncEffect'
-import Http from '../classes/Http'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useGameContext } from '../components/providers/GameProvider'
 import { useNavigate } from 'react-router-dom'
 import { RoutesName } from './router'
+import { useAuthContext } from '../components/providers/AuthProvider'
+import { findAllCategories } from '../api/category'
+import { Alert } from '../components/Tools/Tools'
 
 const schema = Yup.object().shape({
   limit: Yup.string().required('Vous devez choisir une limite!')
@@ -16,19 +18,31 @@ const schema = Yup.object().shape({
 export default function Custom() {
   const [state, setState] = useState({
     categories: [],
-    loading: true
+    loading: true,
+    error: ''
   })
 
+  const navigate = useNavigate()
   const { gameMachine } = useGameContext()
+  const { user, isAuth } = useAuthContext()
 
   const [gameState, gameCtx, gameSend, gameCan] = gameMachine
 
-  const navigate = useNavigate()
-
   useAsyncEffect(async () => {
-    const categories = await Http.get('/api/categories').catch(console.error)
-    setState({ loading: false, categories })
-  }, [])
+    if (isAuth && user.isPremium) {
+      setState((s) => ({ ...s, isLoading: true }))
+      try {
+        const categories = await findAllCategories()
+        setState({ loading: false, categories })
+      } catch (e) {
+        setState({
+          loading: false,
+          categories: [],
+          error: "Les catégories n'ont pû être récupérer"
+        })
+      }
+    }
+  }, [isAuth, user.isPremium])
 
   const handleSubmit = ({ limit, category }) => {
     if (gameCan('run')) {
@@ -41,6 +55,7 @@ export default function Custom() {
     <main className="container-sm custom">
       <ButtonBack />
       {state.loading && <time-indicator></time-indicator>}
+      {state.error && <Alert type="error">{error}</Alert>}
       <h2 className="txt-center">Partie Personnaliser</h2>
       {!state.loading && (
         <Formik

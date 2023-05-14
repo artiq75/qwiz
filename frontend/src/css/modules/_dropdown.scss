@@ -31,6 +31,11 @@ drop-down ul {
   color: var(--primary);
   padding-top: 0.5em;
   padding-bottom: 0.5em;
+
+  a {
+    display: inline-block;
+    min-width: 100%;
+  }
 }
 
 drop-down li {

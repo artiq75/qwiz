@@ -1,11 +1,11 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { RoutesName } from './router'
-import { BASE_URL } from '../constants/app'
 import { Alert, Modal } from '../components/Tools/Tools'
 import { useAuthContext } from '../components/providers/AuthProvider'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useAsyncEffect from '../hooks/useAsyncEffect'
 import { regenerateToken } from '../api/account'
+import { createCheckoutSession } from '../api/paiment'
 
 export default function Home() {
   const { user, isAuth, persist } = useAuthContext()
@@ -15,12 +15,12 @@ export default function Home() {
   const [isPremium, setIsPremium] = useState(false)
 
   useAsyncEffect(async () => {
-    if (searchParams.has('success')) {
+    if (isAuth && searchParams.has('success') && !user.isPremium) {
       const { token } = await regenerateToken()
       persist(token)
       setIsPremium(true)
     }
-  }, [searchParams])
+  }, [isAuth, searchParams, user])
 
   const handleClick = function (e) {
     if (!user.isPremium) {
@@ -38,6 +38,11 @@ export default function Home() {
     setIsPremium(false)
     searchParams.delete('success')
     setSearchParams(searchParams)
+  }
+
+  const handleCheckout = async () => {
+    const { sessionUrl } = await createCheckoutSession()
+    window.location.href = sessionUrl
   }
 
   return (
@@ -69,15 +74,16 @@ export default function Home() {
       )}
       {isOpen && (
         <Modal onClose={() => setIsOpen(false)}>
-          <form action={`${BASE_URL}/checkout`} method="post">
+          <div className="premium-alert">
+            <h3 className="premium-alert-price">1.99€</h3>
             <p>
               Pour créer des partie personnalisé vous devez impérativement
               devenir premium
             </p>
-            <button className="btn tertiary w-full" type="submit">
+            <button className="btn tertiary w-full" onClick={handleCheckout}>
               Devenir Premium
             </button>
-          </form>
+          </div>
         </Modal>
       )}
     </main>

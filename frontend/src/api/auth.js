@@ -20,8 +20,8 @@ export const isAuth = () => {
   const token = getToken()
   if (!token) return false
   const user = jwtDecode(getToken())
-  if (!user) return false
-  return Date.now() + (user.exp - user.iat) > Date.now()
+  if (!user || !user.exp) return false
+  return !(Math.floor(Date.now() / 1000) > user.exp)
 }
 
 export const isPremium = () => {

@@ -2,14 +2,16 @@
 
 namespace App\Service;
 
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 class ImageURLGenerator
 {
   public function __construct(
-    private StorageInterface $storage,
-    private RequestStack $requestStack
+    private readonly StorageInterface $storage,
+    private readonly RequestStack $requestStack,
+    private readonly Security $security
   ) {
   }
 
@@ -18,6 +20,14 @@ class ImageURLGenerator
    */
   public function generate(object $entity, string $imageField): string
   {
+    /**
+     * @var \App\Entity\User
+     */
+    $user = $this->security->getUser();
+    
+    if (!$user->getImageFile())
+      return '';
+
     // Récuperation de l'url de base
     $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
 

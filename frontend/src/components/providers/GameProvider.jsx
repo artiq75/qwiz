@@ -15,7 +15,7 @@ const Context = createContext({
 export const useGameContext = () => useContext(Context)
 
 export default function GameProvider({ children }) {
-  const { user } = useAuthContext()
+  const { user, isAuth } = useAuthContext()
   const [scores, setScores] = useState([])
   const timerMachine = useMachine(TimerMachine, {
     start: 3
@@ -23,11 +23,11 @@ export default function GameProvider({ children }) {
   const gameMachine = useMachine(GameMachine)
 
   useAsyncEffect(async () => {
-    if (user.id) {
+    if (isAuth && user.id) {
       const scores = await findAllScore(user.id)
       setScores(scores)
     }
-  }, [user])
+  }, [isAuth, user])
 
   const value = useMemo(() => {
     return {

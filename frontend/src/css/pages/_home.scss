@@ -17,3 +17,13 @@
 .home .alert {
   width: var(--container-sm);
 }
+
+.premium-alert {
+  text-align: center;
+  display: grid;
+  gap: 1em;
+}
+
+.premium-alert-price {
+  font-size: var(--text-1xl);
+}

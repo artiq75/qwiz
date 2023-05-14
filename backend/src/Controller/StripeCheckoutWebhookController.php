@@ -18,6 +18,7 @@ class StripeCheckoutWebhookController extends AbstractController
         private readonly UserRepository $userRepository
     ) {
         Stripe::setApiKey($_ENV['STRIPE_SK_KEY']);
+        Stripe::setApiVersion('2022-11-15');
     }
 
     #[Route('/checkout/webhook', name: 'checkout.webhook')]
