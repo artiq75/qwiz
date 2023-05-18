@@ -1,6 +1,7 @@
 .btn {
   display: flex;
   align-items: center;
+  max-width: 100%;
   gap: 1em;
   justify-content: center;
   padding: 1em;
@@ -15,15 +16,15 @@
   &:disabled {
     cursor: unset;
   }
-}
 
-.btn.back {
-  position: fixed;
-  top: calc(var(--topbar-height) + 1em);
-  left: 1em;
-  padding: 0.5em;
-  gap: 0.25em;
-  color: var(--light);
+  &.back {
+    position: fixed;
+    top: calc(var(--topbar-height) + 1em);
+    left: 1em;
+    padding: 0.5em;
+    gap: 0.25em;
+    color: var(--light);
+  }
 }
 
 .btn-close {

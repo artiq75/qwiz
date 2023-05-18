@@ -1,17 +1,9 @@
-import {
-  createMachine,
-  guard,
-  immediate,
-  invoke,
-  reduce,
-  state,
-  transition
-} from 'robot3'
+import { createMachine, invoke, reduce, state, transition } from 'robot3'
 
-const canStart = (ctx) =>
-  (ctx.timer && ctx.timer === ctx.start) || ctx.timer > 0
+// const canStart = (ctx) =>
+//   (ctx.timer && ctx.timer === ctx.start) || ctx.timer > 0
 
-const decrement = (ctx) => {
+const decrementReducer = (ctx) => {
   clearTimeout(timeoutID)
   timeoutID = null
   return { ...ctx, timer: ctx.timer - 1 }
@@ -32,16 +24,20 @@ const canContinue = async (ctx) =>
 
 const resetReducer = (ctx) => ({ ...ctx, timer: ctx.start })
 
+const resetTimerReducer = (ctx) => {
+  clearTimeout(timeoutID)
+  timeoutID = null
+  return { ...ctx, timer: ctx.start }
+}
+
 const TimerMachine = createMachine(
   {
-    stop: state(
-      transition('start', 'start', reduce(resetReducer))
-    ),
+    stop: state(transition('start', 'start', reduce(resetReducer))),
     start: invoke(
       canContinue,
-      transition('done', 'start', reduce(decrement)),
+      transition('done', 'start', reduce(decrementReducer)),
       transition('error', 'stop'),
-      transition('stop', 'stop')
+      transition('stop', 'stop', reduce(resetTimerReducer))
     )
   },
   (ctx) => ({ ...ctx, timer: ctx.start ?? 30 })

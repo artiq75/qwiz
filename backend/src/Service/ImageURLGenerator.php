@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -18,14 +19,9 @@ class ImageURLGenerator
   /**
    * Generate a absolute url of image for entity image field
    */
-  public function generate(object $entity, string $imageField): string
+  public function generate(User $entity, string $imageField): string
   {
-    /**
-     * @var \App\Entity\User
-     */
-    $user = $this->security->getUser();
-    
-    if (!$user->getImageFile())
+    if (!$entity->getImageFile())
       return '';
 
     // Récuperation de l'url de base
