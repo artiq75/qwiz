@@ -21,7 +21,7 @@ export default function Topbar() {
       <Link to={RoutesName.HOME}>
         <h1>Qwiz</h1>
       </Link>
-      <h1>{JSON.stringify(gameState)}</h1>
+      {user.username && !gameCan('choose') && <p className='topbar-username'>{user.username}</p>}
       {gameCan('choose') && (
         <div className="topbar-play">
           <h2 className="topbar-play__timer">{timerCtx.timer}s</h2>

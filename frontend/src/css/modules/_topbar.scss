@@ -27,6 +27,7 @@
   flex-direction: column;
 }
 
-.topbar-play__timer {
+.topbar-play__timer,
+.topbar-username {
   font-size: var(--text-1xl);
 }
