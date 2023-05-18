@@ -50,9 +50,10 @@ const GameMachine = createMachine(
     lobby: state(transition('run', 'loading', reduce(lobbyReduce))),
     loading: invoke(
       findQuestion,
-      transition('done', 'play', reduce(loadingDoneReduce)),
+      transition('done', 'prePlay', reduce(loadingDoneReduce)),
       transition('error', 'loading')
     ),
+    prePlay: state(transition('startPlay', 'play')),
     play: state(
       transition(
         'choose',

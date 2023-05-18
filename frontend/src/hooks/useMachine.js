@@ -47,12 +47,5 @@ export default function useMachine(machine, initialContext = {}) {
     [service.context, service.machine.state.value.transitions]
   )
 
-  const isIn = useCallback(
-    (stateName) => {
-      return state === stateName
-    },
-    [state]
-  )
-
-  return [state, context, send, can, isIn]
+  return [state, context, send, can]
 }
