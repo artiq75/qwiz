@@ -3,6 +3,7 @@ import Websocket from '@fastify/websocket'
 import * as dotenv from 'dotenv'
 import { resolve } from 'node:path'
 import jwt from 'jsonwebtoken'
+import jwtDecode from 'jwt-decode'
 
 dotenv.config({
   path: resolve('.env')
@@ -17,11 +18,15 @@ const fastify = Fastify({
 fastify.register(Websocket)
 
 fastify.register(async () => {
-  fastify.get('/game', { websocket: true }, (connection, req) => {
+  fastify.get('/ws', { websocket: true }, (connection, req) => {
     const query = req.query
     const token = query.token ?? ''
 
-    if (!jwt.verify(token, process.env.JWT_PUBLIC, { algorithms: 'RS256' })) {
+    if (
+      !jwt.verify(token, process.env.JWT_PUBLIC, {
+        algorithms: 'RS256'
+      })
+    ) {
       connection.socket.send(
         JSON.stringify({
           type: 'error',
@@ -32,21 +37,37 @@ fastify.register(async () => {
 
     connections.set(token, connection)
 
-    connection.socket.send(
-      JSON.stringify({
-        type: 'connexion',
-        token
-      })
+    const players = Array.from(connections.keys()).map((token) =>
+      jwtDecode(token)
     )
 
-    connection.socket.on('message', (payload) => {
-      const event = JSON.parse(payload.toString())
-      connection.socket.send(JSON.stringify(event))
+    for (const [key, value] of connections) {
+      value.socket.send(
+        JSON.stringify({
+          type: 'joint',
+          data: players
+        })
+      )
+    }
+
+    connection.socket.on('close', () => {
+      connections.delete(token)
+      const players = Array.from(connections.keys()).map((token) =>
+        jwtDecode(token)
+      )
+      for (const [key, value] of connections) {
+        value.socket.send(
+          JSON.stringify({
+            type: 'leave',
+            data: players
+          })
+        )
+      }
     })
   })
 })
 
-fastify.listen({ port: 3000 }, (err) => {
+fastify.listen({ port: 3000, host: '0.0.0.0' }, (err) => {
   if (err) {
     fastify.log.error(err)
     process.exit(1)

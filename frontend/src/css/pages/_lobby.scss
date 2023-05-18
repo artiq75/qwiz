@@ -15,3 +15,17 @@
 .lobby-title {
   font-size: var(--text-1xl);
 }
+
+.lobby-players {
+  display: grid;
+  gap: 1em;
+}
+
+.lobby-players-item {
+  border: 1px solid var(--primary);
+  border-radius: var(--rounded);
+  padding: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
