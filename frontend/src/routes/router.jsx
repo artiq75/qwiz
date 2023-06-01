@@ -7,6 +7,7 @@ import Result from './result'
 import Login from './login'
 import Register from './register'
 import Profil from './profil'
+import ErrorPage from './error-page'
 import RequireAuth from '../components/Auth/RequireAuth'
 import { createBrowserRouter } from 'react-router-dom'
 import Account from './account'
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
   {
     path: RoutesName.HOME,
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: RoutesName.HOME,

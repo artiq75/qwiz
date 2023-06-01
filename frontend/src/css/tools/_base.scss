@@ -17,3 +17,12 @@ main {
   padding-left: 1em;
   padding-right: 1em;
 }
+
+#error-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+}
