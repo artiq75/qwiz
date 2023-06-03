@@ -74,8 +74,8 @@ export default function Home() {
       )}
       {isOpen && (
         <Modal onClose={() => setIsOpen(false)}>
-          <div className="premium-alert">
-            <h3 className="premium-alert-price">1.99€</h3>
+          <section className="premium-alert">
+            <h2 className="premium-alert-price">1.99€</h2>
             <p>
               Pour créer des partie personnalisé vous devez impérativement
               devenir premium
@@ -83,7 +83,7 @@ export default function Home() {
             <button className="btn tertiary w-full" onClick={handleCheckout}>
               Devenir Premium
             </button>
-          </div>
+          </section>
         </Modal>
       )}
     </main>

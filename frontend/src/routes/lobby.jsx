@@ -47,7 +47,7 @@ export default function Lobby() {
   return (
     <main className="lobby">
       <ButtonBack />
-      <section className="lobby-body">
+      <div className="lobby-body">
         <h2 className="lobby-title txt-center">Multijoueur</h2>
         {players.length > 0 && (
           <ul className="lobby-players">
@@ -62,7 +62,7 @@ export default function Lobby() {
         <Link className="btn tertiary w-full" to={RoutesName.PLAY}>
           Lancer la partie
         </Link>
-      </section>
+      </div>
     </main>
   )
 }

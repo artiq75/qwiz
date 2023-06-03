@@ -42,6 +42,7 @@ export default function PersonalForm() {
             name="image"
             src={user.image}
             setFieldValue={setFieldValue}
+            alt="Photo de profile"
           />
 
           <div className="g2 gap1">

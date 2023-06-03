@@ -5,6 +5,12 @@
   gap: 1em;
 }
 
+.profil-header {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
 .profil-logo {
   height: 200px;
   width: 200px;
@@ -15,4 +21,8 @@
 .profil-stats {
   display: grid;
   gap: 1em;
+}
+
+.profil-username {
+  font-size: var(--text-1xl);
 }

@@ -19,8 +19,8 @@ export default function Profil() {
   return (
     <main className="container-lg profil">
       <div className="profil-header">
-        <Avatar src={user.image} size={200} />
-        <h1 className="profil-username">{user.username}</h1>
+        <h3 className="profil-username">{user.username}</h3>
+        <Avatar src={user.image} size={200} alt="Photo de profile" />
       </div>
       <div className="separator"></div>
       <div className="profil-stats">

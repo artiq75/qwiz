@@ -18,13 +18,15 @@ export default function Topbar() {
 
   return (
     <header className="topbar">
-      <Link to={RoutesName.HOME}>
-        <h1>Qwiz</h1>
-      </Link>
-      {user.username && !gameCan('choose') && <p className='topbar-username'>{user.username}</p>}
+      <h1>
+        <Link to={RoutesName.HOME}>Qwiz</Link>
+      </h1>
+      {user.username && !gameCan('choose') && (
+        <h2 className="topbar-username">{user.username}</h2>
+      )}
       {gameCan('choose') && (
         <div className="topbar-play">
-          <h2 className="topbar-play__timer">{timerCtx.timer}s</h2>
+          <h3 className="topbar-play__timer">{timerCtx.timer}s</h3>
           <div className="tag primary">
             Question: {gameCtx.round} / {gameCtx.limit}
           </div>

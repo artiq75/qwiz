@@ -15,7 +15,7 @@ export default function Result() {
   return (
     <main className="result">
       <div className="result-inner w-full container-lg">
-        <h1 className="txt-center">Résultats</h1>
+        <h2 className="txt-center">Résultats</h2>
         <Stats scores={gameCtx.gameScores} />
         <div className="separator"></div>
         <Link

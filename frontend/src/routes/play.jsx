@@ -80,10 +80,11 @@ export default function Play() {
         {gameCtx.loading && <time-indicator></time-indicator>}
         {/* Affichage du timer de préparation avant le début du round */}
         {startTimerCan('stop') && (
-          <div className="play-starttimer">
-            <p>Départ dans</p>
-            <h2>{startTimerCtx.timer}</h2>
-          </div>
+          <h2 className="play-starttimer">
+            <span>Départ dans</span>
+            <br />
+            <span>{startTimerCtx.timer}</span>
+          </h2>
         )}
         {/* Affichage du round lorsque le timer est fini */}
         {!gameCtx.loading && startTimerCan('start') && (
