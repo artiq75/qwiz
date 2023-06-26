@@ -37,7 +37,7 @@ class AppFixtures extends Fixture
             ->setPassword(
                 $this->hasher->hashPassword(
                     $user,
-                    'password'
+                    'Vantablack123.'
                 )
             );
         $manager->persist($user);
