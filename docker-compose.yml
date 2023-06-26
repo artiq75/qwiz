@@ -14,7 +14,7 @@ services:
       - "3307:3306"
 
   app:
-    user: "1000:1000"
+    user: "1002:1002"
     build:
       context: ./php
     restart: always
@@ -26,7 +26,7 @@ services:
       - db
 
   caddy:
-    user: "1000:1000"
+    user: "1002:1002"
     build: .
     restart: always
     ports:
@@ -42,8 +42,8 @@ services:
 
   node:
     restart: always
-    user: "1000:1000"
-    image: node:latest
+    user: "1002:1002"
+    image: node:18
     tty: true
     working_dir: /frontend
     volumes:

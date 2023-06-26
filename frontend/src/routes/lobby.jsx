@@ -21,7 +21,6 @@ export default function Lobby() {
       const event = JSON.parse(data)
       switch (event.type) {
         case 'joint':
-          console.log(event.data)
           setPlayers(event.data)
           break
         case 'leave':
