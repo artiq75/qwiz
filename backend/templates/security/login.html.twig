@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Se Connecter{% endblock %}
+
+{% block body %}
+
+<main>
+
+    <form action="{{ path('app_login') }}" method="post">
+
+        <h1>Se Connecter</h1>
+
+        {% if error %}
+            <div class="alert" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <p>
+            <label for="username">Email</label>
+            <input type="email" id="username" name="_username" value="{{ last_username }}">
+        </p>
+
+        <p>
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="_password">
+        </p>
+
+        <button type="submit">Se conncter</button>
+    
+    </form>
+
+</main>
+
+<style>
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+main {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+form {
+    display: grid;
+    gap: 1.75em;
+    max-width: 400px;
+    width: 100%;
+}
+h1 {
+    text-align: center;
+}
+label {
+    display: block;
+    margin-bottom: .5em;
+}
+input {
+    width: 100%;
+    padding: 1em;
+    border: 1px solid gray;
+    font: inherit;
+    border-radius: 5px;
+}
+button {
+    padding: 1em;
+    font: inherit;
+    border: 1px solid #0d6efd;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #0d6efd;
+    color: white;
+}
+.alert {
+    position: relative;
+    padding: 1rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+</style>
+
+{% endblock %}
